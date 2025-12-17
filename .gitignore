@@ -1,0 +1,18 @@
+.DS_Store
+.env
+./.vscode
+/node_modules
+# /docs
+/docs/assets
+/docs/images
+/docs/mar
+/docs/pur
+/docs/src/node_modules
+/docs/src/.vitepress/dist
+.
+assets/dist
+# /system
+application/cache
+application/logs
+application/third_party
+application/vendor

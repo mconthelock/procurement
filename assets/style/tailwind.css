@@ -1,0 +1,208 @@
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+@plugin "tailwindcss-bg-patterns";
+
+/* view */
+@source "../../application/views/**/*.php";
+
+/* css */
+@source "../style/**/*.css";
+
+/* js */
+@source "../script/**/*.js";
+
+
+@source "../../../node_modules/@amec/webasset/src/**/*.{js,css}";
+
+/* Daisyui */
+@plugin "daisyui" {
+    themes: light --default, dark --prefersdark;
+}
+
+@plugin "daisyui/theme" {
+    name: "light";
+    default: true;
+    prefersdark: true;
+    color-scheme: "light";
+    --color-base-100: oklch(98% 0 0);
+    --color-base-200: oklch(97% 0 0);
+    --color-base-300: oklch(92% 0 0);
+    --color-base-content: oklch(20% 0 0);
+    --color-primary: oklch(0.47 0.11 358.91);
+    --color-primary-content: oklch(0.88 0.03 4.25);
+    --color-secondary: oklch(0.97 0.02 67.47);
+    --color-secondary-content: oklch(25% 0.092 26.042);
+    --color-accent: oklch(0.94 0.03 17.68 / 1);
+    --color-accent-content: oklch(25% 0.092 26.042);
+    --color-neutral: oklch(26% 0 0);
+    --color-neutral-content: oklch(98% 0 0);
+    --color-info: oklch(50% 0.134 242.749);
+    --color-info-content: oklch(95% 0.026 236.824);
+    --color-success: oklch(45% 0.124 130.933);
+    --color-success-content: oklch(98% 0.031 120.757);
+    --color-warning: oklch(66% 0.179 58.318);
+    --color-warning-content: oklch(98% 0.022 95.277);
+    --color-error: oklch(50% 0.213 27.518);
+    --color-error-content: oklch(94% 0.03 12.58);
+    --radius-selector: 0.5rem;
+    --radius-field: 0.25rem;
+    --radius-box: 1rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+    --border: 1px;
+    --depth: 1;
+    --noise: 1;
+}
+
+@layer base {
+    :root {
+        --font-sans: "LINE Seed EN", "LINE Seed EN Bold", "LINE Seed TH",
+            "LINE Seed TH Bold", "LINE Seed JP", "LINE Seed JP Bold", sans-serif;
+    }
+
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+
+    body {
+        @apply font-sans;
+    }
+
+    .input,
+    .select,
+    .textarea,
+    .file-input {
+        &:focus,
+        &:focus-within {
+            outline-offset: 0px !important;
+            outline: 1px solid var(--input-color) !important;
+        }
+    }
+
+    .dark {
+        --color-primary: 255, 0, 0;
+        --color-secondary: 107, 114, 128;
+        --color-accent: 232, 159, 2;
+        --color-card: 0, 0, 0;
+        --color-border: 216, 218, 223;
+        --color-body: 229, 231, 235;
+    }
+
+    @font-face {
+        font-family: "LINE Seed EN";
+        src: url("../../fonts/lineseed/en/LINESeedSans_W_Rg.woff2")
+                format("woff2"),
+            url("../../fonts/lineseed/en/LINESeedSans_W_Rg.woff") format("woff");
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: "LINE Seed EN Bold";
+        src: url("../../fonts/lineseed/en/LINESeedSans_W_Bd.woff2")
+                format("woff2"),
+            url("../../fonts/lineseed/en/LINESeedSans_W_Bd.woff") format("woff");
+        font-weight: 700;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: "LINE Seed TH";
+        src: url("../../fonts/lineseed/th/LINESeedSansTH_W_Rg.woff2")
+                format("woff2"),
+            url("../../fonts/lineseed/th/LINESeedSansTH_W_Rg.woff")
+                format("woff");
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: "LINE Seed TH Bold";
+        src: url("../../fonts/lineseed/th/LINESeedSansTH_W_Bd.woff2")
+                format("woff2"),
+            url("../../fonts/lineseed/th/LINESeedSansTH_W_Bd.woff")
+                format("woff");
+        font-weight: 700;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: "LINE Seed JP";
+        src: url("../../fonts/lineseed/jp/LINESeedJP_OTF_Rg.woff2")
+                format("woff2"),
+            url("../../fonts/lineseed/jp/LINESeedJP_OTF_Rg.woff") format("woff");
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: "LINE Seed JP Bold";
+        src: url("../../fonts/lineseed/jp/LINESeedJP_OTF_Bd.woff2")
+                format("woff2"),
+            url("../../fonts/lineseed/jp/LINESeedJP_OTF_Bd.woff") format("woff");
+        font-weight: 700;
+        font-style: normal;
+    }
+
+    .loader {
+        height: 5rem;
+        aspect-ratio: 1;
+        border: 3px solid #ffffff;
+        animation: l4 2s infinite;
+    }
+    @keyframes l4 {
+        0% {
+            aspect-ratio: 1;
+            border-radius: 50px;
+        }
+        25% {
+            aspect-ratio: 2;
+            border-radius: 50px;
+        }
+        50% {
+            aspect-ratio: 2;
+            border-radius: 0;
+        }
+        75% {
+            aspect-ratio: 1;
+            border-radius: 0;
+        }
+        100% {
+            aspect-ratio: 1;
+            border-radius: 50px;
+        }
+    }
+
+    .shadow-button {
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1),
+            0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+    }
+
+    .txt-upper {
+        text-transform: uppercase;
+    }
+
+    .drawer-side {
+        z-index: 11 !important;
+    }
+
+    .tooltip:before {
+        z-index: 12 !important;
+    }
+
+    .text-center {
+        text-align: center !important;
+    }
+
+    input {
+        color: #000; /* มีค่าก็สีดำ */
+    }
+
+    input:placeholder-shown {
+        color: gray; /* ยังว่างอยู่ */
+    }
+}
