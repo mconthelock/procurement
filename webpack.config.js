@@ -50,7 +50,6 @@ module.exports = {
             test: /\.(js|css|html|svg)$/,
             threshold: 10240,
             minRatio: 0.8,
-            exclude: /public/, // <<< อย่ามาบีบอัดไฟล์ที่ copy มา
         }),
         new webpack.ProvidePlugin({
             $: "jquery",
