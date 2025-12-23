@@ -43,14 +43,18 @@ pipeline {
             }
         }
 
-        // stage('Deploy to NAS') {
-        //     steps {
-        //         sh '''
-        //             mkdir -p ${TARGET_DIR}
-        //             rsync -rlptvz --delete --no-perms --no-owner --no-group \
-        //             dist/ ${TARGET_DIR}/
-        //         '''
-        //     }
-        // }
+        stage('Deploy to NAS') {
+            steps {
+                sh '''
+                    mkdir -p ${TARGET_DIR}
+
+                    rsync -av --delete \
+                        --exclude='node_modules' \
+                        --exclude='.git' \
+                        --exclude='.gitignore' \
+                        ./ ${TARGET_DIR}/
+                '''
+            }
+        }
     }
 }
