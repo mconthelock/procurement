@@ -15,7 +15,7 @@
   "license": "UNLICENSED",
   "description": "",
   "dependencies": {
-    "@amec/webasset": "git+ssh://git@webhub:2222/wsd/webasset.git"
+    "@amec/webasset": "git+https://webhub.mitsubishielevatorasia.co.th/wsd/webasset.git"
   }
 }
 
