@@ -25,11 +25,21 @@ pipeline {
 
         stage('Install & Build on NAS') {
             steps {
-                sh '''
-                    echo "Current directory: $(pwd)"
-                    npm install
-                    npm run build
-                '''
+                // ดึง Credentials มาใช้งานในรูปแบบตัวแปร GIT_USER และ GIT_PASS
+                withCredentials([usernamePassword(credentialsId: 'gitlab-auth-id', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
+                    sh '''
+                        echo "Current directory: $(pwd)"
+
+                        # บอกให้ git แอบใส่ username:password เข้าไปใน URL ของ domain นี้โดยอัตโนมัติ
+                        git config --global url."https://${GIT_USER}:${GIT_PASS}@webhub.mitsubishielevatorasia.co.th/".insteadOf "https://webhub.mitsubishielevatorasia.co.th/"
+
+                        npm install
+                        npm run build
+
+                        # ลบการตั้งค่า url เพื่อความปลอดภัยหลังใช้งานเสร็จ
+                        git config --global --unset url."https://${GIT_USER}:${GIT_PASS}@webhub.mitsubishielevatorasia.co.th/".insteadOf
+                    '''
+                }
             }
         }
 
