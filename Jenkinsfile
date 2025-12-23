@@ -43,6 +43,16 @@ pipeline {
             }
         }
 
+        stage('PHP Prep (Composer)') {
+            steps {
+                // ใช้คำสั่ง dir เพื่อ cd เข้าไปในโฟลเดอร์ application ก่อนรัน composer
+                dir('application') {
+                    sh 'composer install --no-dev --optimize-autoloader'
+                }
+                echo "PHP preparation with Composer done."
+            }
+        }
+
         stage('Deploy to NAS') {
             steps {
                 sh '''
