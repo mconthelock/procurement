@@ -4,6 +4,7 @@ pipeline {
     environment {
         ENV = 'development'
         TARGET_DIR = '/var/amecweb/wwwroot/development/procurement'
+        GIT_SSL_NO_VERIFY = 'true'
     }
 
     tools {
