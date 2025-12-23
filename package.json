@@ -2,6 +2,14 @@
   "name": "procurement",
   "version": "1.0.0",
   "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "description": "",
+  "dependencies": {
+    "@amec/webasset": "git+https://webhub.mitsubishielevatorasia.co.th/wsd/webasset.git",
+    "npm-run-all": "^4.1.5"
+  },
   "scripts": {
     "tailwind:watch": "tailwindcss -i ./assets/style/tailwind.css -o ./assets/dist/css/tailwind.css --watch ",
     "webpack:watch": "webpack --watch --mode development",
@@ -9,13 +17,5 @@
     "tailwind:build": "tailwindcss -i ./assets/style/tailwind.css -o ./assets/dist/css/tailwind.css --minify ",
     "webpack:build": "webpack --mode production",
     "build": "npm-run-all --serial tailwind:build webpack:build"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "UNLICENSED",
-  "description": "",
-  "dependencies": {
-    "@amec/webasset": "git+https://webhub.mitsubishielevatorasia.co.th/wsd/webasset.git"
   }
 }
-
