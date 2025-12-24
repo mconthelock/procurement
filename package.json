@@ -19,7 +19,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@amec/webasset": "git+https://webhub.mitsubishielevatorasia.co.th/wsd/webasset.git",
+    "@amec/webasset": "git+ssh://git@webhub.mitsubishielevatorasia.co.th:2222/wsd/webasset.git",
     "@fancyapps/ui": "^5.0.36",
     "@flaticon/flaticon-uicons": "^3.3.1",
     "@fontsource/kanit": "^5.1.0",
