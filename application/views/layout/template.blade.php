@@ -28,6 +28,7 @@
             <!-- Page content here -->
             <div class="flex-1 flex flex-col w-full p-4 md:p-8">
                 test
+                bay
                 @yield('contents')
             </div>
         </div>
