@@ -1,89 +1,87 @@
 const quickStartItem = { text: "Back to Home", link: "/quick-start" };
-const mar = [
+const pr = [
 	{
-		text: "Inquiry",
+		text: "P/R Management",
 		collapsed: true,
 		items: [
-			{ text: "Add new inquiry", link: "/mar/inquiry-new" },
+			{ text: "Create P/R", link: "/pr/create" },
 			{
-				text: "Add stock part inquiry",
-				link: "/mar/inquiry-stock",
+				text: "Wait for Approval",
+				link: "/pr/approval",
 			},
 			{
-				text: "On process inquiry",
-				link: "/mar/inquiry-onprocess",
+				text: "Conning soon",
+				link: "/pr/comming",
 			},
 			{
-				text: "Pending pre-bm inquiry",
-				link: "/mar/inquiry-prebm",
+				text: "Mine",
+				link: "/pr/mine",
 			},
-			{
-				text: "Inquiry report",
-				link: "/mar/inquiry-report",
-			},
-		],
-	},
-	{
-		text: "Quotation",
-		collapsed: true,
-		items: [
-			{ text: "Issue Quotation", link: "/mar/quotation-issue" },
-			{ text: "Pending Weight", link: "/mar/quotation-weight" },
-			{ text: "Quotation Released", link: "/mar/quotation-release" },
-			{ text: "Add Out-Out quotation", link: "/mar/quotation-out" },
-		],
-	},
-	{ text: "Orders", link: "/mar/orders" },
-	{
-		text: "Price List",
-		collapsed: true,
-		items: [
-			{ text: "Price List", link: "/mar/price-history" },
-			{ text: "Items/Drawing", link: "/mar/price-item" },
-		],
-	},
-	{
-		text: "Master",
-		collapsed: true,
-		items: [
-			{ text: "Price Ratio", link: "/mar/master-ratio" },
-			{ text: "Inquiry Controller", link: "/mar/master-control" },
-			{ text: "Currency", link: "/mar/master-cur" },
 		],
 	},
 ];
-const sale = [];
-const de = [];
-const fin = [
+const po = [
 	{
-		text: "Price Confirmation",
-		link: "/fin/confirm",
-	},
-	{
-		text: "Check inquiry",
-		link: "/fin/check",
-	},
-	{
-		text: "Price Approval",
-		link: "/fin/approve",
-	},
-	{
-		text: "Running Inquiry",
-		link: "/fin/inquiry",
-	},
-	{
-		text: "Price List",
-		link: "/fin/price-list",
-	},
-	{
-		text: "Item Master",
-		link: "/fin/item",
+		text: "P/O Management",
+		collapsed: true,
+		items: [
+			{ text: "Issue P/O", link: "/po/issue" },
+			{ text: "Wait for Approval", link: "/po/approve" },
+			{ text: "Mine", link: "/po/mine" },
+			{ text: "Awaiting Delivery", link: "/po/wait" },
+			{ text: "Canceled P/O", link: "/po/canceled" },
+		],
 	},
 ];
-const pkc = [];
+const product = [
+	{
+		text: "P/O Management",
+		collapsed: true,
+		items: [
+			{ text: "Product List", link: "/product/product" },
+			{ text: "Category", link: "/product/category" },
+		],
+	},
+];
+const receive = [
+	{
+		text: "Receiving",
+		collapsed: true,
+		items: [
+			{ text: "WH Receive", link: "/receive/receive" },
+			{ text: "Receiving Plan", link: "/receive/plan" },
+			{ text: "Invoice/Tax", link: "/receive/invoice" },
+		],
+	},
+];
+const report = [
+	{
+		text: "Report",
+		collapsed: true,
+		items: [
+			{ text: "Orders Report", link: "/report/order" },
+			{ text: "Receiving Report", link: "/report/receive" },
+			{ text: "Matching Report", link: "/report/matching" },
+			{ text: "Inventory Report", link: "/report/inventory" },
+			{ text: "Running Orders", link: "/report/running" },
+		],
+	},
+];
+const vendor = [
+	{
+		text: "Vendor Management",
+		collapsed: true,
+		items: [
+			{ text: "Vendor List", link: "/vendor/vendor" },
+			{ text: "Approving Vendor", link: "/vendor/approve" },
+			{ text: "SCM users", link: "/vendor/users" },
+		],
+	},
+];
 
-export const marItem = [...mar, quickStartItem];
-export const saleItem = [...sale, quickStartItem];
-export const deItem = [...de, quickStartItem];
-export const finItem = [...fin, quickStartItem];
-export const pkcItem = [...pkc, quickStartItem];
+export const prItem = [...pr, quickStartItem];
+export const poItem = [...po, quickStartItem];
+export const productItem = [...product, quickStartItem];
+export const receiveItem = [...receive, quickStartItem];
+export const reportItem = [...report, quickStartItem];
+export const vendorItem = [...vendor, quickStartItem];

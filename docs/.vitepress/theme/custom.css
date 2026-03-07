@@ -12,6 +12,7 @@
 /* ทำให้พื้นหลังของ Hero โปร่งใสเพื่อให้เห็น Three.js ชัดขึ้น */
 .VPContent.is-home {
 	background: transparent !important;
+	max-height: 100vh;
 }
 
 .VPNavBar.home .VPNavBarTitle a {
@@ -31,7 +32,7 @@
 }
 
 .VPHomeHero .container {
-	min-height: 60vh;
+	min-height: 50vh;
 }
 .VPHome .vp-doc > div {
 	position: fixed !important;

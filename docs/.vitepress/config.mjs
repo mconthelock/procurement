@@ -31,31 +31,36 @@ export default defineConfig({
 			"/": [
 				{ text: "Quick Start", link: "/quick-start" },
 				{
-					text: "MAR User Guide",
-					link: "/mar/inquiry-new",
+					text: "P/R Management",
+					link: "/pr/create",
 				},
 				{
-					text: "Sale User Guide",
-					link: "/sale/inquiry",
+					text: "P/O Management",
+					link: "/po/issue",
 				},
 				{
-					text: "D/E User Guide",
-					link: "/de/inquiry",
+					text: "Receiving",
+					link: "/receive/receive",
 				},
 				{
-					text: "Finance User Guide",
-					link: "/fin/confirm",
+					text: "Products and Inventory",
+					link: "/product/product",
 				},
 				{
-					text: "PKC User Guide",
-					link: "/pkc/inquiry",
+					text: "Vendor Management",
+					link: "/vendor/vendor",
+				},
+				{
+					text: "Report",
+					link: "/report/order",
 				},
 			],
-			"/mar/": sidebar.marItem,
-			"/sale/": sidebar.saleItem,
-			"/de/": sidebar.deItem,
-			"/fin/": sidebar.finItem,
-			"/pkc/": sidebar.pkcItem,
+			"/pr/": sidebar.prItem,
+			"/po/": sidebar.poItem,
+			"/receive/": sidebar.receiveItem,
+			"/product/": sidebar.productItem,
+			"/vendor/": sidebar.vendorItem,
+			"/report/": sidebar.reportItem,
 		},
 	},
 	// ควบคุม หน้า index.md จาก env
@@ -65,7 +70,7 @@ export default defineConfig({
 			pageData.frontmatter.hero = {
 				...(pageData.frontmatter.hero || {}),
 				name: process.env.VITE_APP_NAME || "AMEC Procurement System",
-				text: process.env.VITE_APP_TEXT || "manual",
+				text: process.env.VITE_APP_TEXT || "Manual",
 				tagline:
 					process.env.VITE_APP_TAGLINE ||
 					"Powered by VitePress + custom theme",
