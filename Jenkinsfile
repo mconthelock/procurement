@@ -1,54 +1,68 @@
 pipeline {
     agent any
 
-    environment {
-        ENV = 'development'
-        TARGET_DIR = '/var/amecweb/wwwroot/development/procurement'
-        GIT_SSL_NO_VERIFY = 'true'
-    }
-
     tools {
         nodejs 'node'
     }
 
     stages {
-        stage('Checkout') {
+        stage('Setup Environment') {
             steps {
-                checkout scmGit(
-                    branches: [[name: '*/main']],
-                    userRemoteConfigs: [[
-                        url: 'https://webhub.mitsubishielevatorasia.co.th/wsd/procurement.git',
-                        credentialsId: 'gitlab-auth-id']
-                    ]
-                )
+                script {
+                    if (env.BRANCH_NAME == 'develop') {
+                        env.TARGET_DIR = '/var/amecweb/wwwroot/development/procurement'
+                        env.ENV_CRED_ID = 'procurement-env-dev'
+                        env.NODE_ENV = 'development'
+                        env.DEPLOY_ENV = 'development'
+                        echo ">>> MR merged → develop → DEPLOY DEVELOPMENT"
+
+                    } else if (env.BRANCH_NAME == 'main') {
+                        env.TARGET_DIR = '/var/amecweb/wwwroot/production/procurement'
+                        env.ENV_CRED_ID = 'procurement-env-prod'
+                        env.NODE_ENV = 'development'
+                        env.DEPLOY_ENV = 'production'
+
+                        echo ">>> MR merged → main → DEPLOY PRODUCTION"
+
+                    } else {
+                        error "❌ Branch ${env.BRANCH_NAME} is not deployable"
+                    }
+                }
             }
         }
 
-        stage('Install & Build on NAS') {
+        stage('Checkout') {
             steps {
-                // ดึง Credentials มาใช้งานในรูปแบบตัวแปร GIT_USER และ GIT_PASS
-                withCredentials([usernamePassword(credentialsId: 'gitlab-auth-id', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
-                    sh '''
-                        echo "Current directory: $(pwd)"
+                checkout scm
+            }
+        }
 
-                        # บอกให้ git แอบใส่ username:password เข้าไปใน URL ของ domain นี้โดยอัตโนมัติ
-                        git config --global url."https://${GIT_USER}:${GIT_PASS}@webhub.mitsubishielevatorasia.co.th/".insteadOf "https://webhub.mitsubishielevatorasia.co.th/"
 
-                        npm install
-                        npm run build
+        stage('Install & Build') {
+            steps {
+                withCredentials([file(credentialsId: "${env.ENV_CRED_ID}", variable: 'ENV_FILE')]) {
+                    withCredentials([usernamePassword(credentialsId: 'gitlab-auth-id', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
+                        sh '''
+                            cp ${ENV_FILE} .env
 
-                        # ลบการตั้งค่า url เพื่อความปลอดภัยหลังใช้งานเสร็จ
-                        git config --global --unset url."https://${GIT_USER}:${GIT_PASS}@webhub.mitsubishielevatorasia.co.th/".insteadOf
-                    '''
+                            git config --global url."https://${GIT_USER}:${GIT_PASS}@webhub.mitsubishielevatorasia.co.th/".insteadOf "https://webhub.mitsubishielevatorasia.co.th/"
+
+                            npm install --include=dev
+                            npm update @amec/webasset
+                            npm run build
+                            npm run docs:build
+
+                            git config --global --unset url."https://${GIT_USER}:${GIT_PASS}@webhub.mitsubishielevatorasia.co.th/".insteadOf
+                        '''
+                    }
                 }
             }
         }
 
         stage('PHP Prep (Composer)') {
             steps {
-                // ใช้คำสั่ง dir เพื่อ cd เข้าไปในโฟลเดอร์ application ก่อนรัน composer
                 dir('application') {
-                    sh 'composer install --no-dev --optimize-autoloader'
+                    sh 'composer update --optimize-autoloader'
                 }
                 echo "PHP preparation with Composer done."
             }
@@ -58,13 +72,65 @@ pipeline {
             steps {
                 sh '''
                     mkdir -p ${TARGET_DIR}
+                    mkdir -p ${TARGET_DIR}/application/cache
+                    mkdir -p ${TARGET_DIR}/application/logs
 
                     rsync -av --delete \
                         --exclude='node_modules' \
                         --exclude='.git' \
                         --exclude='.gitignore' \
+                        --exclude='.env-sample' \
+                        --exclude='Jenkinsfile' \
+                        --exclude='application/cache' \
+                        --exclude='application/logs' \
+                        --exclude='*@tmp' \
                         ./ ${TARGET_DIR}/
                 '''
+            }
+        }
+    }
+
+    post {
+        always {
+            script {
+                // 1. หาชื่อคนสั่ง Build (ดึงจาก Build Causes)
+                def buildCauses = currentBuild.getBuildCauses()
+                def buildUser = ""
+                for (cause in buildCauses) {
+                    if (cause.shortDescription.contains('Started by user')) {
+                        buildUser = cause.shortDescription.replace('Started by user ', '')
+                    }else{
+                        buildUser = cause.shortDescription.replace('Started by GitLab push by ', '')
+                    }
+                }
+
+                // 2. จัดการเรื่องเวลา (แปลงจาก milliseconds เป็นวันที่ที่อ่านออก)
+                def startTime = new Date(currentBuild.startTimeInMillis).format("dd/MM/yyyy HH:mm:ss", TimeZone.getTimeZone('Asia/Bangkok'))
+                def endTime = new Date().format("dd/MM/yyyy HH:mm:ss", TimeZone.getTimeZone('Asia/Bangkok'))
+
+                mail (
+                    to: 'sec_wsd@MitsubishiElevatorAsia.co.th',
+                    subject: "Build ${currentBuild.currentResult}: ${env.JOB_NAME} [#${env.BUILD_NUMBER}]",
+                    from: 'jenkins-notify@MitsubishiElevatorAsia.co.th',
+                    body: """
+                        ข้อมูลการ Build เบื้องต้น:
+                        -------------------------------------------
+                        ผลการทำงาน: ${currentBuild.currentResult}
+                        ผู้ดำเนินการ: ${buildUser}
+                        เวลาที่เริ่ม: ${startTime}
+                        เวลาที่เสร็จ: ${endTime}
+                        ระยะเวลาทั้งหมด: ${currentBuild.durationString.replace(' and counting', '')}
+
+                        รายละเอียดสภาพแวดล้อม:
+                        -------------------------------------------
+                        Environment: ${env.DEPLOY_ENV}
+                        Target Directory: ${env.TARGET_DIR}
+
+                        สามารถตรวจสอบ Log อย่างละเอียดได้ที่:
+                        ${env.BUILD_URL}console
+                        -------------------------------------------
+                    """
+                )
             }
         }
     }

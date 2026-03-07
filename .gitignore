@@ -1,18 +1,17 @@
 .DS_Store
 .env
-./.vscode
+.env.development
+.env.production
+.env.backup
 /node_modules
-# /docs
-/docs/assets
-/docs/images
-/docs/mar
-/docs/pur
-/docs/src/node_modules
-/docs/src/.vitepress/dist
-.
 assets/dist
-# /system
 application/cache
 application/logs
-application/third_party
 application/vendor
+
+docs/dist
+docs/.vitepress/cache
+backup
+
+package-lock.json
+application/composer.lock
