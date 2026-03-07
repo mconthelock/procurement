@@ -2,9 +2,9 @@ import { initAuthen } from "@amec/webasset/authen";
 export const initApp = async (opt = {}) => {
 	try {
 		await initAuthen({
-			icon: `${process.env.APP_ENV}/assets/images/cube.png`,
-			iconLogo: `${process.env.APP_ENV}/assets/images/cube.png`,
-			programName: "SP PROGRAM",
+			icon: `${process.env.APP_ENV}/assets/images/preloader.gif`,
+			iconLogo: `${process.env.APP_ENV}/assets/images/preloader.gif`,
+			programName: "Procurement",
 			sidebarClass: `size-xl text-gray-50 bg-primary md:h-[calc(100vh-2.5rem)]! md:rounded-3xl! md:py-5 md:shadow-lg`,
 		});
 		$(".mainmenu").find("details").attr("open", false);

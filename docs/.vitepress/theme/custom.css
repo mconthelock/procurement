@@ -1,0 +1,43 @@
+/* .vitepress/theme/custom.css */
+
+:root {
+	--vp-home-hero-name-color: transparent;
+	--vp-home-hero-name-background: linear-gradient(
+		135deg,
+		#646cff 10%,
+		#ff3e00 100%
+	);
+}
+
+/* ทำให้พื้นหลังของ Hero โปร่งใสเพื่อให้เห็น Three.js ชัดขึ้น */
+.VPContent.is-home {
+	background: transparent !important;
+}
+
+.VPNavBar.home .VPNavBarTitle a {
+	color: #ffffff !important;
+}
+
+.VPLink.active {
+	color: #646cff !important;
+}
+
+.VPNavBar.home .VPLink:not(.active) {
+	color: #fff !important;
+}
+
+.VPHomeHero {
+	min-width: 60vw;
+}
+
+.VPHomeHero .container {
+	min-height: 60vh;
+}
+.VPHome .vp-doc > div {
+	position: fixed !important;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+}
