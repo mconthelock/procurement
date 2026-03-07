@@ -1,0 +1,19 @@
+{
+    "short_name": "Procurement",
+    "name": "Procurement System",
+    "icons": [
+      {
+        "src": "assets/images/icon_192.png",
+        "type": "image/png",
+        "sizes": "192x192",
+        "purpose": "any maskable"
+      }
+    ],
+    "start_url": ".",
+    "background_color": "#fff",
+    "display": "standalone",
+    "scope": ".",
+    "theme_color": "#fff",
+    "description": "Procurement System for Mitsubishi Elevator Asia",
+    "prefer_related_application" : true
+  }

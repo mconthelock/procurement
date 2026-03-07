@@ -1,12 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Welcome extends MY_Controller {
+class Home extends MY_Controller {
     public function __construct(){
         parent::__construct();
     }
 
 	public function index(){
-        $this->views('home');
+        $this->views('home/index');
     }
 }

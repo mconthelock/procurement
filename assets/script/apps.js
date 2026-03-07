@@ -1,0 +1,63 @@
+import "@flaticon/flaticon-uicons/css/all/all.css";
+import dayjs from "dayjs";
+
+$(document).on("click", ".msg-close", function (e) {
+	e.preventDefault();
+	const alertBox = $(this).closest(".alert");
+	alertBox.removeClass("opacity-100");
+	alertBox.addClass("opacity-0");
+	setTimeout(() => {
+		alertBox.remove();
+	}, 700);
+});
+
+$(document).on("click", ".mainmenu summary", function () {
+	const m = $(".mainmenu").length;
+	$(".mainmenu").map((i, el) => {
+		$(el).find("details").removeAttr("open");
+	});
+});
+
+$(document).on("click", "a.menu-name", async function (e) {
+	e.preventDefault();
+	const link = $(this).attr("href");
+	if (link.includes("mar/inquiry/report")) {
+		localStorage.removeItem("spinquiryquery");
+	}
+	window.location.href = link;
+});
+
+$("#confirm_close").on("click", function () {
+	$("#confirm_reason").val("");
+});
+
+$(document).on("focus", ".input-number", function (e) {
+	this.select();
+});
+
+$(document).on("keyup", ".input-number", function (e) {
+	let value = $(this).val();
+	value = value.replace(/[^\d.-]/g, "");
+	value = value.replace(/(?!^)-/g, "");
+	const parts = value.split(".");
+	if (parts.length > 2) value = parts[0] + "." + parts.slice(1).join("");
+	$(this).val(value);
+});
+
+$(document).on("change", ".fdate", function (e) {
+	if ($(this).hasClass("sdate-report")) {
+		const row = $(this).closest(".fieldset");
+		const edate = row.find(".edate-report").val();
+		if (edate == "") {
+			const newdate = dayjs($(this).val())
+				.add(30, "days")
+				.format("YYYY-MM-DD");
+			row.find(".edate-report").val(newdate);
+		}
+	}
+});
+
+$(document).on("click", "#goback", async function (e) {
+	e.preventDefault();
+	window.history.back();
+});

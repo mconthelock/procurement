@@ -1,0 +1,52 @@
+import { initAuthen } from "@amec/webasset/authen";
+export const initApp = async (opt = {}) => {
+	try {
+		await initAuthen({
+			icon: `${process.env.APP_ENV}/assets/images/cube.png`,
+			iconLogo: `${process.env.APP_ENV}/assets/images/cube.png`,
+			programName: "SP PROGRAM",
+			sidebarClass: `size-xl text-gray-50 bg-primary md:h-[calc(100vh-2.5rem)]! md:rounded-3xl! md:py-5 md:shadow-lg`,
+		});
+		$(".mainmenu").find("details").attr("open", false);
+		if (opt.submenu !== undefined) {
+			$(`.mainmenu${opt.submenu}`).find("details").attr("open", true);
+		}
+	} catch (error) {
+		console.log(error);
+	}
+	await new Promise((r) => setTimeout(r, 1000));
+	return;
+};
+
+export const tableOpt = {
+	dom: `<"flex items-center mb-3"<"table-search flex flex-1 gap-5"f><"flex items-center table-option"l>><"bg-white border border-slate-300 rounded-2xl overflow-hidden"t><"flex mt-5 mb-3"<"table-info flex flex-col flex-1 gap-5"i><"table-page flex-none"p>>`,
+	order: [[0, "desc"]],
+	pageLength: 25,
+	responsive: false,
+	language: {
+		info: "Showing _START_ to _END_ from _TOTAL_ records",
+		infoEmpty: "",
+		paginate: {
+			previous: '<i class="fi fi-br-arrow-alt-circle-left"></i>',
+			next: '<i class="fi fi-br-arrow-alt-circle-right"></i>',
+			first: '<i class="fi fi-rs-angle-double-small-left"></i>',
+			last: '<i class="fi fi-rs-angle-double-small-right"></i>',
+		},
+		search: "",
+		searchPlaceholder: "Filter records...",
+		loadingRecords: `<span class="loading loading-spinner loading-xl"></span>`,
+		emptyTable: `<span class="text-[14px] text-gray-600 font-medium">Have no record found</span>`,
+		zeroRecords: "ไม่พบข้อมูลที่ต้องการ",
+		lengthMenu: "_MENU_",
+		infoFiltered: "(กรองข้อมูลจากทั้งหมด _MAX_ รายการ)",
+	},
+	drawCallback: function (settings) {
+		const api = this.api();
+		const pagination = $(this).closest(".dt-container").find(".dt-paging");
+		if (api.page.info().pages <= 1) {
+			pagination.addClass("hidden");
+		} else {
+			pagination.removeClass("hidden");
+		}
+	},
+};
