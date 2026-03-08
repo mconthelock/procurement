@@ -1,4 +1,4 @@
-<div id="datatable_loading">
+<div id="datatable_loading" class="table-loader">
     <div class="flex gap-2 mt-3">
         <div class="flex-1">
             <div class="skeleton h-10 w-96 "></div>

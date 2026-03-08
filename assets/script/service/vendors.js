@@ -1,5 +1,5 @@
-export async function getVendors() {
-	const response = await fetch(`${process.env.API_URL}/pursys/vendors`, {});
+export async function getVendors(id = "") {
+	const response = await fetch(`${process.env.APP_API}/vendors/${id}`);
 	const data = await response.json();
 	return data;
 }

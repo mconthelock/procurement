@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "@faker-js/faker": "^10.3.0",
     "@rspack/cli": "^1.7.1",
     "@rspack/core": "^1.7.1",
     "@tailwindcss/cli": "^4.1.1",
@@ -49,11 +50,16 @@
     "build:css": "tailwindcss -i ./assets/style/tailwind.css -o ./assets/dist/css/tailwind.css --minify",
     "build:js": "rspack build --mode production",
     "build": "run-s build:css build:js",
+
+    "server": "json-server --watch db.json --port 3000",
+    "generate": "node mockapi/generator.js",
+
     "watch:css": "tailwindcss -i ./assets/style/tailwind.css -o ./assets/dist/css/tailwind.css --watch",
     "watch:js": "rspack build --watch --mode development",
-    "watch": "run-s update:webasset start-watch",
-    "start-watch": "run-p watch:css watch:js",
-    "update:webasset": "npm update @amec/webasset",
+    "watch:webasset": "npm update @amec/webasset",
+    "watch:start": "run-p watch:css watch:js server",
+    "watch": "run-s watch:webasset generate watch:start",
+
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"

@@ -49,4 +49,7 @@ export const tableOpt = {
 			pagination.removeClass("hidden");
 		}
 	},
+	initComplete: function (settings, json) {
+		$(this).closest(".tableArea").find(".table-loader").addClass("hidden");
+	},
 };
