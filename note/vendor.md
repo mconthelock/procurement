@@ -1,5 +1,5 @@
 # Feature List
 
-Here's a sentence with a footnote. [^1]
+# To do list
 
-[^1]: This is the footnote.
+- [x] Test
