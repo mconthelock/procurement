@@ -10,6 +10,7 @@ const createVendor = (id) => {
 		VND_STATE: faker.location.state(),
 		VND_ZIP: faker.location.zipCode(),
 		VND_COUNTRY: faker.location.country(),
+		VND_PHONE: faker.phone.number(),
 		VND_CREATED_AT: faker.date.past().toISOString(),
 		VND_UPDATED_AT: faker.date.recent().toISOString(),
 		VND_STATUS: faker.helpers.arrayElement([0, 1, 2]),

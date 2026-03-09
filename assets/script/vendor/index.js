@@ -36,6 +36,18 @@ async function tableVendorOption(data) {
 			render: (data, type, row) => `${data}, ${row.VND_COUNTRY}`,
 		},
 		{
+			data: "VND_PHONE",
+			title: "Contact",
+		},
+		{
+			data: "VENDOR_CODES",
+			title: "Code",
+			render: (data) => {
+				if (data.length === 0) return "-";
+				return data.map((code) => code.CODE_NUM).join(", ");
+			},
+		},
+		{
 			data: "VND_STATUS",
 			title: "Status",
 			render: (data) => {
@@ -45,14 +57,6 @@ async function tableVendorOption(data) {
 					2: `<div class="badge badge-error">Inactive</div>`,
 				};
 				return statusMap[data] || "Unknown";
-			},
-		},
-		{
-			data: "VENDOR_CODES",
-			title: "Code",
-			render: (data) => {
-				if (data.length === 0) return "-";
-				return data.map((code) => code.CODE_NUM).join(", ");
 			},
 		},
 		{
@@ -91,11 +95,10 @@ $(document).on("click", "#export-vendor", async function () {
 		const data = table.data().toArray();
 		const result = await extractDataForExport(data);
 		console.log(result);
-		// const template = await getTemplate("vendor_template.xlsx");
-		// await exportExcel(result, template, {
-		// 	filename: "Vendors List.xlsx",
-		// 	rowstart: 3,
-		// });
+		const template = await getTemplate("export_vendors.xlsx");
+		await exportExcel(result, template, {
+			filename: "Vendors List.xlsx",
+		});
 	} catch (error) {
 		console.error(error);
 		await showMessage(error.message || "Error exporting data");

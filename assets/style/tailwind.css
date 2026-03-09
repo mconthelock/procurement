@@ -103,4 +103,8 @@
 		--color-border: 216, 218, 223;
 		--color-body: 229, 231, 235;
 	}
+
+	table > thead > tr > th {
+		@apply text-center!;
+	}
 }
