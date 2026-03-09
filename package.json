@@ -57,7 +57,8 @@
     "watch:js": "rspack build --watch --mode development",
     "watch:webasset": "npm update @amec/webasset",
     "watch:start": "run-p watch:css watch:js server",
-    "watch": "run-s watch:webasset generate watch:start",
+    "watch:update": "run-s watch:webasset generate watch:start",
+    "watch": "run-s generate watch:start",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
