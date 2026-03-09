@@ -13,7 +13,7 @@ var table;
 $(document).ready(async () => {
 	try {
 		await showLoader();
-		await initApp({ submenu: ".navmenu-newinq" });
+		await initApp({ submenu: ".nav-vendors" });
 		const data = await getVendors();
 		const options = await tableVendorOption(data);
 		table = await createTable(options);
@@ -32,7 +32,7 @@ async function tableVendorOption(data) {
 		{ data: "VND_NAME", title: "Name" },
 		{
 			data: "VND_CITY",
-			title: "City",
+			title: "Address",
 			render: (data, type, row) => `${data}, ${row.VND_COUNTRY}`,
 		},
 		{

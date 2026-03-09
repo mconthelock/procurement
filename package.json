@@ -13,7 +13,7 @@
     "vitepress": "^2.0.0-alpha.12"
   },
   "dependencies": {
-    "@amec/webasset": "git+https://github.com/sutthipongjab/webasset.git",
+    "@amec/webasset": "git+https://webhub.mitsubishielevatorasia.co.th/wsd/webasset.git",
     "@fancyapps/ui": "^5.0.36",
     "@flaticon/flaticon-uicons": "^3.3.1",
     "@fontsource/kanit": "^5.1.0",
@@ -34,6 +34,7 @@
     "gsap": "^3.14.2",
     "jquery": "^3.7.1",
     "js-cookie": "^3.0.5",
+    "json-server": "^1.0.0-beta.12",
     "jssha": "^3.3.1",
     "litepicker": "^2.0.12",
     "mime-types": "^3.0.1",
@@ -50,16 +51,13 @@
     "build:css": "tailwindcss -i ./assets/style/tailwind.css -o ./assets/dist/css/tailwind.css --minify",
     "build:js": "rspack build --mode production",
     "build": "run-s build:css build:js",
-
-    "server": "json-server --watch db.json --port 3000",
+    "server": "json-server --watch db.json --port 3002",
     "generate": "node mockapi/generator.js",
-
     "watch:css": "tailwindcss -i ./assets/style/tailwind.css -o ./assets/dist/css/tailwind.css --watch",
     "watch:js": "rspack build --watch --mode development",
     "watch:webasset": "npm update @amec/webasset",
     "watch:start": "run-p watch:css watch:js server",
     "watch": "run-s watch:webasset generate watch:start",
-
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
