@@ -1,0 +1,83 @@
+const { faker } = require("@faker-js/faker");
+const dept = [
+	"020201",
+	"020301",
+	"051001",
+	"000401",
+	"060801",
+	"000301",
+	"000501",
+	"040201",
+	"040301",
+	"040401",
+	"050501",
+	"050601",
+	"060201",
+	"060301",
+	"060401",
+	"060501",
+	"060701",
+	"090201",
+	"090301",
+	"090401",
+	"090501",
+	"090601",
+	"071101",
+	"071201",
+	"020601",
+	"051401",
+	"040501",
+	"090701",
+];
+const CATEGORY_DEFINITIONS = [
+	{
+		CATEGORY_ID: 1,
+		CATEGORY_NAME: "Electronics",
+		DESCRIPTION: "Devices and gadgets",
+		CATEGORY_OWNER: faker.helpers.arrayElement(dept),
+	},
+	{
+		CATEGORY_ID: 2,
+		CATEGORY_NAME: "Furniture",
+		DESCRIPTION: "Home and office furniture",
+		CATEGORY_OWNER: faker.helpers.arrayElement(dept),
+	},
+	{
+		CATEGORY_ID: 3,
+		CATEGORY_NAME: "Machines",
+		DESCRIPTION: "Industrial and office machines",
+		CATEGORY_OWNER: faker.helpers.arrayElement(dept),
+	},
+	{
+		CATEGORY_ID: 4,
+		CATEGORY_NAME: "Software",
+		DESCRIPTION: "Software and applications",
+		CATEGORY_OWNER: faker.helpers.arrayElement(dept),
+	},
+	{
+		CATEGORY_ID: 5,
+		CATEGORY_NAME: "Transportation",
+		DESCRIPTION: "Vehicles and transportation equipment",
+		CATEGORY_OWNER: faker.helpers.arrayElement(dept),
+	},
+	{
+		CATEGORY_ID: 6,
+		CATEGORY_NAME: "Training",
+		DESCRIPTION: "Training and development",
+		CATEGORY_OWNER: faker.helpers.arrayElement(dept),
+	},
+	{
+		CATEGORY_ID: 7,
+		CATEGORY_NAME: "Tools",
+		DESCRIPTION: "Hand and power tools",
+		CATEGORY_OWNER: faker.helpers.arrayElement(dept),
+	},
+	{
+		CATEGORY_ID: 8,
+		CATEGORY_NAME: "Tools warehouse",
+		DESCRIPTION: "Tools storage and management",
+		CATEGORY_OWNER: faker.helpers.arrayElement(dept),
+	},
+];
+const createCategory = (cate) => cate;
+module.exports = { createCategory, CATEGORY_DEFINITIONS };
