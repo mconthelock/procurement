@@ -31,12 +31,15 @@ async function tableVendorOption(data) {
 	opt.columns = [
 		{ data: "VND_NAME", title: "Name" },
 		{
-			data: "VND_CITY",
+			data: "VENDOR_ADDRESS",
 			title: "Address",
-			render: (data, type, row) => `${data}, ${row.VND_COUNTRY}`,
+			render: (data) => {
+				if (data.length === 0) return "-";
+				return data.map((addr) => addr.ADDR_COUNTRY).join(", ");
+			},
 		},
 		{
-			data: "VND_PHONE",
+			data: "ADDR_PHONE",
 			title: "Contact",
 		},
 		{

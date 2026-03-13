@@ -7,12 +7,18 @@ class Vendors extends MY_Controller {
     }
 
     public function index(){
-        $this->views('vendors/index');
+        $this->views('Vendors/index');
     }
 
     public function detail($id = ''){
-        $this->views('vendors/detail', [
+        $this->views('Vendors/detail', [
             'id' => $id
         ]);
     }
+    public function create()
+{
+     $this->views('Vendors/create', [
+        'title' => 'Create New Vendor'
+    ]); 
+}
 }
