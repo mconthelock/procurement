@@ -14,6 +14,7 @@ const generateDB = () => {
 		vendors: [],
 		categories: [],
 		products: [],
+		users: [],
 	};
 
 	//1. Create Vendor data
