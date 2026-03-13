@@ -5,6 +5,12 @@ import { initApp } from "../utils.js";
 import { getVendors } from "../service/index.js";
 import { log } from "three";
 import { el } from "@faker-js/faker";
+
+const statusBadges = {
+	0: { class: "badge-warning", text: "Creating" },
+	1: { class: "badge-success", text: "Active" },
+	2: { class: "badge-error", text: "Inactive" },
+};
 $(document).ready(async () => {
 	try {
 		const pathname = window.location.pathname;
@@ -25,6 +31,7 @@ $(document).ready(async () => {
 				// ใช้ .text() แทน .innerText
 				$("#" + elementId).text(text ? text : "-");
 			};
+			updateVendorStatus(vendorData.VND_STATUS);
 			setText("view-VND_CODE", vendorData.VND_ID);
 			setText("view-VND_NAME", vendorData.VND_NAME);
 			setText("view-VND_TNAME", vendorData.VND_TNAME);
@@ -93,10 +100,6 @@ $(document).ready(async () => {
                 <div class="form-control w-full md:col-span-3">
                     <label class="label"><span class="label-text font-medium text-gray-500">Currency</span></label>
                     <div class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-800 h-[3rem] flex items-center">${vendor.CODE_CURRENCY || "-"}</div>
-                </div>
-                <div class="form-control w-full md:col-span-3">
-                    <label class="label"><span class="label-text font-medium text-gray-500">Shipping Term</span></label>
-                    <div class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-800 h-[3rem] flex items-center">${vendor.CODE_SHIP || "-"}</div>
                 </div>
                 <div class="form-control w-full md:col-span-3">
                     <label class="label"><span class="label-text font-medium text-gray-500">Payment Term</span></label>
@@ -218,3 +221,20 @@ $(document).on("click", "#update-vnd", async function (e) {
 		//await activatedBtnRow($(this), false);
 	}
 });
+
+function updateVendorStatus(statusCode) {
+	// ดึง HTML ออกมาตามตัวเลข ถ้าส่งเลขแปลกๆ มาให้ใส่ค่า Default เป็น Unknown
+	const vndstatus = $("#view-VND_STATUS");
+	vndstatus.removeClass(
+		"badge-warning badge-success badge-error badge-ghost",
+	);
+	if (statusBadges[statusCode]) {
+		// ถ้ามี: เติมคลาสสีใหม่เข้าไป และอัปเดตข้อความ
+		vndstatus
+			.addClass(statusBadges[statusCode].class)
+			.text(statusBadges[statusCode].text);
+	} else {
+		// ถ้าไม่มี (เป็นค่าแปลกๆ): ให้เป็นสีเทา Unknown
+		vndstatus.addClass("badge-ghost").text("Unknown");
+	}
+}

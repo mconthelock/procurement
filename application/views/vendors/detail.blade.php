@@ -5,6 +5,9 @@
     
     <div class="flex justify-between items-center mb-2 w-full">
         <h2 class="card-title text-2xl m-0">{{ $title ?? 'Vendors Information' }}</h2>
+        <div id="view-VND_STATUS" class="badge badge-success text-white px-3 py-3 rounded-full font-medium">
+                Active
+        </div>
     </div>
     <div class="divider m-0 mb-4"></div>
 

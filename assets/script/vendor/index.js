@@ -7,6 +7,7 @@ import { createBtn, activatedBtnRow } from "@amec/webasset/components/buttons";
 import { createTable } from "@amec/webasset/dataTable";
 import { initApp, tableOpt } from "../utils.js";
 import { getVendors, getTemplate, exportExcel } from "../service/index.js";
+
 import { extractDataForExport } from "./excel-data.js";
 
 var table;

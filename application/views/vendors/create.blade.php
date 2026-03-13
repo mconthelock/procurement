@@ -93,20 +93,19 @@
                                 </div>
                                 <div class="form-control w-full md:col-span-2">
                                     <label class="label"><span class="label-text font-medium">Currency</span></label>
-                                    <select name="CODE_CURRENCY[]" class="select select-bordered w-full bg-white">
-                                        <option value="THB">THB</option>
-                                        <option value="USD">USD</option>
-                                        <option value="EUR">EUR</option>
-                                        <option value="JPY">JPY</option>
+                                    <select name="CODE_CURRENCY[]" class="select select-bordered w-full bg-white currency-select">
+                                 <option value="" disabled selected>Select Currency...</option>
                                     </select>
                                 </div>
-                                <div class="form-control w-full md:col-span-3">
+                                <!-- <div class="form-control w-full md:col-span-3">
                                     <label class="label"><span class="label-text font-medium">Shipping Term</span></label>
                                     <input type="text" name="CODE_SHIP[]" class="input input-bordered w-full bg-white" placeholder="e.g. FOB" />
-                                </div>
+                                </div> -->
                                 <div class="form-control w-full md:col-span-3">
                                     <label class="label"><span class="label-text font-medium">Payment Term</span></label>
-                                    <input type="text" name="CODE_PAY[]" class="input input-bordered w-full bg-white" placeholder="e.g. 30 Days" />
+                          <select name="CODE_PAY[]" class="select select-bordered w-full bg-white payment-select" required>
+        <option value="" disabled selected>Select Payment Term...</option>
+    </select>
                                 </div>
                                 <div class="form-control md:col-span-1 pb-1">
                                     <button type="button" class="btn btn-error btn-square btn-remove-code">
@@ -143,13 +142,24 @@
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div class="form-control w-full">
-                                <label class="label"><span class="label-text font-medium">เขต / อำเภอ</span></label>
-                                <input type="text" name="TH_ADDR_CITY" class="input input-bordered w-full" />
+                                <label class="label"><span class="label-text font-medium">จังหวัด</span></label>
+                                   <select name="TH_ADDR_STATE" class="select select-bordered w-full bg-white state-select">
+                                    <option value="" disabled selected>เลือกจังหวัด</option>
+                                </select>
                             </div>
                             <div class="form-control w-full">
-                                <label class="label"><span class="label-text font-medium">จังหวัด</span></label>
-                                <input type="text" name="TH_ADDR_STATE" class="input input-bordered w-full" />
+                                <label class="label"><span class="label-text font-medium">อำเภอ/เขต</span></label>
+                                <select name="TH_ADDR_CITY" class="select select-bordered w-full bg-white city-select">
+                                    <option value="" disabled selected>เลือกอำเภอ/เขต</option>
+                                </select>
                             </div>
+                            <div class="form-control w-full">
+                                <label class="label"><span class="label-text font-medium">ตำบล/แขวง</span></label>
+                                <select name="TH_ADDR_SUBDISTRICT" class="select select-bordered w-full bg-white subdistrict-select">
+                                    <option value="" disabled selected>เลือกตำบล/แขวง</option>
+                                </select>
+                            </div>
+                
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div class="form-control w-full">
@@ -183,19 +193,23 @@
                             <input type="text" name="EN_ADDR_LINE3" class="input input-bordered w-full" />
                         </div>
                         <div class="grid grid-cols-2 gap-4">
-                            <div class="form-control w-full">
-                                <label class="label"><span class="label-text font-medium">City / District</span></label>
-                                <input type="text" name="EN_ADDR_CITY" class="input input-bordered w-full" />
+                                 <div class="form-control w-full">
+                                <label class="label"><span class="label-text font-medium">State / Province</span></label>
+                                <input type="text" name="EN_ADDR_STATE" class="input input-bordered w-full state-eng-select" />
                             </div>
                             <div class="form-control w-full">
-                                <label class="label"><span class="label-text font-medium">State / Province</span></label>
-                                <input type="text" name="EN_ADDR_STATE" class="input input-bordered w-full" />
+                                <label class="label"><span class="label-text font-medium">City / District</span></label>
+                                <input type="text" name="EN_ADDR_CITY" class="input input-bordered w-full city-eng-select" />
+                            </div>
+                                <div class="form-control w-full">
+                                <label class="label"><span class="label-text font-medium">Subdistrict</span></label>
+                                <input type="text" name="EN_ADDR_SUBDISTRICT" class="input input-bordered w-full subdistrict-eng-select" />
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div class="form-control w-full">
                                 <label class="label"><span class="label-text font-medium">Zip Code</span></label>
-                                <input type="text" name="EN_ADDR_ZIPCODE" class="input input-bordered w-full" />
+                                <input type="text" name="EN_ADDR_ZIPCODE" class="input input-bordered w-full zip-code-eng-select" />
                             </div>
                             <div class="form-control w-full">
                                 <label class="label"><span class="label-text font-medium">Country</span></label>
@@ -225,7 +239,7 @@
 
 @section('scripts')
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="{{ $_ENV['APP_JS'] }}/vendors.js?ver={{ $GLOBALS['version'] }}"></script>
+    <script src="{{ $_ENV['APP_JS'] }}/create.js?ver={{ $GLOBALS['version'] }}"></script>
     <script>
         // ==============================================
         // ฟังก์ชันสลับ 3 TABS
@@ -250,63 +264,6 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             
-            // ==============================================
-            // สคริปต์เพิ่ม Vendor Code
-            // ==============================================
-            const codeContainer = document.getElementById('vendor-code-container');
-            const btnAddCode = document.getElementById('btnAddVendorCode');
-
-            if (btnAddCode && codeContainer) {
-                btnAddCode.addEventListener('click', function () {
-                    const row = document.createElement('div');
-                    row.className = 'vendor-code-row grid grid-cols-1 md:grid-cols-12 gap-4 items-end bg-gray-50 p-4 rounded-lg border border-gray-100 relative mt-4';
-                    
-                    row.innerHTML = `
-                        <div class="form-control w-full md:col-span-3">
-                            <label class="label"><span class="label-text font-medium">Code Number <span class="text-error">*</span></span></label>
-                            <input type="text" name="CODE_NUM[]" class="input input-bordered w-full bg-white" required placeholder="e.g. VND001" />
-                        </div>
-                        <div class="form-control w-full md:col-span-2">
-                            <label class="label"><span class="label-text font-medium">Currency</span></label>
-                            <select name="CODE_CURRENCY[]" class="select select-bordered w-full bg-white">
-                                <option value="THB">THB</option>
-                                <option value="USD">USD</option>
-                                <option value="EUR">EUR</option>
-                                <option value="JPY">JPY</option>
-                            </select>
-                        </div>
-                        <div class="form-control w-full md:col-span-3">
-                            <label class="label"><span class="label-text font-medium">Shipping Term</span></label>
-                            <input type="text" name="CODE_SHIP[]" class="input input-bordered w-full bg-white" placeholder="e.g. FOB" />
-                        </div>
-                        <div class="form-control w-full md:col-span-3">
-                            <label class="label"><span class="label-text font-medium">Payment Term</span></label>
-                            <input type="text" name="CODE_PAY[]" class="input input-bordered w-full bg-white" placeholder="e.g. 30 Days" />
-                        </div>
-                        <div class="form-control md:col-span-1 pb-1">
-                            <button type="button" class="btn btn-error btn-square btn-remove-code">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                </svg>
-                            </button>
-                        </div>
-                    `;
-                    
-                    row.querySelector('.btn-remove-code').addEventListener('click', function() {
-                        row.remove();
-                    });
-
-                    codeContainer.appendChild(row);
-                    codeContainer.scrollTop = codeContainer.scrollHeight;
-                });
-
-                document.querySelectorAll('.btn-remove-code').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        this.closest('.vendor-code-row').remove();
-                    });
-                });
-            }
-
             // ==============================================
             // สคริปต์การแนบไฟล์
             // ==============================================
