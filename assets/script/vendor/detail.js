@@ -3,6 +3,7 @@ import { showMessage } from "@amec/webasset/utils";
 import { createBtn, activatedBtnRow } from "@amec/webasset/components/buttons";
 import { initApp } from "../utils.js";
 import { getVendors } from "../service/index.js";
+import { getAddressMST } from "../service/addressth.js";
 import { log } from "three";
 import { el } from "@faker-js/faker";
 
@@ -11,8 +12,30 @@ const statusBadges = {
 	1: { class: "badge-success", text: "Active" },
 	2: { class: "badge-error", text: "Inactive" },
 };
+let addressData = [];
+function getUniqueValues(dataArray, key) {
+	return [...new Set(dataArray.map((item) => item[key]))];
+}
 $(document).ready(async () => {
 	try {
+		addressData = await getAddressMST();
+
+		// ล็อก Dropdown อำเภอและตำบลไว้ก่อนตั้งแต่เริ่มต้น
+		$(".city-select").prop("disabled", true);
+		$(".subdistrict-select").prop("disabled", true);
+		// ทำให้ช่อง Zipcode พิมพ์เองไม่ได้ (ป้องกันพิมพ์ผิด)
+		$('input[name="TH_ADDR_ZIPCODE"]')
+			.prop("readonly", true)
+			.addClass("bg-gray-100");
+
+		// --- สเตปที่ 1: ใส่ข้อมูลจังหวัดลงใน Dropdown ที่มีคลาส .state-select ---
+		const provinces = getUniqueValues(addressData, "province");
+		$(".state-select").each(function () {
+			const $thisProv = $(this);
+			provinces.forEach((prov) => {
+				$thisProv.append(new Option(prov, prov));
+			});
+		});
 		const pathname = window.location.pathname;
 		// แยกสตริงด้วยเครื่องหมาย / และดึงตัวสุดท้ายออกมา
 		const vendorId = pathname.split("/").pop();
@@ -31,6 +54,10 @@ $(document).ready(async () => {
 				// ใช้ .text() แทน .innerText
 				$("#" + elementId).text(text ? text : "-");
 			};
+			const setVal = (elementId, value) => {
+				// ใช้ .val() และถ้าไม่มีข้อมูล ให้เป็นค่าว่าง ('') แทน
+				$("#" + elementId).val(value ? value : "");
+			};
 			updateVendorStatus(vendorData.VND_STATUS);
 			setText("view-VND_CODE", vendorData.VND_ID);
 			setText("view-VND_NAME", vendorData.VND_NAME);
@@ -38,14 +65,22 @@ $(document).ready(async () => {
 			setText("view-VND_SALE", vendorData.VND_SALE);
 			setText("view-ADDR_PHONE", vendorData.ADDR_PHONE);
 			setText("view-ADDR_WEB", vendorData.ADDR_WEB);
-			setText("view-ADDR_WEB", vendorData.ADDR_WEB);
+			setVal("input-VND_NAME", vendorData.VND_NAME);
+			setVal("input-VND_TNAME", vendorData.VND_TNAME);
+			setVal("input-VND_SALE", vendorData.VND_SALE);
+			setVal("input-ADDR_PHONE", vendorData.ADDR_PHONE);
+			setVal("input-ADDR_WEB", vendorData.ADDR_WEB);
 			const addresses = vendorData.VENDOR_ADDRESS || [];
 			const thAddress = addresses.find((addr) => addr.ADDR_TYPE === "T");
 			const enAddress = addresses.find((addr) => addr.ADDR_TYPE === "E");
 			if (thAddress) {
 				setText("view-ADDR_TH_LINE1", thAddress.ADDR_LINE1);
+				setVal("input-ADDR_TH_LINE1", thAddress.ADDR_LINE1);
 				setText("view-ADDR_TH_LINE2", thAddress.ADDR_LINE2);
+				setVal("input-ADDR_TH_LINE2", thAddress.ADDR_LINE2);
 				setText("view-ADDR_TH_LINE3", thAddress.ADDR_LINE3);
+				setVal("input-ADDR_TH_LINE3", thAddress.ADDR_LINE3);
+				setText("view-ADDR_TH_SUBDISTRICT", thAddress.ADDR_SUBDISTRICT);
 				setText("view-ADDR_TH_CITY", thAddress.ADDR_CITY);
 				setText("view-ADDR_TH_STATE", thAddress.ADDR_STATE);
 				setText("view-ADDR_TH_ZIPCODE", thAddress.ADDR_ZIPCODE);
@@ -53,17 +88,23 @@ $(document).ready(async () => {
 			}
 			if (enAddress) {
 				setText("view-ADDR_EN_LINE1", enAddress.ADDR_LINE1);
+				setVal("input-ADDR_EN_LINE1", enAddress.ADDR_LINE1);
 				setText("view-ADDR_EN_LINE2", enAddress.ADDR_LINE2);
+				setVal("input-ADDR_EN_LINE2", enAddress.ADDR_LINE2);
 				setText("view-ADDR_EN_LINE3", enAddress.ADDR_LINE3);
+				setVal("input-ADDR_EN_LINE3", enAddress.ADDR_LINE3);
+				setText("view-ADDR_EN_SUBDISTRICT", enAddress.ADDR_SUBDISTRICT);
 				setText("view-ADDR_EN_CITY", enAddress.ADDR_CITY);
 				setText("view-ADDR_EN_STATE", enAddress.ADDR_STATE);
 				setText("view-ADDR_EN_ZIPCODE", enAddress.ADDR_ZIPCODE);
 				setText("view-ADDR_EN_COUNTRY", enAddress.ADDR_COUNTRY);
 			}
 
-			const attContainer = $("#attachment-container");
+			const v_attContainer = $("#view-attachment-container");
+			const e_attContainer = $("#edit-attachment-container");
 			const files = vendorData.VENDOR_ATTFILE || [];
-			attContainer.empty();
+			//v_attContainer.empty();
+			//e_attContainer.empty();
 
 			if (files.length > 0) {
 				files.forEach((file) => {
@@ -76,12 +117,18 @@ $(document).ready(async () => {
 						<a href="/uploads/${file.UFILE_NAME}" target="_blank" class="text-blue-600 hover:underline cursor-pointer">
 							${file.FILE_NAME}
 						</a>
+						<button type="button" class="edit-mode hidden ml-2 text-red-500 hover:text-red-700 transition-colors tooltip tooltip-right" data-tip="ลบไฟล์นี้" onclick="removeFileRow(1)">
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+						</svg>
+					</button>
 					</div>
 				`;
-					attContainer.append(fileHtml);
+					v_attContainer.append(fileHtml);
+					e_attContainer.append(fileHtml);
 				});
 			} else {
-				attContainer.append(
+				v_attContainer.append(
 					'<span class="text-gray-400 italic text-sm">No attachments available.</span>',
 				);
 			}
@@ -105,8 +152,20 @@ $(document).ready(async () => {
                     <label class="label"><span class="label-text font-medium text-gray-500">Payment Term</span></label>
                     <div class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-800 h-[3rem] flex items-center">${vendor.CODE_PAY || "-"}</div>
                 </div>
+			<div class="form-control w-full md:col-span-3">
+            <label class="label"><span class="label-text font-medium text-gray-500">Status</span></label>
+            <div class="px-4 py-3 bg-white border border-gray-200 rounded-lg h-[3rem] flex items-center">
+                ${
+					vendor.CODE_STATUS == 1
+						? '<span class="text-emerald-600 font-semibold">Active</span>'
+						: vendor.CODE_STATUS == 0
+							? '<span class="text-rose-500 font-semibold">Inactive</span>'
+							: "-"
+				}
             </div>
-        `;
+        </div>
+    </div>
+`;
 					vendorContainer.append(htmlContent);
 				});
 			} else {
@@ -210,17 +269,17 @@ $(document).on("click", "#create-vnd", async function (e) {
 	}
 });
 
-$(document).on("click", "#update-vnd", async function (e) {
-	e.preventDefault();
-	try {
-		await activatedBtnRow($(this), true);
-	} catch (error) {
-		console.error(error);
-		await showMessage(error.message || "Error updating vendor");
-	} finally {
-		//await activatedBtnRow($(this), false);
-	}
-});
+// $(document).on("click", "#update-vnd", async function (e) {
+// 	e.preventDefault();
+// 	try {
+// 		await activatedBtnRow($(this), true);
+// 	} catch (error) {
+// 		console.error(error);
+// 		await showMessage(error.message || "Error updating vendor");
+// 	} finally {
+// 		//await activatedBtnRow($(this), false);
+// 	}
+// });
 
 function updateVendorStatus(statusCode) {
 	// ดึง HTML ออกมาตามตัวเลข ถ้าส่งเลขแปลกๆ มาให้ใส่ค่า Default เป็น Unknown
@@ -238,3 +297,187 @@ function updateVendorStatus(statusCode) {
 		vndstatus.addClass("badge-ghost").text("Unknown");
 	}
 }
+
+// สมมติว่านี่คือฟังก์ชันตอนสลับเป็นโหมดแก้ไข
+function toggleEditMode(isEdit) {
+	if (isEdit) {
+		$(".view-mode").addClass("hidden");
+		$(".edit-mode").removeClass("hidden");
+	} else {
+		$(".edit-mode").addClass("hidden");
+		$(".view-mode").removeClass("hidden");
+	}
+}
+
+$(document).on("click", "#update-vnd", function (e) {
+	e.preventDefault();
+	toggleEditMode(true);
+});
+
+$(document).on("click", "#cancel-edit", function (e) {
+	e.preventDefault();
+	if (
+		confirm(
+			"Are you sure you want to cancel? Any unsaved changes will be lost.",
+		)
+	) {
+		toggleEditMode(false); // เรียกใช้ฟังก์ชัน สั่งปิดโหมด Edit
+	}
+});
+
+// --- สเตปที่ 2: เมื่อเลือกจังหวัด (ดึงจังหวัดภาษาอังกฤษ) ---
+$(document).on("change", ".state-select", function () {
+	const selectedProvince = $(this).val();
+
+	// หา Wrapper ตัวใหญ่ที่ครอบทั้งฟอร์มไทยและอังกฤษ
+	const $wrapper = $(this).closest("#tab-content-address");
+
+	// ช่องฝั่งไทย
+	const $selCity = $wrapper.find(".city-select");
+	const $selSubdistrict = $wrapper.find(".subdistrict-select");
+	const $txtZipcodeTH = $wrapper.find('input[name="TH_ADDR_ZIPCODE"]');
+
+	// ช่องฝั่งอังกฤษ
+	const $txtStateEN = $wrapper.find('input[name="EN_ADDR_STATE"]');
+	const $txtCityEN = $wrapper.find('input[name="EN_ADDR_CITY"]');
+	const $txtSubdistrictEN = $wrapper.find(
+		'input[name="EN_ADDR_SUBDISTRICT"]',
+	);
+	const $txtZipcodeEN = $wrapper.find('input[name="EN_ADDR_ZIPCODE"]');
+
+	// รีเซ็ตค่าฟิลด์ที่เกี่ยวข้องและปลดล็อกช่องอำเภอ (ไทย)
+	$selCity
+		.html('<option value="" disabled selected>เลือกอำเภอ/เขต</option>')
+		.prop("disabled", false);
+	$selSubdistrict
+		.html('<option value="" disabled selected>เลือกตำบล/แขวง</option>')
+		.prop("disabled", true);
+	$txtZipcodeTH.val("");
+
+	// เคลียร์ค่าฝั่งอังกฤษ (เผื่อผู้ใช้เปลี่ยนจังหวัด)
+	$txtCityEN.val("");
+	$txtSubdistrictEN.val("");
+	$txtZipcodeEN.val("");
+
+	// ดึงอำเภอทั้งหมดที่ตรงกับจังหวัด
+	const filteredCities = addressData.filter(
+		(item) => item.province === selectedProvince,
+	);
+
+	// Auto-fill: จังหวัดภาษาอังกฤษ (ดึงจาก Object แรกที่เจอในจังหวัดนี้ได้เลย)
+	if (filteredCities.length > 0) {
+		$txtStateEN.val(filteredCities[0].province_en);
+	}
+
+	// เอาอำเภอมาใส่ Dropdown ไทย (ไม่ให้ซ้ำกัน)
+	const cities = getUniqueValues(filteredCities, "district");
+	cities.forEach((city) => {
+		$selCity.append(new Option(city, city));
+	});
+});
+
+// --- สเตปที่ 3: เมื่อเลือกอำเภอ/เขต (ดึงอำเภอภาษาอังกฤษ) ---
+$(document).on("change", ".city-select", function () {
+	const $wrapper = $(this).closest("#tab-content-address");
+	const selectedProvince = $wrapper.find(".state-select").val();
+	const selectedCity = $(this).val();
+
+	const $selSubdistrict = $wrapper.find(".subdistrict-select");
+	const $txtZipcodeTH = $wrapper.find('input[name="TH_ADDR_ZIPCODE"]');
+	const $txtCityEN = $wrapper.find('input[name="EN_ADDR_CITY"]');
+	const $txtSubdistrictEN = $wrapper.find(
+		'input[name="EN_ADDR_SUBDISTRICT"]',
+	);
+	const $txtZipcodeEN = $wrapper.find('input[name="EN_ADDR_ZIPCODE"]');
+
+	// รีเซ็ตค่าและปลดล็อกช่องตำบล
+	$selSubdistrict
+		.html('<option value="" disabled selected>เลือกตำบล/แขวง</option>')
+		.prop("disabled", false);
+	$txtZipcodeTH.val("");
+	$txtSubdistrictEN.val("");
+	$txtZipcodeEN.val("");
+
+	// กรองหาตำบลที่ตรงกับจังหวัดและอำเภอ
+	const filteredSubdistricts = addressData.filter(
+		(item) =>
+			item.province === selectedProvince &&
+			item.district === selectedCity,
+	);
+
+	// Auto-fill: อำเภอภาษาอังกฤษ
+	if (filteredSubdistricts.length > 0) {
+		$txtCityEN.val(filteredSubdistricts[0].district_en);
+	}
+
+	// เอาตำบลมาใส่ Dropdown ไทย
+	const subdistricts = getUniqueValues(filteredSubdistricts, "sub_district");
+	subdistricts.forEach((sub) => {
+		$selSubdistrict.append(new Option(sub, sub));
+	});
+});
+
+// --- สเตปที่ 4: เมื่อเลือกตำบล/แขวง (ดึงตำบล + รหัสไปรษณีย์) ---
+$(document).on("change", ".subdistrict-select", function () {
+	const $wrapper = $(this).closest("#tab-content-address");
+	const selectedProvince = $wrapper.find(".state-select").val();
+	const selectedCity = $wrapper.find(".city-select").val();
+	const selectedSubdistrict = $(this).val();
+
+	// หา Object ที่ข้อมูลตรงกันเป๊ะๆ ทั้ง 3 ระดับ
+	const matchedAddress = addressData.find(
+		(item) =>
+			item.province === selectedProvince &&
+			item.district === selectedCity &&
+			item.sub_district === selectedSubdistrict,
+	);
+
+	// นำข้อมูลที่เหลือไปใส่ใน Input อัตโนมัติ (ทั้งไทยและอังกฤษ)
+	if (matchedAddress) {
+		$wrapper
+			.find('input[name="TH_ADDR_ZIPCODE"]')
+			.val(matchedAddress.zipcode);
+		$wrapper
+			.find('input[name="EN_ADDR_SUBDISTRICT"]')
+			.val(matchedAddress.sub_district_en);
+		$wrapper
+			.find('input[name="TH_ADDR_ZIPCODE"]')
+			.val(matchedAddress.zipcode);
+		$wrapper
+			.find('input[name="EN_ADDR_ZIPCODE"]')
+			.val(matchedAddress.zipcode);
+	}
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+	// ==============================================
+	// สคริปต์การแนบไฟล์
+	// ==============================================
+	const fileContainer = document.getElementById("editattachment-container");
+	const btnAddFile = document.getElementById("btnAddFile");
+
+	if (btnAddFile && fileContainer) {
+		btnAddFile.addEventListener("click", function () {
+			const row = document.createElement("div");
+			row.className =
+				"form-control w-full flex-row items-center gap-3 file-row mt-3";
+
+			row.innerHTML = `
+                        <input type="file" name="vendor_file[]" class="file-input file-input-bordered file-input-primary w-full max-w-md" />
+                        <button type="button" class="btn btn-error btn-sm btn-square btn-remove-file">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                    `;
+
+			row.querySelector(".btn-remove-file").addEventListener(
+				"click",
+				function () {
+					row.remove();
+				},
+			);
+
+			fileContainer.appendChild(row);
+			fileContainer.scrollTop = fileContainer.scrollHeight;
+		});
+	}
+});
