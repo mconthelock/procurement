@@ -5,3 +5,9 @@ export async function getProducts(id = "") {
 	const data = await response.json();
 	return data;
 }
+
+export async function getCategories() {
+	const response = await fetch(`${process.env.MOCK_API}/categories`);
+	const data = await response.json();
+	return data;
+}

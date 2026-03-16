@@ -57,6 +57,7 @@
                         <option value="กล่อง">กล่อง</option>
                         <option value="แพ็ค">แพ็ค</option>
                         <option value="ชิ้น">ชิ้น</option>
+                        <option value="ชุด">ชุด</option>
                     </select>
                 </div>
 
@@ -87,8 +88,7 @@
                         <span class="label-text font-semibold text-gray-600">Category</span>
                     </label>
                     <select id="CATEGORY_ID" class="select select-bordered w-full">
-                        <option value="">Select Category</option>
-                        <option value="1">Category 1</option>
+                        <option value="">Loading categories...</option>
                     </select>
                 </div>
             </div>

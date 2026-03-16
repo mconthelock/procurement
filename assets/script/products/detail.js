@@ -6,19 +6,23 @@ import { currentUser } from "@amec/webasset/api/amec";
 import { createBtn, activatedBtnRow } from "@amec/webasset/components/buttons";
 import { createTable } from "@amec/webasset/dataTable";
 import { initApp, tableOpt } from "../utils.js";
-import { getProducts } from "../service/products.js";
-
-const API_URL = `${process.env.MOCK_API}/products`;
+import { getProducts, getCategories } from "../service/products.js";
 
 $(document).ready(async () => {
 	try {
 		await showLoader();
 
+		// 1. ดึงข้อมูล Categories และสร้าง Dropdown ก่อน
+		const categories = await getCategories();
+		renderCategoryOptions(categories);
+
 		await initApp({ submenu: ".nav-products" });
 		const id = $("#prod_id_hidden").val();
 
 		if (id) {
-			await loadData(id);
+			// 2. ถ้ามี ID ให้โหลดข้อมูลสินค้าผ่าน Service
+			const productData = await getProducts(id);
+			loadData(productData);
 		} else {
 			// โหมดสร้างใหม่: เพิ่มแถวเริ่มต้น
 			addImageRow();
@@ -36,10 +40,7 @@ $(document).ready(async () => {
 });
 
 // --- LOAD DATA ---
-async function loadData(id) {
-	const res = await fetch(`${API_URL}/${id}`);
-	const data = await res.json();
-
+async function loadData(data) {
 	// Mapping General Info
 	$("#PROD_CODE").val(data.PROD_CODE);
 	$("#PROD_NAME").val(data.PROD_NAME);
@@ -201,5 +202,18 @@ function initSubmit() {
 		} finally {
 			await showLoader({ show: false });
 		}
+	});
+}
+
+// ฟังก์ชันสร้าง Options ใน Select
+function renderCategoryOptions(categories) {
+	const $select = $("#CATEGORY_ID");
+	$select.empty(); // ล้างค่าเดิม
+	$select.append('<option value="">Select Category</option>');
+
+	categories.forEach((cat) => {
+		$select.append(
+			`<option value="${cat.CATEGORY_ID}">${cat.CATEGORY_NAME}</option>`,
+		);
 	});
 }
