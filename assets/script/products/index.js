@@ -6,7 +6,8 @@ import { currentUser } from "@amec/webasset/api/amec";
 import { createBtn, activatedBtnRow } from "@amec/webasset/components/buttons";
 import { createTable } from "@amec/webasset/dataTable";
 import { initApp, tableOpt } from "../utils.js";
-import { getProducts } from "../service/products.js";
+import { getProducts, getTemplate, exportExcel } from "../service/index.js";
+import { extractDataForExport } from "./excel-data.js";
 
 const API_URL = `${process.env.MOCK_API}/products`;
 var table;
@@ -111,6 +112,24 @@ async function tableProductOption(data) {
 
 	return opt;
 }
+
+$(document).on("click", "#export-products", async function () {
+	try {
+		await activatedBtnRow($(this), true);
+		const data = table.data().toArray();
+		const result = await extractDataForExport(data);
+		console.log(result);
+		const template = await getTemplate("export_products.xlsx");
+		await exportExcel(result, template, {
+			filename: "Products_List.xlsx",
+		});
+	} catch (error) {
+		console.error(error);
+		await showMessage(error.message || "Error exporting data");
+	} finally {
+		await activatedBtnRow($(this), false);
+	}
+});
 
 window.deleteProduct = async function (id) {
 	if (confirm("Are you sure you want to delete this product?")) {
