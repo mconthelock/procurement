@@ -6,7 +6,12 @@ import { currentUser } from "@amec/webasset/api/amec";
 import { createBtn, activatedBtnRow } from "@amec/webasset/components/buttons";
 import { createTable } from "@amec/webasset/dataTable";
 import { initApp, tableOpt } from "../utils.js";
-import { getProducts, getCategories, getVendors } from "../service/index.js";
+import {
+	getProducts,
+	getCategories,
+	getVendors,
+	saveProduct,
+} from "../service/index.js";
 let vendorList = []; // เก็บข้อมูล Vendor สำหรับใช้งานใน Dropdown
 $(document).ready(async () => {
 	try {
@@ -64,15 +69,22 @@ async function loadData(data) {
 
 window.addImageRow = (url = "") => {
 	const id = `img_${Date.now()}_${Math.floor(Math.random() * 100)}`;
+	const fileName = url ? url.split("/").pop() : ""; // ตัดเอาเฉพาะชื่อไฟล์มาโชว์
+
 	const html = `
-        <div class="p-2 border rounded-lg bg-gray-50 flex flex-col gap-2" id="${id}">
-            <div class="flex gap-1">
-                <input type="text" class="input input-bordered input-xs flex-1 img-url" value="${url}" placeholder="Image URL">
+        <div class="p-3 border rounded-lg bg-gray-50 flex flex-col gap-2" id="${id}">
+            <div class="flex gap-2 items-center">
+                <input type="hidden" class="img-url" value="${url}">
+                
+                <input type="file" class="file-input file-input-bordered file-input-xs flex-1" 
+                    onchange="handleFileUpload(this, '${id}')">
+                
                 <button type="button" class="btn btn-xs btn-error btn-square text-white" onclick="$('#${id}').remove()">×</button>
             </div>
-            <div class="h-24 w-full bg-white rounded overflow-hidden flex justify-center border border-dashed">
-                <img src="${url || "https://placehold.co/200x150?text=No+Preview"}" class="h-full object-contain p-1" onerror="this.src='https://placehold.co/200x150?text=Invalid+URL'">
+            <div class="h-24 w-full bg-white rounded overflow-hidden flex justify-center border border-dashed preview-box">
+                <img src="${url || "https://placehold.co/200x150?text=No+Preview"}" class="h-full object-contain p-1">
             </div>
+            <p class="text-[10px] truncate text-gray-400 file-name-display">${fileName}</p>
         </div>`;
 	$("#images_container").append(html);
 };
@@ -144,9 +156,18 @@ window.addPriceRow = (data = {}) => {
                         <input type="date" class="input input-bordered input-xs w-full q-date" value="${q.QUOTATION_DATE?.split("T")[0] || ""}">
                     </div>
                     <div class="col-span-2">
-                        <label class="font-bold opacity-50">File Name</label>
-                        <input type="text" class="input input-bordered input-xs w-full q-file" value="${q.QUOTATION_FILE || ""}">
-                    </div>
+						<label class="text-[10px] uppercase font-bold opacity-50">Quotation File (PDF/Image)</label>
+						<div class="flex flex-col gap-1">
+							<input type="hidden" class="q-file" value="${q.QUOTATION_FILE || ""}">
+							
+							<input type="file" class="file-input file-input-bordered file-input-xs w-full" 
+								onchange="handleQuoteFileUpload(this)">
+							
+							<span class="text-[10px] text-blue-600 font-medium current-file-name">
+								${q.QUOTATION_FILE ? "Current: " + q.QUOTATION_FILE : "No file selected"}
+							</span>
+						</div>
+					</div>
                     <div class="col-span-2">
                         <label class="font-bold opacity-50">Remark</label>
                         <textarea class="textarea textarea-bordered textarea-xs w-full q-remark" rows="1">${q.REMARK || ""}</textarea>
@@ -288,6 +309,42 @@ function initSubmit() {
 		}
 	});
 }
+
+// สำหรับรูปภาพ (แสดง Preview ได้ด้วย)
+window.handleFileUpload = function (input, containerId) {
+	const file = input.files[0];
+	if (file) {
+		const fileName = file.name;
+		const $container = $(`#${containerId}`);
+
+		// 1. อัปเดตชื่อไฟล์เข้า Hidden input เพื่อรอส่ง JSON
+		$container.find(".img-url").val(fileName);
+		$container.find(".file-name-display").text(fileName);
+
+		// 2. ทำ Preview (ถ้าเป็นรูปภาพ)
+		const reader = new FileReader();
+		reader.onload = function (e) {
+			$container.find("img").attr("src", e.target.result);
+		};
+		reader.readAsDataURL(file);
+
+		// หมายเหตุ: ในระบบจริง คุณต้องมีฟังก์ชันส่งไฟล์ขึ้น Server (Upload API)
+		// แล้วเอา URL จริงมาใส่ใน .val() แทน
+	}
+};
+
+// สำหรับไฟล์ใบเสนอราคา
+window.handleQuoteFileUpload = function (input) {
+	const file = input.files[0];
+	if (file) {
+		const fileName = file.name;
+		const $parent = $(input).parent();
+
+		// อัปเดตชื่อไฟล์เข้า Hidden input
+		$parent.find(".q-file").val(fileName);
+		$parent.find(".current-file-name").text("Selected: " + fileName);
+	}
+};
 
 window.deleteProduct = async function (id) {
 	// 1. ถามเพื่อความแน่ใจ
