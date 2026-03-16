@@ -13,6 +13,7 @@ const statusBadges = {
 	2: { class: "badge-error", text: "Inactive" },
 };
 let addressData = [];
+const vendorContainer = $("#edit-vendor-code-container");
 function getUniqueValues(dataArray, key) {
 	return [...new Set(dataArray.map((item) => item[key]))];
 }
@@ -58,6 +59,31 @@ $(document).ready(async () => {
 				// ใช้ .val() และถ้าไม่มีข้อมูล ให้เป็นค่าว่าง ('') แทน
 				$("#" + elementId).val(value ? value : "");
 			};
+
+			const setSelect = (elementName, value, text = null) => {
+				// ถ้าไม่มีข้อมูลส่งมา ให้หยุดทำงานหรือปล่อยผ่านไปเลย
+				if (!value) return;
+
+				// อ้างอิง <select> จาก attribute name
+				const selectEl = $(`select[name="${elementName}"]`);
+
+				// ถ้าไม่ส่ง text มา ให้เอา value ไปแสดงเป็นข้อความแทน (เหมือนในโค้ดต้นฉบับของคุณ)
+				const displayText = text !== null ? text : value;
+
+				if (selectEl.length > 0) {
+					// เช็คว่ามีตัวเลือกนี้อยู่แล้วหรือยัง
+					if (
+						selectEl.find(`option[value="${value}"]`).length === 0
+					) {
+						// ถ้าไม่มี ให้สร้าง option ใหม่ต่อท้าย
+						selectEl.append(
+							`<option value="${value}">${displayText}</option>`,
+						);
+					}
+					// สั่งให้เลือกค่านี้
+					selectEl.val(value);
+				}
+			};
 			updateVendorStatus(vendorData.VND_STATUS);
 			setText("view-VND_CODE", vendorData.VND_ID);
 			setText("view-VND_NAME", vendorData.VND_NAME);
@@ -81,10 +107,19 @@ $(document).ready(async () => {
 				setText("view-ADDR_TH_LINE3", thAddress.ADDR_LINE3);
 				setVal("input-ADDR_TH_LINE3", thAddress.ADDR_LINE3);
 				setText("view-ADDR_TH_SUBDISTRICT", thAddress.ADDR_SUBDISTRICT);
+				setVal("input-ADDR_TH_SUBDISTRICT", thAddress.ADDR_SUBDISTRICT);
 				setText("view-ADDR_TH_CITY", thAddress.ADDR_CITY);
+				setVal("input-ADDR_TH_CITY", thAddress.ADDR_CITY);
 				setText("view-ADDR_TH_STATE", thAddress.ADDR_STATE);
+				setVal("input-ADDR_TH_STATE", thAddress.ADDR_STATE);
 				setText("view-ADDR_TH_ZIPCODE", thAddress.ADDR_ZIPCODE);
+				setVal("input-ADDR_TH_ZIPCODE", thAddress.ADDR_ZIPCODE);
 				setText("view-ADDR_TH_COUNTRY", thAddress.ADDR_COUNTRY);
+				setVal("input-ADDR_TH_COUNTRY", thAddress.ADDR_COUNTRY);
+				setSelect("ADDR_TH_STATE", thAddress.ADDR_STATE);
+				setSelect("ADDR_TH_CITY", thAddress.ADDR_CITY);
+				setSelect("ADDR_TH_SUBDISTRICT", thAddress.ADDR_SUBDISTRICT);
+				setSelect("ADDR_TH_COUNTRY", thAddress.ADDR_COUNTRY);
 			}
 			if (enAddress) {
 				setText("view-ADDR_EN_LINE1", enAddress.ADDR_LINE1);
@@ -94,41 +129,41 @@ $(document).ready(async () => {
 				setText("view-ADDR_EN_LINE3", enAddress.ADDR_LINE3);
 				setVal("input-ADDR_EN_LINE3", enAddress.ADDR_LINE3);
 				setText("view-ADDR_EN_SUBDISTRICT", enAddress.ADDR_SUBDISTRICT);
+				setVal("input-ADDR_EN_SUBDISTRICT", enAddress.ADDR_SUBDISTRICT);
 				setText("view-ADDR_EN_CITY", enAddress.ADDR_CITY);
+				setVal("input-ADDR_EN_CITY", enAddress.ADDR_CITY);
 				setText("view-ADDR_EN_STATE", enAddress.ADDR_STATE);
+				setVal("input-ADDR_EN_STATE", enAddress.ADDR_STATE);
 				setText("view-ADDR_EN_ZIPCODE", enAddress.ADDR_ZIPCODE);
+				setVal("input-ADDR_EN_ZIPCODE", enAddress.ADDR_ZIPCODE);
 				setText("view-ADDR_EN_COUNTRY", enAddress.ADDR_COUNTRY);
+				setVal("input-ADDR_EN_COUNTRY", enAddress.ADDR_COUNTRY);
+				setSelect("ADDR_EN_COUNTRY", enAddress.ADDR_COUNTRY);
 			}
 
-			const v_attContainer = $("#view-attachment-container");
-			const e_attContainer = $("#edit-attachment-container");
+			const existingContainer = $("#existing-files-container");
+			existingContainer.empty();
 			const files = vendorData.VENDOR_ATTFILE || [];
 			//v_attContainer.empty();
 			//e_attContainer.empty();
 
-			if (files.length > 0) {
+			if (files && files.length > 0) {
 				files.forEach((file) => {
 					const fileHtml = `
-					<div class="flex items-center gap-2 text-sm">
-						<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
-						</svg>
-						
+					<div class="flex items-center gap-2 text-sm mb-2" id="att-row-${file.FILE_ID}">
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
 						<a href="/uploads/${file.UFILE_NAME}" target="_blank" class="text-blue-600 hover:underline cursor-pointer">
 							${file.FILE_NAME}
 						</a>
-						<button type="button" class="edit-mode hidden ml-2 text-red-500 hover:text-red-700 transition-colors tooltip tooltip-right" data-tip="ลบไฟล์นี้" onclick="removeFileRow(1)">
-						<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-						</svg>
-					</button>
-					</div>
-				`;
-					v_attContainer.append(fileHtml);
-					e_attContainer.append(fileHtml);
+
+						<button type="button" class="edit-mode hidden  btn btn-error btn-xs btn-square btn-remove-existing" data-fileid="${file.FILE_ID}">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+						</button>
+					</div>`;
+					existingContainer.append(fileHtml);
 				});
 			} else {
-				v_attContainer.append(
+				existingContainer.append(
 					'<span class="text-gray-400 italic text-sm">No attachments available.</span>',
 				);
 			}
@@ -154,7 +189,7 @@ $(document).ready(async () => {
                 </div>
 			<div class="form-control w-full md:col-span-3">
             <label class="label"><span class="label-text font-medium text-gray-500">Status</span></label>
-            <div class="px-4 py-3 bg-white border border-gray-200 rounded-lg h-[3rem] flex items-center">
+  <div class="view-mode px-4 py-3 bg-white border border-gray-200 rounded-lg h-[3rem] flex items-center">
                 ${
 					vendor.CODE_STATUS == 1
 						? '<span class="text-emerald-600 font-semibold">Active</span>'
@@ -163,6 +198,11 @@ $(document).ready(async () => {
 							: "-"
 				}
             </div>
+
+            <select name="CODE_STATUS[]" class="edit-mode hidden select select-bordered w-full h-[3rem] bg-white font-semibold ${vendor.CODE_STATUS == 1 ? "text-emerald-600" : "text-rose-500"}">
+                <option value="1" class="text-emerald-600" ${vendor.CODE_STATUS == 1 ? "selected" : ""}>Active</option>
+                <option value="0" class="text-rose-500" ${vendor.CODE_STATUS == 0 ? "selected" : ""}>Inactive</option>
+            </select>
         </div>
     </div>
 `;
@@ -309,9 +349,20 @@ function toggleEditMode(isEdit) {
 	}
 }
 
-$(document).on("click", "#update-vnd", function (e) {
+$(document).on("click", "#update-vnd", async function (e) {
 	e.preventDefault();
 	toggleEditMode(true);
+	const btnsave = await createBtn({
+		id: "save-vnd",
+		title: "Save",
+	});
+	const cansave = await createBtn({
+		className: "btn-error",
+		id: "cancel-edit",
+		title: "Cancel",
+	});
+	$(".btn-container").empty();
+	$(".btn-container").append(`${btnsave}${cansave}`);
 });
 
 $(document).on("click", "#cancel-edit", function (e) {
@@ -335,15 +386,15 @@ $(document).on("change", ".state-select", function () {
 	// ช่องฝั่งไทย
 	const $selCity = $wrapper.find(".city-select");
 	const $selSubdistrict = $wrapper.find(".subdistrict-select");
-	const $txtZipcodeTH = $wrapper.find('input[name="TH_ADDR_ZIPCODE"]');
+	const $txtZipcodeTH = $wrapper.find('input[name="ADDR_TH_ZIPCODE"]');
 
 	// ช่องฝั่งอังกฤษ
-	const $txtStateEN = $wrapper.find('input[name="EN_ADDR_STATE"]');
-	const $txtCityEN = $wrapper.find('input[name="EN_ADDR_CITY"]');
+	const $txtStateEN = $wrapper.find('input[name="ADDR_EN_STATE"]');
+	const $txtCityEN = $wrapper.find('input[name="ADDR_EN_CITY"]');
 	const $txtSubdistrictEN = $wrapper.find(
-		'input[name="EN_ADDR_SUBDISTRICT"]',
+		'input[name="ADDR_EN_SUBDISTRICT"]',
 	);
-	const $txtZipcodeEN = $wrapper.find('input[name="EN_ADDR_ZIPCODE"]');
+	const $txtZipcodeEN = $wrapper.find('input[name="ADDR_EN_ZIPCODE"]');
 
 	// รีเซ็ตค่าฟิลด์ที่เกี่ยวข้องและปลดล็อกช่องอำเภอ (ไทย)
 	$selCity
@@ -383,12 +434,12 @@ $(document).on("change", ".city-select", function () {
 	const selectedCity = $(this).val();
 
 	const $selSubdistrict = $wrapper.find(".subdistrict-select");
-	const $txtZipcodeTH = $wrapper.find('input[name="TH_ADDR_ZIPCODE"]');
-	const $txtCityEN = $wrapper.find('input[name="EN_ADDR_CITY"]');
+	const $txtZipcodeTH = $wrapper.find('input[name="ADDR_TH_ZIPCODE"]');
+	const $txtCityEN = $wrapper.find('input[name="ADDR_EN_CITY"]');
 	const $txtSubdistrictEN = $wrapper.find(
-		'input[name="EN_ADDR_SUBDISTRICT"]',
+		'input[name="ADDR_EN_SUBDISTRICT"]',
 	);
-	const $txtZipcodeEN = $wrapper.find('input[name="EN_ADDR_ZIPCODE"]');
+	const $txtZipcodeEN = $wrapper.find('input[name="ADDR_EN_ZIPCODE"]');
 
 	// รีเซ็ตค่าและปลดล็อกช่องตำบล
 	$selSubdistrict
@@ -435,16 +486,16 @@ $(document).on("change", ".subdistrict-select", function () {
 	// นำข้อมูลที่เหลือไปใส่ใน Input อัตโนมัติ (ทั้งไทยและอังกฤษ)
 	if (matchedAddress) {
 		$wrapper
-			.find('input[name="TH_ADDR_ZIPCODE"]')
+			.find('input[name="ADDR_TH_ZIPCODE"]')
 			.val(matchedAddress.zipcode);
 		$wrapper
-			.find('input[name="EN_ADDR_SUBDISTRICT"]')
+			.find('input[name="ADDR_EN_SUBDISTRICT"]')
 			.val(matchedAddress.sub_district_en);
 		$wrapper
-			.find('input[name="TH_ADDR_ZIPCODE"]')
+			.find('input[name="ADDR_TH_ZIPCODE"]')
 			.val(matchedAddress.zipcode);
 		$wrapper
-			.find('input[name="EN_ADDR_ZIPCODE"]')
+			.find('input[name="ADDR_EN_ZIPCODE"]')
 			.val(matchedAddress.zipcode);
 	}
 });
@@ -453,7 +504,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	// ==============================================
 	// สคริปต์การแนบไฟล์
 	// ==============================================
-	const fileContainer = document.getElementById("editattachment-container");
+	const fileContainer = document.getElementById("edit-attachment-container");
 	const btnAddFile = document.getElementById("btnAddFile");
 
 	if (btnAddFile && fileContainer) {
@@ -479,5 +530,23 @@ document.addEventListener("DOMContentLoaded", function () {
 			fileContainer.appendChild(row);
 			fileContainer.scrollTop = fileContainer.scrollHeight;
 		});
+	}
+});
+
+$("#btnAddVendorCode").on("click", function () {
+	const newRow = vendorContainer.find(".vendor-code-row").first().clone();
+	newRow.find('input[type="text"]').val("");
+	newRow.find('select[name="CODE_CURRENCY[]"]').prop("selectedIndex", 0);
+	newRow.find("select.payment-select").prop("selectedIndex", 0);
+	vendorContainer.append(newRow);
+});
+
+vendorContainer.on("click", ".btn-remove-code", function () {
+	if (vendorContainer.find(".vendor-code-row").length > 1) {
+		$(this).closest(".vendor-code-row").remove();
+	} else {
+		alert(
+			"Cannot remove the last vendor code. Please clear the inputs instead.",
+		);
 	}
 });

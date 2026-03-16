@@ -74,8 +74,8 @@
                                  
                                 </div>
 
-                                <div class="md:col-span-3 divider text-gray-400 text-sm mt-2 mb-0">Record Details</div>
-                                <div class="form-control w-full">
+                                <div class="view-mode md:col-span-3 divider text-gray-400 text-sm mt-2 mb-0">Record Details</div>
+                                <div class="view-mode form-control w-full">
                                     <label class="label"><span class="label-text font-medium text-gray-500">Registered By</span></label>
                                     <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
                                         <p id="view-VND_REGNAME" class="font-medium text-base px-1">-</p>
@@ -83,14 +83,14 @@
 
                                 </div>
 
-                                <div class="form-control w-full">
+                                <div class="view-mode form-control w-full">
                                     <label class="label"><span class="label-text font-medium text-gray-500">Registered Date</span></label>
                                     <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
                                         <p id="view-VND_REGDATE" class="font-medium text-base px-1">-</p>
                                     </div>
                                 </div>
 
-                                <div class="form-control w-full">
+                                <div class="view-mode form-control w-full">
                                     <label class="label"><span class="label-text font-medium text-gray-500">Last Updated</span></label>
                                     <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
                                         <p id="view-VND_LASTUPDATE" class="font-medium text-base px-1">-</p>
@@ -110,10 +110,7 @@
                             </button>
                             </div>
                          
-                            <div id="view-attachment-container" class="view-mode mt-4 space-y-3 max-h-[200px] overflow-y-auto pr-2 custom-scrollbar hidden">
-                            <div class="form-control w-full flex-row items-center gap-3 file-row">
-                         
-                            </div>
+                            <div id="existing-files-container" class="mt-4 space-y-3 max-h-[200px] overflow-y-auto pr-2      custom-scrollbar">
                             </div>
                             <div id="edit-attachment-container" class="edit-mode mt-4 space-y-3 max-h-[200px] overflow-y-auto pr-2 custom-scrollbar hidden">
                             <div class="form-control w-full flex-row items-center gap-3 file-row">
@@ -128,18 +125,57 @@
 
                 </div>
             </div>
-             <div id="tab-content-codes" class="tab-content hidden">
-                <div class="grid grid-cols-1 gap-6 pb-4">
-                    <div class="card bg-base-100 shadow-sm border border-base-200">
-                        <div class="card-body">
-                            <h3 class="card-title text-base border-b pb-2">Vendor Codes Details</h3>
-                            <div id="view-vendor-code-container" class="mt-2 pr-2">
-                                
-                            </div>
+        <div id="tab-content-codes" class="tab-content hidden">
+            <div class="grid grid-cols-1 gap-6 pb-4">
+                <div class="card bg-base-100 shadow-sm border border-base-200">
+                    <div class="card-body">
+                        
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <h3 class="card-title text-base m-0">Vendor Codes Details</h3>
+                            
+                            <button type="button" id="btnAddVendorCode" class="edit-mode hidden btn btn-sm btn-outline text-indigo-600 hover:bg-indigo-600 hover:text-white hover:border-indigo-600 outline-none">
+                                + Add Code
+                            </button>
                         </div>
+                        
+                        <div id="view-vendor-code-container" class="mt-4 pr-2">
+                        </div>
+                        <div id="edit-vendor-code-container" class="edit-mode mt-4 pr-2 hidden">
+                        <div class="vendor-code-row grid grid-cols-1 md:grid-cols-12 gap-4 items-end bg-gray-50 p-4 rounded-lg border border-gray-100 relative mb-4">
+                                <div class="form-control w-full md:col-span-3">
+                                    <label class="label"><span class="label-text font-medium">Code<span class="text-error">*</span></span></label>
+                                    <input type="text" name="CODE_NUM[]" class="input input-bordered w-full bg-white" required placeholder="e.g. VND001" />
+                                </div>
+                                <div class="form-control w-full md:col-span-2">
+                                    <label class="label"><span class="label-text font-medium">Currency</span></label>
+                                    <select name="CODE_CURRENCY[]" class="select select-bordered w-full bg-white currency-select">
+                                 <option value="" disabled selected>Select Currency...</option>
+                                    </select>
+                                </div>
+                                <!-- <div class="form-control w-full md:col-span-3">
+                                    <label class="label"><span class="label-text font-medium">Shipping Term</span></label>
+                                    <input type="text" name="CODE_SHIP[]" class="input input-bordered w-full bg-white" placeholder="e.g. FOB" />
+                                </div> -->
+                                                <div class="form-control w-full md:col-span-3">
+                                                    <label class="label"><span class="label-text font-medium">Payment Term</span></label>
+                                        <select name="CODE_PAY[]" class="select select-bordered w-full bg-white payment-select" required>
+                        <option value="" disabled selected>Select Payment Term...</option>
+                    </select>
+                                                </div>
+                                                <div class="form-control md:col-span-1 pb-1">
+                                                    <button type="button" class="btn btn-error btn-square btn-remove-code">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                        </div>
+                        </div>
+
                     </div>
                 </div>
-            </div> 
+            </div>
+        </div>
 <div id="tab-content-address" class="tab-content hidden">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-4">
         
@@ -227,11 +263,15 @@
                     </div>
                     <div class="form-control w-full">
                         <label class="label"><span class="label-text font-medium text-indigo-700">รหัสไปรษณีย์</span></label>
-                        <input type="text" id="input-ADDR_TH_ZIPCODE" name="TH_ADDR_ZIPCODE" class="input input-bordered w-full">
+                        <input type="text" id="input-ADDR_TH_ZIPCODE" name="ADDR_ZIPCODE" class="input input-bordered w-full">
                     </div>
                     <div class="form-control w-full md:col-span-2">
                         <label class="label"><span class="label-text font-medium text-indigo-700">ประเทศ</span></label>
-                        <input type="text" id="input-ADDR_TH_COUNTRY" name="TH_ADDR_COUNTRY" class="input input-bordered w-full">
+                              <select name="ADDR_TH_COUNTRY" class="select select-bordered w-full">
+                                    <option value="66">Thailand</option>
+                                    <option value="1">United States</option>
+                                    <option value="81">Japan</option>
+                                </select>
                     </div>
                 </div>
             </div>
@@ -262,7 +302,7 @@
                         <label class="label"><span class="label-text font-medium text-gray-500">Address Line 3</span></label>
                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
                             <p id="view-ADDR_EN_LINE3" class="view-mode font-medium text-base px-1">-</p>
-                              <input type="text" id="input-ADDR_EN_LINE3" name="ADDR_EN_LINE3" class="edit-mode input input-bordered w-full hidden">
+                            <input type="text" id="input-ADDR_EN_LINE3" name="ADDR_EN_LINE3" class="edit-mode input input-bordered w-full hidden">
                         </div>
                       
                     </div>
@@ -304,23 +344,27 @@
                 <div class="edit-mode hidden grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 bg-indigo-50/50 p-4 rounded-lg border border-indigo-100">
                     <div class="form-control w-full">
                         <label class="label"><span class="label-text font-medium text-indigo-700">State / Province</span></label>
-                        <input type="text" id="input-EN_ADDR_STATE" name="EN_ADDR_STATE" class="input input-bordered w-full" >
+                        <input type="text" id="input-ADDR_EN_STATE" name="ADDR_EN_STATE" class="input input-bordered w-full" >
                     </div>
                     <div class="form-control w-full">
                         <label class="label"><span class="label-text font-medium text-indigo-700">City / District</span></label>
-                        <input type="text" id="input-EN_ADDR_CITY" name="EN_ADDR_CITY" class="input input-bordered w-full" >
+                        <input type="text" id="input-ADDR_EN_CITY" name="ADDR_EN_CITY" class="input input-bordered w-full" >
                     </div>
                     <div class="form-control w-full">
                         <label class="label"><span class="label-text font-medium text-indigo-700">Sub-district</span></label>
-                        <input type="text" id="input-EN_ADDR_SUBDISTRICT" name="EN_ADDR_SUBDISTRICT" class="input input-bordered w-full" placeholder="Sub-district">
+                        <input type="text" id="input-ADDR_EN_SUBDISTRICT" name="ADDR_EN_SUBDISTRICT" class="input input-bordered w-full" placeholder="Sub-district">
                     </div>
                     <div class="form-control w-full">
                         <label class="label"><span class="label-text font-medium text-indigo-700">Zip Code</span></label>
-                        <input type="text" id="input-EN_ADDR_ZIPCODE" name="EN_ADDR_ZIPCODE" class="input input-bordered w-full">
+                        <input type="text" id="input-ADDR_EN_ZIPCODE" name="ADDR_EN_ZIPCODE" class="input input-bordered w-full">
                     </div>
                     <div class="form-control w-full md:col-span-2">
                         <label class="label"><span class="label-text font-medium text-indigo-700">Country</span></label>
-                        <input type="text" id="input-EN_ADDR_COUNTRY" name="EN_ADDR_COUNTRY" class="input input-bordered w-full">
+                            <select name="ADDR_EN_COUNTRY" class="select select-bordered w-full">
+                                    <option value="66">Thailand</option>
+                                    <option value="1">United States</option>
+                                    <option value="81">Japan</option>
+                                </select>
                     </div>
                 </div>
 
