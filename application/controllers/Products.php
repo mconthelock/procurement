@@ -21,4 +21,6 @@ class Products extends MY_Controller {
             'id' => $id
         ]);
     }
+
+    
 }

@@ -6,8 +6,8 @@ export async function getProducts(id = "") {
 	return data;
 }
 
-export async function getCategories() {
-	const response = await fetch(`${process.env.MOCK_API}/categories`);
+export async function getCategories(id = "") {
+	const response = await fetch(`${process.env.MOCK_API}/categories/${id}`);
 	const data = await response.json();
 	return data;
 }

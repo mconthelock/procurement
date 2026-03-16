@@ -97,7 +97,7 @@ window.addPriceRow = (data = {}) => {
 		v.VENDOR_CODES.forEach((code) => {
 			allOptions.push({
 				val: code.CODE_NUM, // ใช้รหัสคู่ค้าเป็น Value
-				text: `${v.VND_NAME} (${code.CODE_NUM})`, // แสดง "ชื่อบริษัท (รหัส)"
+				text: `(${code.CODE_NUM})|${v.VND_NAME}`, // แสดง "ชื่อบริษัท (รหัส)"
 				fullData: v,
 			});
 		});
@@ -164,9 +164,59 @@ window.addPriceRow = (data = {}) => {
 function initSubmit() {
 	$("#productForm").on("submit", async function (e) {
 		e.preventDefault();
+
+		// --- 1. VALIDATION LOGIC ---
+		const errors = [];
+
+		// ล้างสีขอบ Error เดิมออกก่อน
+		$(".input, .select, .textarea").removeClass("border-error");
+
+		// ตรวจสอบช่องข้อมูลพื้นฐาน
+		if (!$("#PROD_CODE").val().trim()) {
+			errors.push("Product Code is required");
+			$("#PROD_CODE").addClass("border-error");
+		}
+		if (!$("#PROD_NAME").val().trim()) {
+			errors.push("Product Name is required");
+			$("#PROD_NAME").addClass("border-error");
+		}
+		if (!$("#CATEGORY_ID").val()) {
+			errors.push("Please select a Category");
+			$("#CATEGORY_ID").addClass("border-error");
+		}
+
+		// ตรวจสอบว่าต้องมีราคาอย่างน้อย 1 รายการและเลือก Vendor แล้ว
+		const priceRows = $(".price-row");
+		if (priceRows.length === 0) {
+			errors.push("At least one Price History row is required");
+		} else {
+			priceRows.each(function (i, el) {
+				if (!$(el).find(".vnd-id").val()) {
+					errors.push(`Row ${i + 1}: Please select a Vendor`);
+					$(el).find(".vnd-id").addClass("border-error");
+				}
+				if (
+					!$(el).find(".price-val").val() ||
+					$(el).find(".price-val").val() <= 0
+				) {
+					errors.push(`Row ${i + 1}: Price must be greater than 0`);
+					$(el).find(".price-val").addClass("border-error");
+				}
+			});
+		}
+
+		// ถ้ามี Error ให้แจ้งเตือนและหยุดการทำงาน
+		if (errors.length > 0) {
+			// ใช้ showMessage แจ้ง Error ตัวแรก หรือรวมทั้งหมด
+			await showMessage(errors.join("<br>"));
+			return false;
+		}
+
 		try {
 			await showLoader();
+			const API_URL = `${process.env.MOCK_API}/products`; //http://localhost:3002/products
 			const id = $("#prod_id_hidden").val();
+			// alert(API_URL);
 
 			const payload = {
 				PROD_CODE: $("#PROD_CODE").val(),
@@ -176,6 +226,7 @@ function initSubmit() {
 				PROD_STATUS: parseInt($("#PROD_STATUS").val()),
 				HAZARD: parseInt($("#HAZARD").val()),
 				CATEGORY_ID: parseInt($("#CATEGORY_ID").val()),
+				CREATED_AT: id ? undefined : new Date().toISOString(),
 				UPDATED_AT: new Date().toISOString(),
 				IMAGES: $(".img-url")
 					.map((i, el) => $(el).val())
@@ -190,7 +241,7 @@ function initSubmit() {
 					.filter((v) => v.ATTR_NAME.trim() !== ""),
 				PRICE_HISTORY: $(".price-row")
 					.map((i, el) => ({
-						VND_ID: parseInt($(el).find(".vnd-id").val()),
+						VND_ID: $(el).find(".vnd-id").val(),
 						PRICE: parseFloat($(el).find(".price-val").val()) || 0,
 						EFFECTIVE_DATE: $(el).find(".effective-date").val()
 							? new Date(
@@ -214,8 +265,8 @@ function initSubmit() {
 			};
 
 			const method = id ? "PUT" : "POST";
-			const url = id ? `${API_URL}/${id}` : API_URL;
-
+			const url = id ? `${API_URL}/${id}` : API_URL; //http://localhost:3002/products/0043
+			// alert(url);
 			const res = await fetch(url, {
 				method: method,
 				headers: { "Content-Type": "application/json" },
@@ -223,7 +274,10 @@ function initSubmit() {
 			});
 
 			if (res.ok) {
-				window.location.href = "../Products";
+				await showMessage(
+					id ? "Product updated!" : "Product added successfully!",
+				);
+				window.location.href = `${process.env.APP_ENV}/Products`;
 			} else {
 				throw new Error("Failed to save data");
 			}
@@ -234,6 +288,32 @@ function initSubmit() {
 		}
 	});
 }
+
+window.deleteProduct = async function (id) {
+	// 1. ถามเพื่อความแน่ใจ
+	if (confirm("Are you sure you want to delete this product?")) {
+		try {
+			await showLoader(); // แสดง Preloader ของ amec
+
+			// 2. ส่งคำสั่งลบไปยัง API
+			const response = await fetch(`${API_URL}/${id}`, {
+				method: "DELETE",
+			});
+
+			if (response.ok) {
+				await showMessage("Product deleted successfully");
+				// 3. Refresh ข้อมูลในตารางใหม่
+				initTable();
+			} else {
+				throw new Error("Failed to delete product");
+			}
+		} catch (error) {
+			await showMessage(error.message);
+		} finally {
+			await showLoader({ show: false });
+		}
+	}
+};
 
 // ฟังก์ชันสร้าง Options ใน Select
 function renderCategoryOptions(categories) {
