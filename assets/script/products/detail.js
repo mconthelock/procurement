@@ -6,14 +6,18 @@ import { currentUser } from "@amec/webasset/api/amec";
 import { createBtn, activatedBtnRow } from "@amec/webasset/components/buttons";
 import { createTable } from "@amec/webasset/dataTable";
 import { initApp, tableOpt } from "../utils.js";
-import { getProducts, getCategories } from "../service/products.js";
-
+import { getProducts, getCategories, getVendors } from "../service/index.js";
+let vendorList = []; // เก็บข้อมูล Vendor สำหรับใช้งานใน Dropdown
 $(document).ready(async () => {
 	try {
 		await showLoader();
 
 		// 1. ดึงข้อมูล Categories และสร้าง Dropdown ก่อน
-		const categories = await getCategories();
+		const [categories, vendors] = await Promise.all([
+			getCategories(),
+			getVendors(),
+		]);
+		vendorList = vendors;
 		renderCategoryOptions(categories);
 
 		await initApp({ submenu: ".nav-products" });
@@ -86,11 +90,37 @@ window.addAttributeRow = (name = "", value = "") => {
 window.addPriceRow = (data = {}) => {
 	const rowId = `row_${Date.now()}_${Math.floor(Math.random() * 100)}`;
 	const q = data.QUOTATION || {};
+
+	// 1. กระจาย Vendor Codes ออกมาเป็นรายการย่อยๆ
+	let allOptions = [];
+	vendorList.forEach((v) => {
+		v.VENDOR_CODES.forEach((code) => {
+			allOptions.push({
+				val: code.CODE_NUM, // ใช้รหัสคู่ค้าเป็น Value
+				text: `${v.VND_NAME} (${code.CODE_NUM})`, // แสดง "ชื่อบริษัท (รหัส)"
+				fullData: v,
+			});
+		});
+	});
+
+	// 2. สร้าง HTML Options จากรายการที่กระจายแล้ว
+	const vendorOptions = allOptions
+		.map(
+			(opt) =>
+				`<option value="${opt.val}" ${data.VND_ID == opt.val ? "selected" : ""}>
+            ${opt.text}
+        </button>`,
+		)
+		.join("");
+
 	const html = `
         <tr class="price-row border-b align-top bg-white hover:bg-gray-50" id="${rowId}">
             <td class="p-3">
                 <div class="space-y-2">
-                    <input type="number" class="input input-bordered input-sm w-full vnd-id font-bold" value="${data.VND_ID || ""}" placeholder="Vendor ID">
+                    <select class="select select-bordered select-sm w-full vnd-id font-bold">
+                        <option value="">Select Vendor Code</option>
+                        ${vendorOptions}
+                    </select>
                     <select class="select select-bordered select-sm w-full is-active">
                         <option value="true" ${data.IS_ACTIVE ? "selected" : ""}>Active Price</option>
                         <option value="false" ${!data.IS_ACTIVE ? "selected" : ""}>History Only</option>
@@ -104,21 +134,21 @@ window.addPriceRow = (data = {}) => {
                 <input type="date" class="input input-bordered input-sm w-full effective-date" value="${data.EFFECTIVE_DATE?.split("T")[0] || ""}">
             </td>
             <td class="p-3">
-                <div class="bg-gray-100 p-3 rounded-lg grid grid-cols-2 gap-3 border">
+                <div class="bg-gray-100 p-3 rounded-lg grid grid-cols-2 gap-3 border text-xs">
                     <div class="col-span-1">
-                        <label class="text-[10px] uppercase font-bold opacity-50">Quote No.</label>
+                        <label class="font-bold opacity-50">Quote No.</label>
                         <input type="text" class="input input-bordered input-xs w-full q-no" value="${q.QUOTATION_NO || ""}">
                     </div>
                     <div class="col-span-1">
-                        <label class="text-[10px] uppercase font-bold opacity-50">Quote Date</label>
+                        <label class="font-bold opacity-50">Quote Date</label>
                         <input type="date" class="input input-bordered input-xs w-full q-date" value="${q.QUOTATION_DATE?.split("T")[0] || ""}">
                     </div>
                     <div class="col-span-2">
-                        <label class="text-[10px] uppercase font-bold opacity-50">File (Filename)</label>
-                        <input type="text" class="input input-bordered input-xs w-full q-file" value="${q.QUOTATION_FILE || ""}" placeholder="e.g. quote_01.pdf">
+                        <label class="font-bold opacity-50">File Name</label>
+                        <input type="text" class="input input-bordered input-xs w-full q-file" value="${q.QUOTATION_FILE || ""}">
                     </div>
                     <div class="col-span-2">
-                        <label class="text-[10px] uppercase font-bold opacity-50">Remark</label>
+                        <label class="font-bold opacity-50">Remark</label>
                         <textarea class="textarea textarea-bordered textarea-xs w-full q-remark" rows="1">${q.REMARK || ""}</textarea>
                     </div>
                 </div>
