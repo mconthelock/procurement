@@ -44,7 +44,25 @@
                         <label class="label py-1"><span class="label-text font-semibold text-gray-700">Department Owner Code <span class="text-error">*</span></span></label>
                         <input type="text" id="CATEGORY_OWNER" placeholder="e.g. 090401" class="input input-bordered focus:input-primary w-full font-mono shadow-inner" required>
                     </div>
+                    <div class="form-control w-full">
+                        <label class="label py-1">
+                            <span class="label-text font-semibold text-gray-700">Parent Category</span>
+                        </label>
+                        <select id="CATEGORY_PARENT" class="select select-bordered focus:select-primary w-full shadow-inner font-bold">
+                            <option value="">-- No Parent (Root Level) --</option>
+                        </select>
+                        <label class="label -mt-1">
+                            <span class="label-text-alt opacity-50 italic">Determines the hierarchy level.</span>
+                        </label>
+                    </div>
 
+                    <div class="form-control w-full">
+                        <label class="label py-1">
+                            <span class="label-text font-semibold text-gray-700 font-mono">Current Level</span>
+                        </label>
+                        <input type="text" id="CATEGORY_LEVEL_DISPLAY" class="input input-bordered w-full bg-base-200 text-gray-500 cursor-not-allowed font-bold" value="1" readonly>
+                        <input type="hidden" id="CATEGORY_LEVEL" value="1">
+                    </div>
                     <div class="form-control w-full">
                         <label class="label py-1"><span class="label-text font-semibold text-gray-700">Usage Status</span></label>
                         <select id="CATEGORY_STATUS" class="select select-bordered focus:select-primary w-full shadow-inner">

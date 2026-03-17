@@ -17,103 +17,89 @@ $(document).ready(async () => {
 		await showLoader();
 		await initApp({ submenu: ".nav-categories" });
 
-		// ดึงข้อมูล Categories
-		const data = await getCategories();
-		const options = await tableCategoryOption(data);
-		// console.log(data);
-		// console.log(options);
+		const rawData = await getCategories();
 
-		// สร้าง Table ตามมาตรฐาน amec
+		// --- 💡 ส่วนสำคัญ: จัดกลุ่มลำดับชั้นก่อนแสดงผล ---
+		const sortedData = transformToTreeArray(rawData);
+
+		const options = await tableCategoryOption(sortedData);
 		table = await createTable(options, "#table");
 	} catch (error) {
 		console.error(error);
-		await showMessage(error.message || "Error initializing app");
 	} finally {
 		await showLoader({ show: false });
 	}
 });
+function transformToTreeArray(data, parentId = null) {
+	let result = [];
+	const children = data.filter((item) => item.CATEGORY_PARENT == parentId);
 
+	children.forEach((child) => {
+		result.push(child);
+		const subChildren = transformToTreeArray(data, child.CATEGORY_ID);
+		result = result.concat(subChildren);
+	});
+	return result;
+}
 async function tableCategoryOption(data) {
 	console.log(data);
 	const opt = { ...tableOpt };
 	opt.data = data;
+	opt.ordering = false; // ปิดการกด Sort ที่หัวตารางเพื่อไม่ให้ลำดับชั้นพัง
+
 	opt.columns = [
-		// {
-		// 	title: "Category Information",
-		// 	data: "CATEGORY_NAME",
-		// 	render: (data, type, row) => `
-		//         <div class="flex items-center gap-3">
-		//             <div class="avatar placeholder">
-		//                 <div class="bg-neutral text-neutral-content rounded-full w-10">
-		//                     <span class="text-xs">${data.charAt(0)}</span>
-		//                 </div>
-		//             </div>
-		//             <div>
-		//                 <div class="font-bold text-sm">${data}</div>
-		//                 <div class="text-[10px] opacity-50">ID: ${row.CATEGORY_ID}</div>
-		//             </div>
-		//         </div>`,
-		// },
 		{
 			data: "CATEGORY_NAME",
-			title: "Category Name",
-			render: (data) =>
-				`<div class="max-w-xs truncate" title="${data}">${data || "-"}</div>`,
+			title: "Category Structure",
+			render: (data, type, row) => {
+				// คำนวณการย่อหน้า (1 Level = 25px)
+				const indent = (row.CATEGORY_LEVEL - 1) * 25;
+				const isRoot = row.CATEGORY_LEVEL === 1;
+
+				return `
+                    <div style="padding-left: ${indent}px" class="flex items-center gap-2">
+                        ${!isRoot ? '<i class="fi fi-rr-arrow-turn-down-right opacity-30 text-[10px]"></i>' : ""}
+                        <div class="flex flex-col">
+                            <span class="${isRoot ? "font-extrabold text-primary text-sm" : "text-neutral text-xs"}">
+                                ${data}
+                            </span>
+                            ${isRoot ? '<span class="text-[9px] uppercase opacity-40 font-bold tracking-tighter">Root Category</span>' : ""}
+                        </div>
+                    </div>`;
+			},
 		},
 		{
 			data: "DESCRIPTION",
 			title: "Description",
 			render: (data) =>
-				`<div class="max-w-xs truncate" title="${data}">${data || "-"}</div>`,
+				`<div class="text-[11px] opacity-70 truncate max-w-xs">${data || "-"}</div>`,
 		},
 		{
 			data: "CATEGORY_OWNER",
-			title: "Owner Dept.",
-			// className: "text-center",
+			title: "Owner",
+			className: "text-center",
 			render: (data) =>
-				`<span class="badge badge-ghost badge-sm font-mono">${data}</span>`,
+				`<span class="badge badge-ghost font-mono text-[10px]">${data}</span>`,
 		},
 		{
 			data: "CATEGORY_STATUS",
 			title: "Status",
 			className: "text-center",
 			render: (data) => {
-				// แสดง Badge ตามสถานะ 1=Active, 0=Inactive
 				return data == 1
-					? `<div class="badge badge-success badge-outline gap-2 py-3 px-4">
-                     <div class="h-2 w-2 rounded-full bg-success"></div> Active
-                   </div>`
-					: `<div class="badge badge-ghost opacity-50 gap-2 py-3 px-4">
-                     <div class="h-2 w-2 rounded-full bg-gray-400"></div> Inactive
-                   </div>`;
+					? `<div class="badge badge-success badge-xs">Active</div>`
+					: `<div class="badge badge-ghost badge-xs opacity-50">Inactive</div>`;
 			},
 		},
 		{
 			data: "id",
 			title: "Actions",
 			className: "text-center",
-			orderable: false,
-			render: (data) => {
-				return `<a href="/procurement/categories/detail/${data}" class="btn btn-sm btn-ghost btn-circle text-lg text-primary hover:text-xl"><i class="fi fi-rr-settings-sliders"></i></a>`;
-			},
+			render: (data) => `
+                <a href="/procurement/categories/detail/${data}" class="btn btn-sm btn-ghost btn-circle text-primary">
+                    <i class="fi fi-rr-settings-sliders"></i>
+                </a>`,
 		},
-		// {
-		// 	data: "id",
-		// 	title: "Actions",
-		// 	className: "text-center",
-		// 	orderable: false,
-		// 	render: (data) => {
-		// 		return `
-		//             <div class="flex justify-center gap-1">
-		//                 <a href="/procurement/categories/detail/${data}" class="btn btn-sm btn-ghost btn-circle text-lg text-primary hover:bg-primary/10">
-		//                     <i class="fi fi-rr-edit"></i>
-		//                 </a>
-		//                 <button type="button" onclick="deleteCategory('${data}')" class="btn btn-sm btn-ghost btn-circle text-lg text-error hover:bg-error/10">
-		//                     <i class="fi fi-rr-trash"></i>
-		//                 </button>
-		//             </div>`;
-		// 	},
-		// },
 	];
 
 	// จัดการปุ่ม Export Excel ในส่วน initComplete

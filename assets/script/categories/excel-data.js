@@ -10,5 +10,6 @@ export async function extractDataForExport(data) {
 		CATEGORY_NAME: item.CATEGORY_NAME,
 		DESCRIPTION: item.DESCRIPTION || "-",
 		CATEGORY_OWNER: item.CATEGORY_OWNER || "-",
+		CATEGORY_STATUS: item.CATEGORY_STATUS == 1 ? "Active" : "Inactive",
 	}));
 }
