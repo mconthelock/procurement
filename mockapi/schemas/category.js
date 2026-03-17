@@ -30,12 +30,18 @@ const dept = [
 	"090701",
 ];
 const CATEGORY_DEFINITIONS = [
-	// --- กลุ่มที่ 1: Electronics (Root) ---
+	// --- กลุ่มที่ 1: Electronics ---
 	{
 		CATEGORY_ID: 1,
 		CATEGORY_NAME: "Electronics",
 		DESCRIPTION: "Devices and gadgets",
 		CATEGORY_OWNER: "090401",
+		REQUIRED_ATTRIBUTES: [
+			"Brand",
+			"Voltage",
+			"Power Consumption",
+			"Warranty Period",
+		], // Specs ของไฟฟ้า
 		CATEGORY_STATUS: 1,
 		CATEGORY_LEVEL: 1,
 		CATEGORY_PARENT: null,
@@ -46,38 +52,24 @@ const CATEGORY_DEFINITIONS = [
 		CATEGORY_NAME: "Computer Hardware",
 		DESCRIPTION: "PC Components",
 		CATEGORY_OWNER: "090401",
+		REQUIRED_ATTRIBUTES: ["Brand", "Interface", "Form Factor", "Warranty"],
 		CATEGORY_STATUS: 1,
 		CATEGORY_LEVEL: 2,
 		CATEGORY_PARENT: 1,
 		CREATED_AT: "2025-05-15T10:30:00.000Z",
 	},
-	{
-		CATEGORY_ID: 3,
-		CATEGORY_NAME: "Storage Devices",
-		DESCRIPTION: "Internal and External Drives",
-		CATEGORY_OWNER: "090401",
-		CATEGORY_STATUS: 1,
-		CATEGORY_LEVEL: 3,
-		CATEGORY_PARENT: 2,
-		CREATED_AT: "2025-12-20T12:00:00.000Z",
-	},
-	{
-		CATEGORY_ID: 4,
-		CATEGORY_NAME: "NVMe M.2 SSD",
-		DESCRIPTION: "High-speed storage specifications",
-		CATEGORY_OWNER: "090401",
-		CATEGORY_STATUS: 1,
-		CATEGORY_LEVEL: 4,
-		CATEGORY_PARENT: 3,
-		CREATED_AT: "2026-02-19T06:34:04.479Z",
-	},
-
-	// --- กลุ่มที่ 2: Furniture (Root - อยู่ชั้นเดียวกับ Electronics) ---
+	// --- กลุ่มที่ 2: Furniture ---
 	{
 		CATEGORY_ID: 5,
 		CATEGORY_NAME: "Furniture",
 		DESCRIPTION: "Home and office furniture",
 		CATEGORY_OWNER: "060501",
+		REQUIRED_ATTRIBUTES: [
+			"Material",
+			"Color",
+			"Dimensions (WxLxH)",
+			"Weight Capacity",
+		], // Specs ของเฟอร์นิเจอร์
 		CATEGORY_STATUS: 1,
 		CATEGORY_LEVEL: 1,
 		CATEGORY_PARENT: null,
@@ -88,6 +80,12 @@ const CATEGORY_DEFINITIONS = [
 		CATEGORY_NAME: "Office Tables",
 		DESCRIPTION: "Work desks and meeting tables",
 		CATEGORY_OWNER: "060501",
+		REQUIRED_ATTRIBUTES: [
+			"Material",
+			"Table Top Finish",
+			"Adjustable Height",
+			"Warranty",
+		],
 		CATEGORY_STATUS: 1,
 		CATEGORY_LEVEL: 2,
 		CATEGORY_PARENT: 5,

@@ -1,7 +1,12 @@
 import { showLoader } from "@amec/webasset/preloader";
 import { showMessage } from "@amec/webasset/utils";
 import { initApp } from "../utils.js";
-import { getProducts, getCategories, getVendors } from "../service/index.js";
+import {
+	getProducts,
+	getCategories,
+	getVendors,
+	getCategoryAttributes,
+} from "../service/index.js";
 
 let vendorList = [];
 
@@ -20,16 +25,22 @@ $(document).ready(async () => {
 
 		if (id) {
 			const productData = await getProducts(id);
+			// โหลดสเปกของ Category ปัจจุบันรอไว้ก่อน loadData
+			if (productData.CATEGORY_ID) {
+				window.currentCategorySpecs = await getCategoryAttributes(
+					productData.CATEGORY_ID,
+				);
+			}
 			loadData(productData);
 		} else {
 			addPriceRow();
-			addAttributeRow("Material", ""); // เพิ่มแถวเริ่มต้นเป็นตัวอย่าง
+			addAttributeRow("Material", "");
 		}
 
 		initSubmit();
 	} catch (error) {
 		console.error(error);
-		await showMessage("Error loading page");
+		await showMessage("Error loading page", "error");
 	} finally {
 		await showLoader({ show: false });
 	}
@@ -49,6 +60,29 @@ function loadData(data) {
 	data.PRICE_HISTORY?.forEach((p) => addPriceRow(p));
 }
 
+// ใน $(document).ready
+$(document).on("change", "#CATEGORY_ID", async function () {
+	const catId = $(this).val();
+	try {
+		await showLoader();
+		window.currentCategorySpecs = await getCategoryAttributes(catId);
+		// แจ้งเตือน user เล็กน้อยว่าสเปกเปลี่ยนแล้ว
+		console.log("Updated Specs for Category:", window.currentCategorySpecs);
+	} finally {
+		await showLoader({ show: false });
+	}
+});
+async function updateAttributeOptions(catId) {
+	// 1. ดึงรายการ Attributes จาก Category ที่เลือก
+	const attributes = await getCategoryAttributes(catId);
+
+	// 2. เก็บไว้ในตัวแปร Global เพื่อให้ function addAttributeRow เรียกใช้
+	window.currentCategorySpecs = attributes;
+
+	// 3. (Optional) ถ้าเป็นของใหม่ อาจจะสั่ง addAttributeRow เปล่าๆ ให้เลยตามจำนวนที่ Category บังคับ
+	// $("#attributes_container").empty();
+	// attributes.forEach(attrName => addAttributeRow(attrName, ""));
+}
 // --- UI Builders ---
 
 window.addImageRow = (url = "") => {
@@ -70,16 +104,29 @@ window.addImageRow = (url = "") => {
 };
 
 window.addAttributeRow = (name = "", value = "") => {
-	const id = `attr_${Date.now()}_${Math.floor(Math.random() * 100)}`;
+	const id = `attr_${Date.now()}`;
+	const specs = window.currentCategorySpecs || []; // ดึงมาจากที่โหลดไว้
+
+	const options = specs
+		.map(
+			(s) =>
+				`<option value="${s}" ${name === s ? "selected" : ""}>${s}</option>`,
+		)
+		.join("");
+
 	const html = `
-        <div class="flex gap-2 attr-row group items-center bg-white p-2 rounded-lg border shadow-sm" id="${id}">
-            <div class="flex-none w-32">
-                <input type="text" placeholder="Spec Name" class="input input-bordered input-xs w-full font-bold attr-name" value="${name}">
+        <div class="flex gap-2 attr-row items-center bg-white p-2 rounded-lg border shadow-sm" id="${id}">
+            <div class="flex-none w-48">
+                <select class="select select-bordered select-xs w-full font-bold attr-name">
+                    <option value="">-- Other Spec --</option>
+                    ${options}
+                    ${name && !specs.includes(name) ? `<option value="${name}" selected>${name}</option>` : ""}
+                </select>
             </div>
             <div class="flex-1">
-                <input type="text" placeholder="Value" class="input input-bordered input-xs w-full attr-value" value="${value}">
+                <input type="text" class="input input-bordered input-xs w-full attr-value" value="${value}" placeholder="Value">
             </div>
-            <button type="button" class="btn btn-ghost btn-xs btn-circle text-error opacity-0 group-hover:opacity-100" onclick="$('#${id}').remove()">✕</button>
+            <button type="button" class="btn btn-ghost btn-xs text-error" onclick="$('#${id}').remove()">✕</button>
         </div>`;
 	$("#attributes_container").append(html);
 };
@@ -248,9 +295,14 @@ window.handleQuoteFileUpload = function (i) {
 function renderCategoryOptions(cats) {
 	const s = $("#CATEGORY_ID");
 	s.empty().append('<option value="">Select Category</option>');
-	cats.forEach((c) =>
+
+	// เรียงลำดับ Level 1 ไว้บนสุด
+	cats.sort((a, b) => a.CATEGORY_LEVEL - b.CATEGORY_LEVEL);
+
+	cats.forEach((c) => {
+		const indent = "— ".repeat((c.CATEGORY_LEVEL || 1) - 1);
 		s.append(
-			`<option value="${c.CATEGORY_ID}">${c.CATEGORY_NAME}</option>`,
-		),
-	);
+			`<option value="${c.CATEGORY_ID}">${indent}${c.CATEGORY_NAME}</option>`,
+		);
+	});
 }

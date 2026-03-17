@@ -19,40 +19,63 @@ $(document).ready(async () => {
 
 		const rawData = await getCategories();
 
-		// --- 💡 ส่วนสำคัญ: จัดกลุ่มลำดับชั้นก่อนแสดงผล ---
+		// 💡 เรียกใช้ฟังก์ชันที่ปรับปรุงใหม่
 		const sortedData = transformToTreeArray(rawData);
 
-		const options = await tableCategoryOption(sortedData);
+		// กรณีข้อมูลมีปัญหา (เช่น Parent ID ผิด) ให้เอาข้อมูลที่เหลือที่ไม่ได้ถูกจัดกลุ่มมาต่อท้าย
+		const sortedIds = new Set(sortedData.map((i) => i.CATEGORY_ID));
+		const orphans = rawData.filter((i) => !sortedIds.has(i.CATEGORY_ID));
+		const finalData = sortedData.concat(orphans);
+
+		const options = await tableCategoryOption(finalData);
 		table = await createTable(options, "#table");
 	} catch (error) {
-		console.error(error);
+		console.error("Initialization Error:", error);
+		await showMessage("Error: " + error.message, "error");
 	} finally {
 		await showLoader({ show: false });
 	}
 });
-function transformToTreeArray(data, parentId = null) {
+function transformToTreeArray(data, parentId = null, processedIds = new Set()) {
 	let result = [];
-	const children = data.filter((item) => item.CATEGORY_PARENT == parentId);
+
+	// กรองหาลูกของ Parent ปัจจุบัน
+	// ตรวจสอบทั้ง null และค่าว่าง เพื่อความชัวร์
+	const children = data.filter((item) => {
+		const p = item.CATEGORY_PARENT;
+		return parentId === null
+			? p === null || p === "" || p === 0
+			: p == parentId;
+	});
 
 	children.forEach((child) => {
+		// 💡 ป้องกัน Infinity Loop: ถ้า ID นี้เคยทำไปแล้ว ให้ข้ามเลย
+		if (processedIds.has(child.CATEGORY_ID)) return;
+
+		processedIds.add(child.CATEGORY_ID);
 		result.push(child);
-		const subChildren = transformToTreeArray(data, child.CATEGORY_ID);
+
+		// ค้นหาชั้นถัดไป
+		const subChildren = transformToTreeArray(
+			data,
+			child.CATEGORY_ID,
+			processedIds,
+		);
 		result = result.concat(subChildren);
 	});
+
 	return result;
 }
 async function tableCategoryOption(data) {
-	console.log(data);
 	const opt = { ...tableOpt };
 	opt.data = data;
-	opt.ordering = false; // ปิดการกด Sort ที่หัวตารางเพื่อไม่ให้ลำดับชั้นพัง
+	opt.ordering = false; // สำคัญ: ปิดการเรียงลำดับของ DataTable เพื่อคงสภาพ Tree ไว้
 
 	opt.columns = [
 		{
 			data: "CATEGORY_NAME",
 			title: "Category Structure",
 			render: (data, type, row) => {
-				// คำนวณการย่อหน้า (1 Level = 25px)
 				const indent = (row.CATEGORY_LEVEL - 1) * 25;
 				const isRoot = row.CATEGORY_LEVEL === 1;
 
@@ -96,19 +119,17 @@ async function tableCategoryOption(data) {
 			title: "Actions",
 			className: "text-center",
 			render: (data) => `
-                <a href="/procurement/categories/detail/${data}" class="btn btn-sm btn-ghost btn-circle text-primary">
+                <a href="/procurement/categories/detail/${data}" class="btn btn-sm btn-ghost btn-circle text-primary hover:bg-primary/10">
                     <i class="fi fi-rr-settings-sliders"></i>
                 </a>`,
 		},
 	];
 
-	// จัดการปุ่ม Export Excel ในส่วน initComplete
 	const baseInitComplete = tableOpt.initComplete;
 	opt.initComplete = async function (settings, json) {
 		if (typeof baseInitComplete === "function") {
 			baseInitComplete.call(this, settings, json);
 		}
-
 		const exportBtn = await createBtn({
 			id: "export-categories",
 			title: "Export Excel",
@@ -116,7 +137,6 @@ async function tableCategoryOption(data) {
 			className: "btn-neutral",
 			tooltip: "Export Category List",
 		});
-
 		$(this.api().table().container())
 			.find(".table-info")
 			.append(`<div class="btn-container">${exportBtn}</div>`);

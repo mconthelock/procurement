@@ -67,6 +67,11 @@ async function tableProductOption(data) {
 			},
 		},
 		{
+			data: "CATEGORY_ID",
+			title: "CATEGORY_ID",
+			className: "text-center",
+		},
+		{
 			data: "PROD_STATUS",
 			title: "Status",
 			className: "text-center",

@@ -75,6 +75,14 @@
                         <label class="label py-1"><span class="label-text font-semibold text-gray-700">Detailed Description</span></label>
                         <textarea id="DESCRIPTION" placeholder="Explain the scope of this category..." class="textarea textarea-bordered h-32 focus:textarea-primary shadow-inner w-full"></textarea>
                     </div>
+                    <div class="form-control w-full md:col-span-2 mt-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="label-text font-semibold text-gray-700">Category Specific Attributes</span>
+                            <button type="button" onclick="addCategoryAttrTag()" class="btn btn-xs btn-outline">+ Add Spec Title</button>
+                        </div>
+                        <div id="category_attr_tags" class="flex flex-wrap gap-2 p-4 border rounded-xl bg-gray-50 min-h-[60px]">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
