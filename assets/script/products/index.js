@@ -6,16 +6,26 @@ import { currentUser } from "@amec/webasset/api/amec";
 import { createBtn, activatedBtnRow } from "@amec/webasset/components/buttons";
 import { createTable } from "@amec/webasset/dataTable";
 import { initApp, tableOpt } from "../utils.js";
-import { getProducts, getTemplate, exportExcel } from "../service/index.js";
+import {
+	getProducts,
+	getTemplate,
+	exportExcel,
+	getCategories,
+} from "../service/index.js";
 import { extractDataForExport } from "./excel-data.js";
 
 const API_URL = `${process.env.MOCK_API}/products`;
 var table;
+let categoryMap = {};
 $(document).ready(async () => {
 	try {
 		await showLoader();
 		await initApp({ submenu: ".nav-products" });
 
+		const categories = await getCategories();
+		categories.forEach((cat) => {
+			categoryMap[cat.CATEGORY_ID] = cat.CATEGORY_NAME;
+		});
 		// ดึงข้อมูล Products
 		const data = await getProducts();
 		const options = await tableProductOption(data);
@@ -68,8 +78,11 @@ async function tableProductOption(data) {
 		},
 		{
 			data: "CATEGORY_ID",
-			title: "CATEGORY_ID",
-			className: "text-center",
+			title: "Category", // เปลี่ยนหัวตารางเป็น Category
+			render: (data) => {
+				const catName = categoryMap[data] || `ID: ${data}`;
+				return `<span class="font-semibold text-neutral">${catName}</span>`;
+			},
 		},
 		{
 			data: "PROD_STATUS",

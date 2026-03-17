@@ -133,14 +133,15 @@ function initSubmit() {
 }
 
 window.addCategoryAttrTag = (val = "") => {
-	const tagId = `tag_${Date.now()}_${Math.floor(Math.random() * 100)}`;
 	const html = `
-        <div class="flex items-center gap-1 bg-white border border-primary/30 pl-3 pr-1 py-1 rounded-full shadow-sm group hover:border-primary transition-all attr-tag-item" id="${tagId}">
+        <div class="flex items-center gap-1 bg-white border border-primary/30 pl-3 pr-1 py-1 rounded-full shadow-sm group hover:border-primary transition-all attr-tag-item">
             <input type="text" class="bg-transparent border-none outline-none text-xs font-bold text-primary w-24 attr-tag-input" 
                    placeholder="Spec Name..." value="${val}">
+            
             <button type="button" class="btn btn-ghost btn-xs btn-circle text-error hover:bg-error/10" 
-                    onclick="$('#${tagId}').remove()">✕</button>
+                    onclick="$(this).closest('.attr-tag-item').remove()">✕</button>
         </div>`;
+
 	$("#category_attr_tags").append(html);
 };
 // Soft Delete (Deactivate)
