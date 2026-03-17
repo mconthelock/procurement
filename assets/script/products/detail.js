@@ -91,14 +91,22 @@ window.addImageRow = (url = "") => {
 
 window.addAttributeRow = (name = "", value = "") => {
 	const html = `
-        <div class="flex gap-2 attr-row bg-white p-2 rounded shadow-sm border">
-            <input type="text" placeholder="Spec Name (e.g. Color)" class="input input-bordered input-sm flex-1 attr-name" value="${name}">
-            <input type="text" placeholder="Value" class="input input-bordered input-sm flex-1 attr-value" value="${value}">
-            <button type="button" class="btn btn-sm btn-ghost text-error" onclick="$(this).parent().remove()">✕</button>
+        <div class="flex gap-4 attr-row bg-white p-4 rounded-lg shadow-sm border mb-3 items-start">
+            <div class="w-1/3">
+                <label class="block font-bold opacity-50 text-sm mb-1">Name</label>
+                <input type="text" placeholder="Spec Name (e.g. Color)" class="input input-bordered input-sm w-full attr-name" value="${name}">
+            </div>
+            
+            <div class="flex-1">
+                <label class="block font-bold opacity-50 text-sm mb-1">Description</label>
+                <textarea placeholder="Value" class="textarea textarea-bordered w-full attr-value" rows="3">${value}</textarea>
+            </div>
+            
+            <button type="button" class="btn btn-sm btn-ghost text-error mt-6" onclick="$(this).closest('.attr-row').remove()">✕</button>
         </div>`;
+
 	$("#attributes_container").append(html);
 };
-
 window.addPriceRow = (data = {}) => {
 	const rowId = `row_${Date.now()}_${Math.floor(Math.random() * 100)}`;
 	const q = data.QUOTATION || {};
@@ -297,6 +305,7 @@ function initSubmit() {
 			if (res.ok) {
 				await showMessage(
 					id ? "Product updated!" : "Product added successfully!",
+					"success",
 				);
 				window.location.href = `${process.env.APP_ENV}/Products`;
 			} else {

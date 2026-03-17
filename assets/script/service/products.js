@@ -8,13 +8,6 @@ export async function getProducts(id = "") {
 	return data;
 }
 
-export async function getCategories(id = "") {
-	const response = await fetch(`${MOCK_API}/categories/${id}`);
-	if (!response.ok) throw new Error("Network response was not ok");
-	const data = await response.json();
-	return data;
-}
-
 export const saveProduct = async (payload, id = null) => {
 	const method = id ? "PUT" : "POST";
 	const url = id ? `${MOCK_API}/products/${id}` : `${MOCK_API}/products`;
