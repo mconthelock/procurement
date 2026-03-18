@@ -1,7 +1,5 @@
-const API_BASE =
-	process.env.API_MODE === "REAL"
-		? process.env.APP_API // http://localhost:3001
-		: process.env.MOCK_API; // http://localhost:3002
+import { getBaseURL } from "./utils";
+const API_BASE = getBaseURL();
 
 export async function getCategories(id = "") {
 	// ถ้ามี ID ให้เช็กว่าเป็น ID ของระบบ หรือเป็น CATEGORY_ID

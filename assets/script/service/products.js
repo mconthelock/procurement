@@ -1,8 +1,5 @@
-// นำเข้าข้อมูล (ถ้ามีการใช้โมดูล) หรือประกาศไว้ในไฟล์เดียวกัน
-const API_BASE =
-	process.env.API_MODE === "REAL"
-		? process.env.APP_API // http://localhost:3001
-		: process.env.MOCK_API; // http://localhost:3002
+import { getBaseURL } from "./utils";
+const API_BASE = getBaseURL();
 export async function getProducts(id = "") {
 	// ตรวจสอบว่า process.env.MOCK_API คือ http://localhost:3002
 	const response = await fetch(`${API_BASE}/products/${id}`);
