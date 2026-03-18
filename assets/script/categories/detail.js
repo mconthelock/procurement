@@ -26,6 +26,9 @@ $(document).ready(async () => {
 		});
 
 		initSubmit();
+
+		const permission = $("#USER_PERMISSION").val();
+		applyPermission(permission);
 	} catch (error) {
 		console.error(error);
 		await showMessage("Error loading data", "error");
@@ -177,3 +180,30 @@ window.deleteCategory = async function (id) {
 		}
 	}
 };
+
+function applyPermission(permission) {
+	if (permission === "VIEWER") {
+		// 1. สั่ง Disable Input, Select, Textarea ทั้งหมดในฟอร์ม
+		$(
+			"#categoryForm input, #categoryForm select, #categoryForm textarea",
+		).prop("disabled", true);
+
+		// 2. ซ่อนปุ่มเพิ่ม/ลบ ต่างๆ (เช่น ปุ่ม Add Spec, Add Image)
+		$(".btn-outline, .btn-error, .btn-circle")
+			.filter(":contains('+'), :contains('✕'), :contains('×')")
+			.hide();
+
+		// 3. ปรับสไตล์ให้ดูเป็นโหมดอ่านอย่างเดียว (Viewer Mode)
+		$(".input, .select, .textarea").addClass(
+			"bg-gray-50 border-transparent shadow-none cursor-default",
+		);
+
+		// 4. เปลี่ยนหัวข้อหน้าจอให้ชัดเจน
+		const currentTitle = $(".text-3xl, .text-2xl").first().text();
+		$(".text-3xl, .text-2xl")
+			.first()
+			.html(
+				`<span class="badge badge-ghost mr-2">VIEWER MODE</span> ${currentTitle}`,
+			);
+	}
+}

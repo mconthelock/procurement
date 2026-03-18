@@ -28,6 +28,9 @@ $(document).ready(async () => {
 
 		const options = await tableCategoryOption(finalData);
 		table = await createTable(options, "#table");
+
+		const permission = $("#USER_PERMISSION").val();
+		applyPermission(permission);
 	} catch (error) {
 		console.error("Initialization Error:", error);
 		await showMessage("Error: " + error.message, "error");
@@ -117,7 +120,7 @@ async function tableCategoryOption(data) {
 			title: "Actions",
 			className: "text-center",
 			render: (data) => `
-                <a href="/procurement/categories/detail/${data}" class="btn btn-sm btn-ghost btn-circle text-primary hover:bg-primary/10">
+                <a href="/procurement/categories/detail/${data}/${$("#USER_PERMISSION").val()}" class="btn btn-sm btn-ghost btn-circle text-primary hover:bg-primary/10">
                     <i class="fi fi-rr-settings-sliders"></i>
                 </a>`,
 		},
@@ -199,3 +202,11 @@ window.deleteCategory = async function (id) {
 		}
 	}
 };
+
+function applyPermission(permission) {
+	if (permission === "VIEWER") {
+		// 1. สั่ง Disable Input, Select, Textarea ทั้งหมดในฟอร์ม
+
+		$("#ADDBTN").hide();
+	}
+}

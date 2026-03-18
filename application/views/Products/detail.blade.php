@@ -2,6 +2,7 @@
 
 @section('contents')
 <form id="productForm" class="p-4 md:p-6">
+     <input type="hidden" id="USER_PERMISSION" value="{{ $permission ?? 'EDIT' }}"> <!--EDIT, VIEWER-->
     <input type="hidden" id="prod_id_hidden" value="{{ $id ?? '' }}">
     
     <div class="flex justify-between items-center mb-6">
@@ -11,7 +12,9 @@
         </div>
         <div class="flex gap-2">
             <a href="{{ $_ENV['APP_ENV'] }}/Products" class="btn btn-ghost btn-sm">Cancel</a>
-            <button type="submit" class="btn btn-primary btn-sm px-8 shadow-lg">Save Data</button>
+            @if(isset($permission) && $permission === 'EDIT')
+                <button type="submit" class="btn btn-primary btn-sm px-8 shadow-lg">Save Data</button>
+            @endif
         </div>
     </div>
 

@@ -6,7 +6,9 @@
         <h2 class="card-title text-2xl m-0 text-primary">{{ $title }}</h2>
         <p class="text-xs opacity-60">Manage product groupings and department owners</p>
     </div>
-    <a href="{{ $_ENV['APP_ENV'] }}/Categories/create" class="btn btn-primary btn-sm px-6">
+    
+     <input type="hidden" id="USER_PERMISSION" value="{{ $permission ?? 'EDIT' }}"> <!--EDIT, VIEWER-->
+    <a href="{{ $_ENV['APP_ENV'] }}/Categories/create/{{ $permission ?? 'EDIT' }}" class="btn btn-primary btn-sm px-6"  id="ADDBTN">
         <i class="fi fi-rr-plus mr-1"></i> Add Category
     </a>
 </div>

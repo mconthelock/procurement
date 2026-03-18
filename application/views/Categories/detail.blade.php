@@ -3,6 +3,7 @@
 @section('contents')
 <div class="p-6 md:p-10 bg-base-100 min-h-screen">
     <form id="categoryForm" class="max-w-4xl mx-auto space-y-8">
+        <input type="hidden" id="USER_PERMISSION" value="{{ $permission ?? 'EDIT' }}"> <!--EDIT, VIEWER-->
         <input type="hidden" id="cat_id_hidden" value="{{ $id ?? '' }}">
         
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b">
@@ -14,9 +15,12 @@
                 <a href="{{ $_ENV['APP_ENV'] }}/Categories" class="btn btn-ghost btn-sm">
                     <i class="fi fi-rr-arrow-small-left mr-2"></i> Cancel
                 </a>
-                <button type="submit" class="btn btn-primary btn-sm px-8 shadow-md">
-                    <i class="fi fi-rr-disk mr-2"></i> Save Changes
-                </button>
+                
+                @if(isset($permission) && $permission === 'EDIT')
+                    <button type="submit" class="btn btn-primary btn-sm px-8 shadow-md">
+                        <i class="fi fi-rr-disk mr-2"></i> Save Changes
+                    </button>
+                @endif
             </div>
         </div>
 

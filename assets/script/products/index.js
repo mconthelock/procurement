@@ -32,6 +32,9 @@ $(document).ready(async () => {
 
 		// สร้าง Table ตามมาตรฐาน amec
 		table = await createTable(options);
+
+		const permission = $("#USER_PERMISSION").val();
+		applyPermission(permission);
 	} catch (error) {
 		console.error(error);
 		await showMessage(error.message || "Error initializing app");
@@ -103,7 +106,7 @@ async function tableProductOption(data) {
 			className: "text-center",
 			orderable: false,
 			render: (data) => {
-				return `<a href="/procurement/products/detail/${data}" class="btn btn-sm btn-ghost btn-circle text-lg text-primary hover:text-xl"><i class="fi fi-rr-settings-sliders"></i></a>`;
+				return `<a href="/procurement/products/detail/${data}/${$("#USER_PERMISSION").val()}" class="btn btn-sm btn-ghost btn-circle text-lg text-primary hover:text-xl"><i class="fi fi-rr-settings-sliders"></i></a>`;
 			},
 		},
 	];
@@ -162,3 +165,11 @@ window.deleteProduct = async function (id) {
 		}
 	}
 };
+
+function applyPermission(permission) {
+	if (permission === "VIEWER") {
+		// 1. สั่ง Disable Input, Select, Textarea ทั้งหมดในฟอร์ม
+
+		$("#ADDBTN").hide();
+	}
+}

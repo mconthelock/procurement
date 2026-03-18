@@ -7,7 +7,8 @@
         <p class="text-xs text-gray-500">View and manage procurement items</p>
     </div>
     
-    <a href="{{ $_ENV['APP_ENV'] }}/Products/create" class="btn btn-primary btn-sm">
+     <input type="hidden" id="USER_PERMISSION" value="{{ $permission ?? 'EDIT' }}"> <!--EDIT, VIEWER-->
+    <a href="{{ $_ENV['APP_ENV'] }}/Products/create/{{ $permission ?? 'EDIT' }}" class="btn btn-primary btn-sm" id="ADDBTN">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>
