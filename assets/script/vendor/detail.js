@@ -1,5 +1,5 @@
 import { showLoader } from "@amec/webasset/preloader";
-import { showMessage } from "@amec/webasset/utils";
+import { showMessage, showConfirm } from "@amec/webasset/utils";
 import { createBtn, activatedBtnRow } from "@amec/webasset/components/buttons";
 import { initApp } from "../utils.js";
 import { getVendors } from "../service/index.js";
@@ -357,22 +357,38 @@ $(document).on("click", "#update-vnd", async function (e) {
 		title: "Save",
 	});
 	const cansave = await createBtn({
-		className: "btn-error",
+		className: "bg-gray-200 hover:bg-gray-300 text-gray-700 border-none",
 		id: "cancel-edit",
 		title: "Cancel",
+		icon: "fi fi-ss-cross text-sm", // <--- เปลี่ยนจาก text-xl เป็น text-sm ตรงนี้ครับ
 	});
 	$(".btn-container").empty();
 	$(".btn-container").append(`${btnsave}${cansave}`);
 });
 
-$(document).on("click", "#cancel-edit", function (e) {
+$(document).on("click", "#cancel-edit", async function (e) {
 	e.preventDefault();
-	if (
-		confirm(
+	const isConfirmed = await showConfirm({
+		title: "Confirm Cancellation?",
+		message:
 			"Are you sure you want to cancel? Any unsaved changes will be lost.",
-		)
-	) {
+		acceptText: "Yes, cancel",
+		cancelText: "No, continue editing",
+	});
+	if (isConfirmed) {
 		toggleEditMode(false); // เรียกใช้ฟังก์ชัน สั่งปิดโหมด Edit
+		const updateBtn = await createBtn({
+			id: "update-vnd",
+			title: "Update Vendor",
+		});
+		const backBtn = await createBtn({
+			id: "goback",
+			title: "Go Back",
+			className: "btn-secondary",
+			icon: "fi fi-ss-arrow-circle-left text-xl",
+		});
+		$(".btn-container").empty();
+		$(".btn-container").append(`${updateBtn}${backBtn}`);
 	}
 });
 

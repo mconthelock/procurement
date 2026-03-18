@@ -10,6 +10,7 @@ const createCurrencyMaster = require("./schemas/currency");
 const { createCategory, CATEGORY_DEFINITIONS } = require("./schemas/category");
 const createProduct = require("./schemas/products");
 const createPriceHistory = require("./schemas/price_history");
+const createVendorApv = require("./schemas/vendorsaproval");
 
 function generateDB() {
 	const db = {
@@ -18,6 +19,7 @@ function generateDB() {
 		currencies: createCurrencyMaster(),
 		categories: [],
 		products: [],
+		vendorApprovals: [],
 		addressmst: [
 			// กรุงเทพมหานคร
 			{
@@ -181,7 +183,7 @@ function generateDB() {
 
 	//1. Create Vendor data
 	const usedCodes = new Set();
-	for (let i = 1; i <= 5; i++) {
+	for (let i = 1; i <= 100; i++) {
 		const vendor = createVendor(i);
 		const codeCount = faker.number.int({ min: 1, max: 3 });
 
@@ -198,6 +200,11 @@ function generateDB() {
 			vendor.VENDOR_CODES.push(newCode);
 		}
 		db.vendors.push(vendor);
+	}
+
+	for (let i = 1; i <= 10; i++) {
+		const vendorApv = createVendorApv(i);
+		db.vendorApprovals.push(vendorApv);
 	}
 
 	// 2. Create Category data
