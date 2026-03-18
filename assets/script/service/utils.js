@@ -3,7 +3,7 @@ export const getBaseURL = () => {
 	const hostname = window.location.hostname;
 
 	// 1. เช็คว่ารันบนเครื่องตัวเอง (Local Development) หรือไม่
-	if (hostname === "localhost" || hostname === "127.0.0.1") {
+	if (hostname === "localhost") {
 		return process.env.MOCK_API; // ใช้ JSON Server
 	}
 
