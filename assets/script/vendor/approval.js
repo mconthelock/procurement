@@ -57,7 +57,7 @@ async function tableVendorApvOption(data) {
 			},
 		},
 		{
-			data: "FRM_NO",
+			data: "FRM_ID",
 			title: "Actions",
 			className: "text-center",
 			orderable: false,

@@ -20,14 +20,14 @@
                 <div class="flex flex-row items-center gap-3">
                     <label class="font-medium text-gray-500 w-24 shrink-0">Form No.</label>
                     <div class="w-full min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                        <p id="FRM_NO" class="view-mode font-medium text-base m-0">PUR_VND26-000098</p>
+                        <p id="FRM_NO" class="view-mode font-medium text-base m-0"></p>
                     </div>
                 </div>
 
                 <div class="flex flex-row items-center gap-3">
                     <label class="font-medium text-gray-500 w-24 shrink-0">Vendor Name</label>
                     <div class="w-full min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center justify-between">
-                        <p id="view-VND_NAME" class="view-mode font-bold text-base text-gray-800 m-0">บริษัท ตัวอย่าง จำกัด</p>
+                        <p id="FRM_VNDNAME" class="view-mode font-bold text-base text-gray-800 m-0"></p>
                         <button type="button" class="btn btn-xs btn-outline text-primary hover:bg-primary hover:text-white border-primary" onclick="document.getElementById('vendor_detail_modal').showModal()">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
                             View Details
@@ -38,7 +38,7 @@
                 <div class="flex flex-row items-center gap-3">
                     <label class="font-medium text-gray-500 w-24 shrink-0">Requester</label>
                     <div class="w-full min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                        <p id="REQNO" class="view-mode font-medium text-base m-0">(08035) AMPIKA POKAEW</p>
+                        <p id="FRM_REQNAME" class="view-mode font-medium text-base m-0"></p>
                     </div>
                 </div>
             </div>
@@ -46,13 +46,9 @@
     </div>
 
     <div class="card bg-base-100 shadow-sm border border-base-200 mb-8">
-        <div class="card-body p-0">
-            <div class="p-4 border-b bg-indigo-50/50 rounded-t-2xl flex items-center gap-2">
-                <h3 class="font-bold text-primary uppercase text-xs tracking-widest m-0">Change Summary</h3>
-            </div>
-            
-            <div class="overflow-x-auto">
-                <table class="table w-full">
+        <div class="card-body">
+            <h3 class="font-bold border-b pb-2 text-primary uppercase text-xs tracking-widest">Change Summary</h3>
+                 <table class="table w-full">
                     <thead class="bg-gray-50 text-gray-600">
                         <tr>
                             <th class="w-1/4 text-sm font-semibold">Field Name</th>
@@ -63,34 +59,33 @@
                     <tbody>
                         <tr class="hover:bg-gray-50">
                             <td class="font-medium text-gray-700">Sales Contact Person</td>
-                            <td class="text-red-500 line-through opacity-70">Mr. John Doe</td>
+                            <td class="text-red-500 opacity-70">Mr. John Doe</td>
                             <td class="text-emerald-600 font-bold flex items-center gap-2">
                                 Ms. Jane Smith
-                                <span class="badge badge-success badge-sm text-white border-none">Updated</span>
+                              
                             </td>
                         </tr>
                         <tr class="hover:bg-gray-50">
                             <td class="font-medium text-gray-700">Website</td>
-                            <td class="text-gray-400 italic">- (Empty) -</td>
+                            <td class="text-gray-400 italic"></td>
                             <td class="text-blue-600 font-bold flex items-center gap-2">
                                 www.newvendor.com
-                                <span class="badge badge-info badge-sm text-white border-none">Added</span>
+                               
                             </td>
                         </tr>
                         <tr class="hover:bg-gray-50">
                             <td class="font-medium text-gray-700">Payment Term</td>
-                            <td class="text-red-500 line-through opacity-70">Net 30 Days</td>
+                            <td class="text-red-500  opacity-70">Net 30 Days</td>
                             <td class="text-gray-400 italic flex items-center gap-2">
-                                - (Removed) -
-                                <span class="badge badge-error badge-sm text-white border-none">Removed</span>
+                                
+                                
                             </td>
                         </tr>
                     </tbody>
                 </table>
-            </div>
+
         </div>
     </div>
-
     <div class="card bg-base-100 shadow-sm border border-base-200 mb-8">
         <div class="card-body p-0">
             <div class="overflow-x-auto">
@@ -113,14 +108,14 @@
                             </td>
                             <td class="font-bold text-gray-700">Requester</td>
                             <td>
-                                <div class="font-medium text-gray-800">AMPIKA POKAEW</div>
-                                <div class="text-xs text-gray-500">ID: 08035</div>
+                                <div id="FLOW_REQNAME" class="font-medium text-gray-800"></div>
+                        
                             </td>
                             <td>
                                 <div class="text-sm text-gray-800">08-Dec-2025</div>
                                 <div class="text-xs text-gray-500">14:34:38</div>
                             </td>
-                            <td class="text-gray-400 italic text-sm">-</td>
+                            <td class="text-gray-400 italic text-sm"></td>
                         </tr>
                         <tr class="hover">
                             <td class="text-center">
@@ -130,14 +125,13 @@
                             </td>
                             <td class="font-bold text-gray-700">SEM</td>
                             <td>
-                                <div class="font-medium text-gray-800">PIYAMIT PULSIRI</div>
-                                <div class="text-xs text-gray-500">ID: 10001</div>
+                                <div class="font-medium text-gray-800">(10001) PIYAMIT PULSIRI</div>
                             </td>
                             <td>
                                 <div class="text-sm text-gray-800">08-Dec-2025</div>
                                 <div class="text-xs text-gray-500">14:57:39</div>
                             </td>
-                            <td class="text-gray-400 italic text-sm">-</td>
+                            <td class="text-gray-400 italic text-sm"></td>
                         </tr>
                         <tr class="hover">
                             <td class="text-center">
@@ -147,21 +141,41 @@
                             </td>
                             <td class="font-bold text-gray-700">DEM</td>
                             <td>
-                                <div class="font-medium text-gray-800">PIYAMIT PULSIRI</div>
-                                <div class="text-xs text-gray-500">ID: 10001</div>
+                                <div class="font-medium text-gray-800">(10001) PIYAMIT PULSIRI</div>
                             </td>
                             <td>
                                 <div class="text-sm text-gray-800">08-Dec-2025</div>
-                                <div class="text-xs text-gray-500">14:57:52</div>
+                                <div class="text-xs text-gray-500">14:57:39</div>
                             </td>
-                            <td class="text-gray-400 italic text-sm">-</td>
+                            <td class="text-gray-400 italic text-sm"></td>
+                        </tr>
+                        <tr class="hover">
+                            <td class="text-center">
+                                <div id="dimstapv" class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-100 text-emerald-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                </div>
+                                <div id="dimstrej" class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-red-100 text-red-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </div
+                            </td>
+                            <td class="font-bold text-gray-700">DIM</td>
+                            <td>
+                                <div class="font-medium text-gray-800">(J0149) KEISUKE  TANIGAWA</div>
+                            </td>
+                            <td>
+                                <div class="text-sm text-gray-800"><span id="dimapvdate">08-Dec-2025</span></div>
+                                <div class="text-xs text-gray-500"><span id="dimapvtime">14:57:39</span></div>
+                            </td>
+                            <td class="text-gray-400 italic text-sm"></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             
             <div class="flex justify-center items-center p-4 border-t bg-gray-50 rounded-b-2xl">
-                <div class="text-emerald-600 font-bold border-none text-lg">Status: Approved</div>
+                <span class="text-gray-500 font-bold border-none text-lg">Status : </span><span id="FRM_STATUS" class="pl-2 font-bold border-none text-lg" ></span>
             </div>
         </div>
     </div>
@@ -342,5 +356,5 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ $_ENV['APP_JS'] }}/approval.js?ver={{ $GLOBALS['version'] }}"></script>
+    <script src="{{ $_ENV['APP_JS'] }}/frmapv.js?ver={{ $GLOBALS['version'] }}"></script>
 @endsection

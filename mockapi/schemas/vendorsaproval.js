@@ -1,10 +1,10 @@
 const { faker } = require("@faker-js/faker");
 const employeeNames = [
-	"AMPIKA  POKAEW",
-	"WIYADA  ONSEETHONG",
-	"CHATCHAREE  WETCHAKAMA",
-	"NOPPAMAT  CHAICHUMPOL",
-	"CHITCHANOK  TEPCHOMPOO",
+	"(08035) AMPIKA  POKAEW",
+	"(10070) WIYADA  ONSEETHONG",
+	"(12211) CHATCHAREE  WETCHAKAMA",
+	"(12197) NOPPAMAT  CHAICHUMPOL",
+	"(24006) CHITCHANOK  TEPCHOMPOO",
 ];
 const createVendorApv = (id) => {
 	const currentYear = new Date().getFullYear().toString().slice(-2);
@@ -29,6 +29,7 @@ const createVendorApv = (id) => {
 	];
 	const formattedDate = `${String(randomDate.getDate()).padStart(2, "0")}-${monthNames[randomDate.getMonth()]}-${randomDate.getFullYear()}`;
 	return {
+		FRM_ID: id,
 		FRM_NO: generatedFormNo,
 		FRM_REQNAME: faker.helpers.arrayElement(employeeNames),
 		FRM_REQDATE: formattedDate,
