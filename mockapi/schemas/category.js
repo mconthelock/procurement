@@ -30,53 +30,66 @@ const dept = [
 	"090701",
 ];
 const CATEGORY_DEFINITIONS = [
+	// --- กลุ่มที่ 1: Electronics ---
 	{
 		CATEGORY_ID: 1,
 		CATEGORY_NAME: "Electronics",
 		DESCRIPTION: "Devices and gadgets",
-		CATEGORY_OWNER: faker.helpers.arrayElement(dept),
+		CATEGORY_OWNER: "090401",
+		REQUIRED_ATTRIBUTES: [
+			"Brand",
+			"Voltage",
+			"Power Consumption",
+			"Warranty Period",
+		], // Specs ของไฟฟ้า
+		CATEGORY_STATUS: 1,
+		CATEGORY_LEVEL: 1,
+		CATEGORY_PARENT: null,
+		CREATED_AT: "2025-01-10T08:00:00.000Z",
 	},
 	{
 		CATEGORY_ID: 2,
-		CATEGORY_NAME: "Furniture",
-		DESCRIPTION: "Home and office furniture",
-		CATEGORY_OWNER: faker.helpers.arrayElement(dept),
+		CATEGORY_NAME: "Computer Hardware",
+		DESCRIPTION: "PC Components",
+		CATEGORY_OWNER: "090401",
+		REQUIRED_ATTRIBUTES: ["Brand", "Interface", "Form Factor", "Warranty"],
+		CATEGORY_STATUS: 1,
+		CATEGORY_LEVEL: 2,
+		CATEGORY_PARENT: 1,
+		CREATED_AT: "2025-05-15T10:30:00.000Z",
 	},
-	{
-		CATEGORY_ID: 3,
-		CATEGORY_NAME: "Machines",
-		DESCRIPTION: "Industrial and office machines",
-		CATEGORY_OWNER: faker.helpers.arrayElement(dept),
-	},
-	{
-		CATEGORY_ID: 4,
-		CATEGORY_NAME: "Software",
-		DESCRIPTION: "Software and applications",
-		CATEGORY_OWNER: faker.helpers.arrayElement(dept),
-	},
+	// --- กลุ่มที่ 2: Furniture ---
 	{
 		CATEGORY_ID: 5,
-		CATEGORY_NAME: "Transportation",
-		DESCRIPTION: "Vehicles and transportation equipment",
-		CATEGORY_OWNER: faker.helpers.arrayElement(dept),
+		CATEGORY_NAME: "Furniture",
+		DESCRIPTION: "Home and office furniture",
+		CATEGORY_OWNER: "060501",
+		REQUIRED_ATTRIBUTES: [
+			"Material",
+			"Color",
+			"Dimensions (WxLxH)",
+			"Weight Capacity",
+		], // Specs ของเฟอร์นิเจอร์
+		CATEGORY_STATUS: 1,
+		CATEGORY_LEVEL: 1,
+		CATEGORY_PARENT: null,
+		CREATED_AT: "2025-03-01T09:15:00.000Z",
 	},
 	{
 		CATEGORY_ID: 6,
-		CATEGORY_NAME: "Training",
-		DESCRIPTION: "Training and development",
-		CATEGORY_OWNER: faker.helpers.arrayElement(dept),
-	},
-	{
-		CATEGORY_ID: 7,
-		CATEGORY_NAME: "Tools",
-		DESCRIPTION: "Hand and power tools",
-		CATEGORY_OWNER: faker.helpers.arrayElement(dept),
-	},
-	{
-		CATEGORY_ID: 8,
-		CATEGORY_NAME: "Tools warehouse",
-		DESCRIPTION: "Tools storage and management",
-		CATEGORY_OWNER: faker.helpers.arrayElement(dept),
+		CATEGORY_NAME: "Office Tables",
+		DESCRIPTION: "Work desks and meeting tables",
+		CATEGORY_OWNER: "060501",
+		REQUIRED_ATTRIBUTES: [
+			"Material",
+			"Table Top Finish",
+			"Adjustable Height",
+			"Warranty",
+		],
+		CATEGORY_STATUS: 1,
+		CATEGORY_LEVEL: 2,
+		CATEGORY_PARENT: 5,
+		CREATED_AT: "2025-04-10T11:00:00.000Z",
 	},
 ];
 const createCategory = (cate) => cate;
