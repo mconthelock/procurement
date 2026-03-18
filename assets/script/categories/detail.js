@@ -1,6 +1,8 @@
 import { showLoader } from "@amec/webasset/preloader";
 import { showMessage } from "@amec/webasset/utils";
 import { getCategories } from "../service/index.js";
+import $ from "jquery";
+window.$ = window.jQuery = $;
 
 const API_URL = `${process.env.MOCK_API}/categories`;
 

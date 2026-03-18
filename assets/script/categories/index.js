@@ -7,7 +7,7 @@ import { createBtn, activatedBtnRow } from "@amec/webasset/components/buttons";
 import { createTable } from "@amec/webasset/dataTable";
 import { initApp, tableOpt } from "../utils.js";
 import { getCategories, getTemplate, exportExcel } from "../service/index.js";
-import { extractDataForExport } from "./excel-data.js"; // สร้างฟังก์ชันช่วย export แยกไฟล์
+import { extractDataForExport } from "./excel-data.js";
 
 const API_URL = `${process.env.MOCK_API}/categories`;
 var table;
@@ -19,7 +19,6 @@ $(document).ready(async () => {
 
 		const rawData = await getCategories();
 
-		// 💡 เรียกใช้ฟังก์ชันที่ปรับปรุงใหม่
 		const sortedData = transformToTreeArray(rawData);
 
 		// กรณีข้อมูลมีปัญหา (เช่น Parent ID ผิด) ให้เอาข้อมูลที่เหลือที่ไม่ได้ถูกจัดกลุ่มมาต่อท้าย
@@ -49,7 +48,6 @@ function transformToTreeArray(data, parentId = null, processedIds = new Set()) {
 	});
 
 	children.forEach((child) => {
-		// 💡 ป้องกัน Infinity Loop: ถ้า ID นี้เคยทำไปแล้ว ให้ข้ามเลย
 		if (processedIds.has(child.CATEGORY_ID)) return;
 
 		processedIds.add(child.CATEGORY_ID);

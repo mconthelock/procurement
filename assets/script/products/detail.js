@@ -1,6 +1,8 @@
 import { showLoader } from "@amec/webasset/preloader";
 import { showMessage } from "@amec/webasset/utils";
 import { initApp } from "../utils.js";
+import $ from "jquery";
+window.$ = window.jQuery = $;
 import {
 	getProducts,
 	getCategories,
@@ -72,17 +74,17 @@ $(document).on("change", "#CATEGORY_ID", async function () {
 		await showLoader({ show: false });
 	}
 });
-async function updateAttributeOptions(catId) {
-	// 1. ดึงรายการ Attributes จาก Category ที่เลือก
-	const attributes = await getCategoryAttributes(catId);
+// async function updateAttributeOptions(catId) {
+// 	// 1. ดึงรายการ Attributes จาก Category ที่เลือก
+// 	const attributes = await getCategoryAttributes(catId);
 
-	// 2. เก็บไว้ในตัวแปร Global เพื่อให้ function addAttributeRow เรียกใช้
-	window.currentCategorySpecs = attributes;
+// 	// 2. เก็บไว้ในตัวแปร Global เพื่อให้ function addAttributeRow เรียกใช้
+// 	window.currentCategorySpecs = attributes;
 
-	// 3. (Optional) ถ้าเป็นของใหม่ อาจจะสั่ง addAttributeRow เปล่าๆ ให้เลยตามจำนวนที่ Category บังคับ
-	// $("#attributes_container").empty();
-	// attributes.forEach(attrName => addAttributeRow(attrName, ""));
-}
+// 	// 3. (Optional) ถ้าเป็นของใหม่ อาจจะสั่ง addAttributeRow เปล่าๆ ให้เลยตามจำนวนที่ Category บังคับ
+// 	// $("#attributes_container").empty();
+// 	// attributes.forEach(attrName => addAttributeRow(attrName, ""));
+// }
 // --- UI Builders ---
 
 window.addImageRow = (url = "") => {
