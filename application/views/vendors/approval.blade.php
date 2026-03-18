@@ -11,13 +11,6 @@
             </svg>
             Add New Vendor
         </button> -->
-        <a href="{{ $_ENV['APP_ENV'] }}/Vendors/create" class="btn btn-primary btn-sm w-auto">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-        </svg>
-        Add New Vendor
-    </a>
-        
     </div>
 
     <div class="divider m-0"></div>
@@ -29,5 +22,5 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ $_ENV['APP_JS'] }}/vendors.js?ver={{ $GLOBALS['version'] }}"></script>
+    <script src="{{ $_ENV['APP_JS'] }}/approval.js?ver={{ $GLOBALS['version'] }}"></script>
 @endsection
