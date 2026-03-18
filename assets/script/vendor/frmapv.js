@@ -8,7 +8,6 @@ import { createTable } from "@amec/webasset/dataTable";
 import { initApp, tableOpt } from "../utils.js";
 import { getVendors, getTemplate, exportExcel } from "../service/index.js";
 import { getVendorsApv } from "../service/approval.js";
-import { extractDataForExport } from "./excel-data.js";
 
 var table;
 const frmstatus = {
@@ -63,23 +62,5 @@ $(document).ready(async () => {
 		await showMessage(error.message || "Error initializing app");
 	} finally {
 		await showLoader({ show: false });
-	}
-});
-
-$(document).on("click", "#export-vendor", async function () {
-	try {
-		await activatedBtnRow($(this), true);
-		const data = table.data().toArray();
-		const result = await extractDataForExport(data);
-		console.log(result);
-		const template = await getTemplate("export_vendors.xlsx");
-		await exportExcel(result, template, {
-			filename: "Vendors List.xlsx",
-		});
-	} catch (error) {
-		console.error(error);
-		await showMessage(error.message || "Error exporting data");
-	} finally {
-		await activatedBtnRow($(this), false);
 	}
 });

@@ -8,7 +8,7 @@ import { createTable } from "@amec/webasset/dataTable";
 import { initApp, tableOpt } from "../utils.js";
 import { getVendors, getTemplate, exportExcel } from "../service/index.js";
 import { getVendorsApv } from "../service/approval.js";
-import { extractDataForExport } from "./excel-data.js";
+import { extractApvDataForExport } from "./excel-data.js";
 
 var table;
 $(document).ready(async () => {
@@ -72,7 +72,7 @@ async function tableVendorApvOption(data) {
 			baseInitComplete.call(this, settings, json);
 		}
 		const exportExcel = await createBtn({
-			id: "export-vendor",
+			id: "export-vendor-apv",
 			title: "Export Excel",
 			icon: "fi fi-rr-file-excel text-xl",
 			className: "btn-neutral",
@@ -86,15 +86,15 @@ async function tableVendorApvOption(data) {
 	return opt;
 }
 
-$(document).on("click", "#export-vendor", async function () {
+$(document).on("click", "#export-vendor-apv", async function () {
 	try {
 		await activatedBtnRow($(this), true);
 		const data = table.data().toArray();
-		const result = await extractDataForExport(data);
+		const result = await extractApvDataForExport(data);
 		console.log(result);
-		const template = await getTemplate("export_vendors.xlsx");
+		const template = await getTemplate("export_vendors_apv.xlsx");
 		await exportExcel(result, template, {
-			filename: "Vendors List.xlsx",
+			filename: "Form Vendor Approval List.xlsx",
 		});
 	} catch (error) {
 		console.error(error);
