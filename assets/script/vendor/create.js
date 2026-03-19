@@ -41,12 +41,12 @@ $(document).ready(async () => {
 		$(".city-select").prop("disabled", true);
 		$(".subdistrict-select").prop("disabled", true);
 		// ทำให้ช่อง Zipcode พิมพ์เองไม่ได้ (ป้องกันพิมพ์ผิด)
-		$('input[name="TH_ADDR_ZIPCODE"]')
+		$('input[name="EN_ADDR_ZIPCODE"]')
 			.prop("readonly", true)
 			.addClass("bg-gray-100");
 
 		// --- สเตปที่ 1: ใส่ข้อมูลจังหวัดลงใน Dropdown ที่มีคลาส .state-select ---
-		const provinces = getUniqueValues(addressData, "province");
+		const provinces = getUniqueValues(addressData, "province_en");
 		$(".state-select").each(function () {
 			const $thisProv = $(this);
 			provinces.forEach((prov) => {
@@ -78,123 +78,170 @@ vendorContainer.on("click", ".btn-remove-code", function () {
 		);
 	}
 });
-// --- สเตปที่ 2: เมื่อเลือกจังหวัด (ดึงจังหวัดภาษาอังกฤษ) ---
-$(document).on("change", ".state-select", function () {
-	const selectedProvince = $(this).val();
 
-	// หา Wrapper ตัวใหญ่ที่ครอบทั้งฟอร์มไทยและอังกฤษ
-	const $wrapper = $(this).closest("#tab-content-address");
+// ==========================================================
+// ฟีเจอร์ใหม่: ตรวจสอบการเปลี่ยนประเทศ (Country)
+// ==========================================================
+$(document).on("change", 'select[name="EN_ADDR_COUNTRY"]', function () {
+	const countryCode = $(this).val();
+	const $wrapper = $(this).closest(".tab-content");
 
-	// ช่องฝั่งไทย
-	const $selCity = $wrapper.find(".city-select");
-	const $selSubdistrict = $wrapper.find(".subdistrict-select");
-	const $txtZipcodeTH = $wrapper.find('input[name="TH_ADDR_ZIPCODE"]');
+	// หา div ที่ครอบช่อง State, City, Subdistrict อยู่
+	const $stateParent = $wrapper
+		.find('[name="EN_ADDR_STATE"]')
+		.closest(".form-control");
+	const $cityParent = $wrapper
+		.find('[name="EN_ADDR_CITY"]')
+		.closest(".form-control");
+	const $subdistrictParent = $wrapper
+		.find('[name="EN_ADDR_SUBDISTRICT"]')
+		.closest(".form-control");
+	const $zipcodeEN = $wrapper.find('input[name="EN_ADDR_ZIPCODE"]');
 
-	// ช่องฝั่งอังกฤษ
-	const $txtStateEN = $wrapper.find('input[name="EN_ADDR_STATE"]');
-	const $txtCityEN = $wrapper.find('input[name="EN_ADDR_CITY"]');
-	const $txtSubdistrictEN = $wrapper.find(
-		'input[name="EN_ADDR_SUBDISTRICT"]',
-	);
-	const $txtZipcodeEN = $wrapper.find('input[name="EN_ADDR_ZIPCODE"]');
+	if (countryCode !== "66") {
+		// ❌ ถ้าไม่ใช่ประเทศไทย -> เปลี่ยน Select เป็น Input เพื่อให้พิมพ์เอง
+		$stateParent.html(
+			'<label class="label"><span class="label-text font-medium">State / Province</span></label><input type="text" name="EN_ADDR_STATE" class="input input-bordered w-full" placeholder="Enter State/Province" />',
+		);
+		$cityParent.html(
+			'<label class="label"><span class="label-text font-medium">City / District</span></label><input type="text" name="EN_ADDR_CITY" class="input input-bordered w-full" placeholder="Enter City/District" />',
+		);
+		$subdistrictParent.html(
+			'<label class="label"><span class="label-text font-medium">Subdistrict</span></label><input type="text" name="EN_ADDR_SUBDISTRICT" class="input input-bordered w-full" placeholder="Enter Subdistrict" />',
+		);
 
-	// รีเซ็ตค่าฟิลด์ที่เกี่ยวข้องและปลดล็อกช่องอำเภอ (ไทย)
-	$selCity
-		.html('<option value="" disabled selected>เลือกอำเภอ/เขต</option>')
-		.prop("disabled", false);
-	$selSubdistrict
-		.html('<option value="" disabled selected>เลือกตำบล/แขวง</option>')
-		.prop("disabled", true);
-	$txtZipcodeTH.val("");
+		// ปลดล็อก Zipcode ให้พิมพ์เองได้
+		$zipcodeEN.prop("readonly", false).val("");
+	} else {
+		// ✅ ถ้ากลับมาเลือกประเทศไทย -> เปลี่ยน Input กลับเป็น Select เหมือนเดิม
+		$stateParent.html(
+			'<label class="label"><span class="label-text font-medium">State / Province</span></label><select name="EN_ADDR_STATE" class="select select-bordered w-full bg-white state-select"><option value="" disabled selected>Select State / Province</option></select>',
+		);
+		$cityParent.html(
+			'<label class="label"><span class="label-text font-medium">City / District</span></label><select name="EN_ADDR_CITY" class="select select-bordered w-full bg-white city-select" disabled><option value="" disabled selected>Select City / District</option></select>',
+		);
+		$subdistrictParent.html(
+			'<label class="label"><span class="label-text font-medium">Subdistrict</span></label><select name="EN_ADDR_SUBDISTRICT" class="select select-bordered w-full bg-white subdistrict-select" disabled><option value="" disabled selected>Select Subdistrict</option></select>',
+		);
 
-	// เคลียร์ค่าฝั่งอังกฤษ (เผื่อผู้ใช้เปลี่ยนจังหวัด)
-	$txtCityEN.val("");
-	$txtSubdistrictEN.val("");
-	$txtZipcodeEN.val("");
+		// ล็อก Zipcode ไว้รอ Auto-fill
+		$zipcodeEN.prop("readonly", true).val("");
 
-	// ดึงอำเภอทั้งหมดที่ตรงกับจังหวัด
-	const filteredCities = addressData.filter(
-		(item) => item.province === selectedProvince,
-	);
-
-	// Auto-fill: จังหวัดภาษาอังกฤษ (ดึงจาก Object แรกที่เจอในจังหวัดนี้ได้เลย)
-	if (filteredCities.length > 0) {
-		$txtStateEN.val(filteredCities[0].province_en);
+		// เติมข้อมูลจังหวัดกลับเข้าไปใหม่
+		const provinces = getUniqueValues(addressData, "province_en");
+		const $stateSelect = $wrapper.find('select[name="EN_ADDR_STATE"]');
+		provinces.forEach((prov) => {
+			$stateSelect.append(new Option(prov, prov));
+		});
 	}
+});
 
-	// เอาอำเภอมาใส่ Dropdown ไทย (ไม่ให้ซ้ำกัน)
-	const cities = getUniqueValues(filteredCities, "district");
-	cities.forEach((city) => {
-		$selCity.append(new Option(city, city));
+// --- สเตปที่ 1: เลือก State/Province ---
+$(document).on("change", 'select[name="EN_ADDR_STATE"]', function () {
+	const selectedProvinceEN = $(this).val();
+	const $wrapper = $(this).closest(".tab-content");
+
+	const $selCityEN = $wrapper.find('select[name="EN_ADDR_CITY"]');
+	const $selSubdistrictEN = $wrapper.find(
+		'select[name="EN_ADDR_SUBDISTRICT"]',
+	);
+
+	$selCityEN
+		.html(
+			'<option value="" disabled selected>Select City / District</option>',
+		)
+		.prop("disabled", false);
+	$selSubdistrictEN
+		.html('<option value="" disabled selected>Select Subdistrict</option>')
+		.prop("disabled", true);
+	$wrapper.find('input[name="EN_ADDR_ZIPCODE"]').val("");
+
+	const filteredCities = addressData.filter(
+		(item) => item.province_en === selectedProvinceEN,
+	);
+
+	// 👉 AUTO-FILL: จังหวัดภาษาไทย
+	if (filteredCities.length > 0) {
+		$wrapper
+			.find('input[name="TH_ADDR_STATE"]')
+			.val(filteredCities[0].province_th);
+	}
+	$wrapper.find('input[name="TH_ADDR_CITY"]').val("");
+	$wrapper.find('input[name="TH_ADDR_SUBDISTRICT"]').val("");
+	$wrapper.find('input[name="TH_ADDR_ZIPCODE"]').val("");
+
+	const citiesEN = getUniqueValues(filteredCities, "district_en");
+	citiesEN.forEach((city) => {
+		$selCityEN.append(new Option(city, city));
 	});
 });
 
-// --- สเตปที่ 3: เมื่อเลือกอำเภอ/เขต (ดึงอำเภอภาษาอังกฤษ) ---
-$(document).on("change", ".city-select", function () {
-	const $wrapper = $(this).closest("#tab-content-address");
-	const selectedProvince = $wrapper.find(".state-select").val();
-	const selectedCity = $(this).val();
+// --- สเตปที่ 2: เลือก City/District ---
+$(document).on("change", 'select[name="EN_ADDR_CITY"]', function () {
+	const $wrapper = $(this).closest(".tab-content");
+	const selectedProvinceEN = $wrapper
+		.find('select[name="EN_ADDR_STATE"]')
+		.val();
+	const selectedCityEN = $(this).val();
 
-	const $selSubdistrict = $wrapper.find(".subdistrict-select");
-	const $txtZipcodeTH = $wrapper.find('input[name="TH_ADDR_ZIPCODE"]');
-	const $txtCityEN = $wrapper.find('input[name="EN_ADDR_CITY"]');
-	const $txtSubdistrictEN = $wrapper.find(
-		'input[name="EN_ADDR_SUBDISTRICT"]',
+	const $selSubdistrictEN = $wrapper.find(
+		'select[name="EN_ADDR_SUBDISTRICT"]',
 	);
-	const $txtZipcodeEN = $wrapper.find('input[name="EN_ADDR_ZIPCODE"]');
-
-	// รีเซ็ตค่าและปลดล็อกช่องตำบล
-	$selSubdistrict
-		.html('<option value="" disabled selected>เลือกตำบล/แขวง</option>')
+	$selSubdistrictEN
+		.html('<option value="" disabled selected>Select Subdistrict</option>')
 		.prop("disabled", false);
-	$txtZipcodeTH.val("");
-	$txtSubdistrictEN.val("");
-	$txtZipcodeEN.val("");
+	$wrapper.find('input[name="EN_ADDR_ZIPCODE"]').val("");
 
-	// กรองหาตำบลที่ตรงกับจังหวัดและอำเภอ
 	const filteredSubdistricts = addressData.filter(
 		(item) =>
-			item.province === selectedProvince &&
-			item.district === selectedCity,
+			item.province_en === selectedProvinceEN &&
+			item.district_en === selectedCityEN,
 	);
 
-	// Auto-fill: อำเภอภาษาอังกฤษ
+	// 👉 AUTO-FILL: อำเภอภาษาไทย
 	if (filteredSubdistricts.length > 0) {
-		$txtCityEN.val(filteredSubdistricts[0].district_en);
+		$wrapper
+			.find('input[name="TH_ADDR_CITY"]')
+			.val(filteredSubdistricts[0].district_th);
 	}
+	$wrapper.find('input[name="TH_ADDR_SUBDISTRICT"]').val("");
+	$wrapper.find('input[name="TH_ADDR_ZIPCODE"]').val("");
 
-	// เอาตำบลมาใส่ Dropdown ไทย
-	const subdistricts = getUniqueValues(filteredSubdistricts, "sub_district");
-	subdistricts.forEach((sub) => {
-		$selSubdistrict.append(new Option(sub, sub));
+	const subdistrictsEN = getUniqueValues(
+		filteredSubdistricts,
+		"sub_district_en",
+	);
+	subdistrictsEN.forEach((sub) => {
+		$selSubdistrictEN.append(new Option(sub, sub));
 	});
 });
 
-// --- สเตปที่ 4: เมื่อเลือกตำบล/แขวง (ดึงตำบล + รหัสไปรษณีย์) ---
-$(document).on("change", ".subdistrict-select", function () {
-	const $wrapper = $(this).closest("#tab-content-address");
-	const selectedProvince = $wrapper.find(".state-select").val();
-	const selectedCity = $wrapper.find(".city-select").val();
-	const selectedSubdistrict = $(this).val();
+// --- สเตปที่ 3: เลือก Subdistrict ---
+$(document).on("change", 'select[name="EN_ADDR_SUBDISTRICT"]', function () {
+	const $wrapper = $(this).closest(".tab-content");
+	const selectedProvinceEN = $wrapper
+		.find('select[name="EN_ADDR_STATE"]')
+		.val();
+	const selectedCityEN = $wrapper.find('select[name="EN_ADDR_CITY"]').val();
+	const selectedSubdistrictEN = $(this).val();
 
-	// หา Object ที่ข้อมูลตรงกันเป๊ะๆ ทั้ง 3 ระดับ
 	const matchedAddress = addressData.find(
 		(item) =>
-			item.province === selectedProvince &&
-			item.district === selectedCity &&
-			item.sub_district === selectedSubdistrict,
+			item.province_en === selectedProvinceEN &&
+			item.district_en === selectedCityEN &&
+			item.sub_district_en === selectedSubdistrictEN,
 	);
 
-	// นำข้อมูลที่เหลือไปใส่ใน Input อัตโนมัติ (ทั้งไทยและอังกฤษ)
+	// 👉 AUTO-FILL: ตำบลภาษาไทย + Zipcode
 	if (matchedAddress) {
 		$wrapper
-			.find('input[name="TH_ADDR_ZIPCODE"]')
+			.find('input[name="EN_ADDR_ZIPCODE"]')
 			.val(matchedAddress.zipcode);
 		$wrapper
-			.find('input[name="EN_ADDR_SUBDISTRICT"]')
-			.val(matchedAddress.sub_district_en);
+			.find('input[name="TH_ADDR_SUBDISTRICT"]')
+			.val(matchedAddress.sub_district_th);
 		$wrapper
-			.find('input[name="EN_ADDR_ZIPCODE"]')
+			.find('input[name="TH_ADDR_ZIPCODE"]')
 			.val(matchedAddress.zipcode);
 	}
 });
