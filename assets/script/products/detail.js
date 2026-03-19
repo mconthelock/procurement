@@ -12,6 +12,7 @@ import {
 } from "../service/index.js";
 
 let vendorList = [];
+let originalProductData = null;
 
 $(document).ready(async () => {
 	try {
@@ -28,6 +29,7 @@ $(document).ready(async () => {
 
 		if (id) {
 			const productData = await getProducts(id);
+			originalProductData = productData;
 			// โหลดสเปกของ Category ปัจจุบันรอไว้ก่อน loadData
 			if (productData.CATEGORY_ID) {
 				window.currentCategorySpecs = await getCategoryAttributes(
@@ -56,7 +58,7 @@ function loadData(data) {
 	$("#PROD_CODE").val(data.PROD_CODE);
 	$("#PROD_NAME").val(data.PROD_NAME);
 	$("#PROD_DESCRIPTION").val(data.PROD_DESCRIPTION);
-	$("#PROD_UNIT").val(data.PROD_UNIT);
+	// $("#PROD_UNIT").val(data.PROD_UNIT);
 	$("#PROD_STATUS").val(data.PROD_STATUS);
 	$("#HAZARD").val(data.HAZARD || 0);
 	$("#CATEGORY_ID").val(data.CATEGORY_ID);
@@ -263,9 +265,10 @@ function initSubmit() {
 				// 	}))
 				// 	.get()
 				// 	.filter((v) => v.CODE_NUM),
-				PRICE_HISTORY: window.currentProductData
-					? window.currentProductData.PRICE_HISTORY
-					: [],
+				PRICE_HISTORY:
+					id && originalProductData
+						? originalProductData.PRICE_HISTORY
+						: [],
 			};
 
 			const res = await fetch(
