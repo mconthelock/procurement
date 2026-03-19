@@ -1,9 +1,9 @@
 // ไฟล์: schemas/price_history.js
 const { faker } = require("@faker-js/faker");
 
-const createPriceHistory = (vndId, price, currency, date, isActive) => {
+const createPriceHistory = (codeNum, price, currency, date, isActive) => {
 	return {
-		VND_ID: vndId,
+		CODE_NUM: codeNum,
 		PRICE: price,
 		CURRENCY: currency,
 		EFFECTIVE_DATE: date,

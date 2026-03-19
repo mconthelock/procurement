@@ -40,7 +40,7 @@
                                 <label class="label py-1"><span class="label-text font-semibold text-gray-600">Description</span></label>
                                 <textarea id="PROD_DESCRIPTION" class="textarea textarea-bordered h-24 focus:textarea-primary w-full" placeholder="Enter product details..."></textarea>
                             </div>
-                            <div class="form-control w-full">
+                            <!-- <div class="form-control w-full">
                                 <label class="label py-1"><span class="label-text font-semibold text-gray-600">Unit</span></label>
                                 <select id="PROD_UNIT" class="select select-bordered w-full">
                                     <option value="กล่อง">กล่อง</option>
@@ -48,13 +48,13 @@
                                     <option value="ชิ้น">ชิ้น</option>
                                     <option value="ชุด">ชุด</option>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="form-control w-full">
                                 <label class="label py-1"><span class="label-text font-semibold text-gray-600">Status</span></label>
                                 <select id="PROD_STATUS" class="select select-bordered w-full">
-                                    <option value="0">Draft</option>
+                                    <!-- <option value="0">Draft</option> -->
                                     <option value="1">Active</option>
-                                    <option value="2">Inactive</option>
+                                    <option value="0">Inactive</option>
                                 </select>
                             </div>
                             <div class="form-control w-full">
@@ -99,7 +99,12 @@
         <div role="tabpanel" class="tab-content p-8 bg-white border-base-300">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="font-bold text-lg text-primary">Supplier Price Management</h3>
-                <button type="button" onclick="addPriceRow()" class="btn btn-sm btn-primary">+ Add Vendor Price</button>
+            </div>
+            <div class="mb-10 bg-gray-50 p-4 rounded-xl border">
+                <h4 class="text-xs font-bold opacity-50 uppercase mb-4 tracking-widest">Price Trend Analysis</h4>
+                <div class="h-[300px] w-full">
+                    <canvas id="priceChart"></canvas>
+                </div>
             </div>
             <div class="overflow-x-auto rounded-lg border">
                 <table class="table w-full">
@@ -109,8 +114,7 @@
                             <th width="15%">Unit Price</th>
                             <th width="15%">Effective</th>
                             <th width="45%">Quotation Documents</th>
-                            <th width="5%"></th>
-                        </tr>
+                            </tr>
                     </thead>
                     <tbody id="price_history_container"></tbody>
                 </table>
