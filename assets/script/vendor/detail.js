@@ -4,6 +4,7 @@ import { createBtn, activatedBtnRow } from "@amec/webasset/components/buttons";
 import { initApp } from "../utils.js";
 import { getVendors } from "../service/index.js";
 import { getAddressMST } from "../service/addressth.js";
+import { getPayments } from "../service/payment.js";
 import { log } from "three";
 import { el } from "@faker-js/faker";
 
@@ -13,6 +14,7 @@ const statusBadges = {
 	2: { class: "badge-error", text: "Inactive" },
 };
 let addressData = [];
+const payments = await getPayments();
 const vendorContainer = $("#edit-vendor-code-container");
 function getUniqueValues(dataArray, key) {
 	return [...new Set(dataArray.map((item) => item[key]))];
@@ -20,7 +22,6 @@ function getUniqueValues(dataArray, key) {
 $(document).ready(async () => {
 	try {
 		addressData = await getAddressMST();
-
 		// ล็อก Dropdown อำเภอและตำบลไว้ก่อนตั้งแต่เริ่มต้น
 		$(".city-select").prop("disabled", true);
 		$(".subdistrict-select").prop("disabled", true);
@@ -185,7 +186,10 @@ $(document).ready(async () => {
                 </div>
                 <div class="form-control w-full md:col-span-3">
                     <label class="label"><span class="label-text font-medium text-gray-500">Payment Term</span></label>
-                    <div class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-800 h-[3rem] flex items-center">${vendor.CODE_PAY || "-"}</div>
+                    <div class="view-mode px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-800 h-[3rem] flex items-center">${vendor.CODE_PAY || "-"}</div>
+					      <select name="CODE_PAY[]" class="edit-mode select select-bordered w-full bg-white payment-select hidden" required>
+                                            <option value="" disabled selected>Select Payment Term...</option>
+                                        </select>
                 </div>
 			<div class="form-control w-full md:col-span-3">
             <label class="label"><span class="label-text font-medium text-gray-500">Status</span></label>
