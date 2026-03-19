@@ -151,8 +151,8 @@ window.addPriceRow = (data = {}) => {
 	let vendorLabel = "Unknown Vendor";
 	vendorList.forEach((v) => {
 		v.VENDOR_CODES.forEach((code) => {
-			if (code.CODE_NUM == data.CODE_NUM) {
-				vendorLabel = `(${code.CODE_NUM}) ${v.VND_NAME}`;
+			if (code.CODE_NUM == data.VND_ID) {
+				vendorLabel = `(${code.VND_ID}) ${v.VND_NAME}`;
 			}
 		});
 	});
