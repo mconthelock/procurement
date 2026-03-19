@@ -63,11 +63,11 @@ async function tableProductOption(data) {
                     </div>
                 </div>`,
 		},
-		{
-			data: "PROD_UNIT",
-			title: "Unit",
-			className: "text-center",
-		},
+		// {
+		// 	data: "PROD_UNIT",
+		// 	title: "Unit",
+		// 	className: "text-center",
+		// },
 		{
 			data: "PRICE_HISTORY",
 			title: "Active Price",

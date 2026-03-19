@@ -2,13 +2,13 @@
 
 @section('contents')
 <form id="productForm" class="p-4 md:p-6">
-     <input type="hidden" id="USER_PERMISSION" value="{{ $permission ?? 'EDIT' }}"> <!--EDIT, VIEWER-->
-    <input type="hidden" id="prod_id_hidden" value="{{ $id ?? '' }}">
     
     <div class="flex justify-between items-center mb-6">
         <div>
             <h2 class="text-2xl font-bold m-0 text-primary">{{ $title }}</h2>
             <p class="text-xs opacity-60 italic">Fill in all required fields to update procurement data</p>
+            <input type="hidden" id="USER_PERMISSION" value="{{ $permission ?? 'EDIT' }}"> <!--EDIT, VIEWER-->
+            <input type="hidden" id="prod_id_hidden" value="{{ $id ?? '' }}">
         </div>
         <div class="flex gap-2">
             <a href="{{ $_ENV['APP_ENV'] }}/Products" class="btn btn-ghost btn-sm">Cancel</a>

@@ -1,19 +1,22 @@
-export const getBaseURL = () => {
-	const currentURL = window.location.href; // ดึง URL ปัจจุบันของเบราว์เซอร์
+export const getBaseURL = (envType = null) => {
 	const hostname = window.location.hostname;
+	const currentURL = window.location.href;
 
-	// 1. เช็คว่ารันบนเครื่องตัวเอง (Local Development) หรือไม่
+	// 1. ถ้าอยู่บน localhost ให้ใช้ MOCK_API เสมอ (เพื่อความสะดวกตอน Dev)
 	if (hostname === "localhost") {
-		return process.env.MOCK_API; // ใช้ JSON Server
+		return process.env.MOCK_API;
 	}
 
-	// 2. เช็คว่า URL มีคำว่า "test" หรือไม่ (เช่น test-procurement.mitsubishi...)
+	// 2. ถ้ามีการส่ง 'MOCK_API' มาโดยตรง ให้ใช้ MOCK_API
+	if (envType === "MOCK_API") {
+		return process.env.MOCK_API;
+	}
+
+	// 3. ถ้า URL มีคำว่า "test" ให้ใช้ MOCK_API
 	if (currentURL.includes("test")) {
-		return process.env.MOCK_API; // ใช้ API ฝั่ง Test
+		return process.env.MOCK_API;
 	}
 
-	// 3. ถ้าไม่ใช่ทั้งคู่ ให้ใช้ API หลัก (Production)
+	// 4. กรณีอื่นๆ ทั้งหมด (เช่น Production หรือไม่ส่ง parameter มา) ให้ใช้ APP_API
 	return process.env.APP_API;
 };
-
-const API_BASE = getBaseURL();
