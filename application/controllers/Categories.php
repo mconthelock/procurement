@@ -1,34 +1,29 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Products extends MY_Controller {
+
+class Categories extends MY_Controller {
     public function index() {
         $permission = $_GET['permission'] ?? 'EDIT';
-        echo $permission;
-        $this->views('Products/index', [
-            'title' => 'Product Management',
+        $this->views('Categories/index', [
+            'title' => 'Category Management',
             'permission' =>  $permission
         ]);
     }
 
-
-
     public function create($permission='') {
-        
-        $this->views('Products/detail', [
-            'title' => 'Add New Product',
+        $this->views('Categories/detail', [
+            'title' => 'Add New Category',
             'mode' => 'create',
-            'permission' => $permission
+            'permission' =>  $permission
         ]);
     }
 
     public function detail($id,$permission) {
-        $this->views('Products/detail', [
-            'title' => 'Edit Product',
+        $this->views('Categories/detail', [
+            'title' => 'Edit Category',
             'mode' => 'edit',
             'id' => $id,
             'permission' => $permission
         ]);
     }
-
-    
 }

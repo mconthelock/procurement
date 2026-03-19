@@ -7,6 +7,7 @@ class Home extends MY_Controller {
     }
 
 	public function index(){
+        echo "";
         $this->views('home/index');
     }
 }

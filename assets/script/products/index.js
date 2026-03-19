@@ -6,21 +6,35 @@ import { currentUser } from "@amec/webasset/api/amec";
 import { createBtn, activatedBtnRow } from "@amec/webasset/components/buttons";
 import { createTable } from "@amec/webasset/dataTable";
 import { initApp, tableOpt } from "../utils.js";
-import { getProducts } from "../service/products.js";
+import {
+	getProducts,
+	getTemplate,
+	exportExcel,
+	getCategories,
+} from "../service/index.js";
+import { extractDataForExport } from "./excel-data.js";
 
 const API_URL = `${process.env.MOCK_API}/products`;
 var table;
+let categoryMap = {};
 $(document).ready(async () => {
 	try {
 		await showLoader();
 		await initApp({ submenu: ".nav-products" });
 
+		const categories = await getCategories();
+		categories.forEach((cat) => {
+			categoryMap[cat.CATEGORY_ID] = cat.CATEGORY_NAME;
+		});
 		// ดึงข้อมูล Products
 		const data = await getProducts();
 		const options = await tableProductOption(data);
 
 		// สร้าง Table ตามมาตรฐาน amec
 		table = await createTable(options);
+
+		const permission = $("#USER_PERMISSION").val();
+		applyPermission(permission);
 	} catch (error) {
 		console.error(error);
 		await showMessage(error.message || "Error initializing app");
@@ -66,6 +80,14 @@ async function tableProductOption(data) {
 			},
 		},
 		{
+			data: "CATEGORY_ID",
+			title: "Category", // เปลี่ยนหัวตารางเป็น Category
+			render: (data) => {
+				const catName = categoryMap[data] || `ID: ${data}`;
+				return `<span class="font-semibold text-neutral">${catName}</span>`;
+			},
+		},
+		{
 			data: "PROD_STATUS",
 			title: "Status",
 			className: "text-center",
@@ -84,7 +106,7 @@ async function tableProductOption(data) {
 			className: "text-center",
 			orderable: false,
 			render: (data) => {
-				return `<a href="/procurement/products/detail/${data}" class="btn btn-sm btn-ghost btn-circle text-lg text-primary hover:text-xl"><i class="fi fi-rr-settings-sliders"></i></a>`;
+				return `<a href="/procurement/products/detail/${data}/${$("#USER_PERMISSION").val()}" class="btn btn-sm btn-ghost btn-circle text-lg text-primary hover:text-xl"><i class="fi fi-rr-settings-sliders"></i></a>`;
 			},
 		},
 	];
@@ -112,6 +134,24 @@ async function tableProductOption(data) {
 	return opt;
 }
 
+$(document).on("click", "#export-products", async function () {
+	try {
+		await activatedBtnRow($(this), true);
+		const data = table.data().toArray();
+		const result = await extractDataForExport(data);
+		console.log(result);
+		const template = await getTemplate("export_products.xlsx");
+		await exportExcel(result, template, {
+			filename: "Products_List.xlsx",
+		});
+	} catch (error) {
+		console.error(error);
+		await showMessage(error.message || "Error exporting data");
+	} finally {
+		await activatedBtnRow($(this), false);
+	}
+});
+
 window.deleteProduct = async function (id) {
 	if (confirm("Are you sure you want to delete this product?")) {
 		try {
@@ -125,3 +165,11 @@ window.deleteProduct = async function (id) {
 		}
 	}
 };
+
+function applyPermission(permission) {
+	if (permission === "VIEWER") {
+		// 1. สั่ง Disable Input, Select, Textarea ทั้งหมดในฟอร์ม
+
+		$("#ADDBTN").hide();
+	}
+}
