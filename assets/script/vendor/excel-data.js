@@ -19,3 +19,20 @@ export async function extractDataForExport(data) {
 	});
 	return result;
 }
+
+export async function extractApvDataForExport(data) {
+	let result = [];
+	data = data.sort((a, b) => a.FRM_ID - b.FRM_ID);
+	data.map((item) => {
+		const statusMap = {
+			1: "Running",
+			2: "Approve",
+			3: "Reject",
+		};
+		result.push({
+			...item,
+			STATUS: statusMap[item.FRM_STATUS],
+		});
+	});
+	return result;
+}
