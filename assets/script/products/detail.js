@@ -201,7 +201,6 @@ window.addPriceRow = (data = {}) => {
 };
 
 // --- Submit & File Logic ---
-
 function initSubmit() {
 	$("#productForm").on("submit", async function (e) {
 		e.preventDefault();
@@ -246,24 +245,27 @@ function initSubmit() {
 					}))
 					.get()
 					.filter((v) => v.ATTR_NAME.trim()),
-				PRICE_HISTORY: $(".price-row")
-					.map((i, el) => ({
-						CODE_NUM: $(el).find(".vnd-id").val(),
-						PRICE: parseFloat($(el).find(".price-val").val()) || 0,
-						EFFECTIVE_DATE: new Date(
-							$(el).find(".effective-date").val() || new Date(),
-						).toISOString(),
-						IS_ACTIVE: $(el).find(".is-active").val() === "true",
-						QUOTATION: {
-							QUOTATION_NO: $(el).find(".q-no").val(),
-							QUOTATION_DATE: new Date(
-								$(el).find(".q-date").val() || new Date(),
-							).toISOString(),
-							QUOTATION_FILE: $(el).find(".q-file").val(),
-						},
-					}))
-					.get()
-					.filter((v) => v.CODE_NUM),
+				// PRICE_HISTORY: $(".price-row")
+				// 	.map((i, el) => ({
+				// 		CODE_NUM: $(el).find(".vnd-id").val(),
+				// 		PRICE: parseFloat($(el).find(".price-val").val()) || 0,
+				// 		EFFECTIVE_DATE: new Date(
+				// 			$(el).find(".effective-date").val() || new Date(),
+				// 		).toISOString(),
+				// 		IS_ACTIVE: $(el).find(".is-active").val() === "true",
+				// 		QUOTATION: {
+				// 			QUOTATION_NO: $(el).find(".q-no").val(),
+				// 			QUOTATION_DATE: new Date(
+				// 				$(el).find(".q-date").val() || new Date(),
+				// 			).toISOString(),
+				// 			QUOTATION_FILE: $(el).find(".q-file").val(),
+				// 		},
+				// 	}))
+				// 	.get()
+				// 	.filter((v) => v.CODE_NUM),
+				PRICE_HISTORY: window.currentProductData
+					? window.currentProductData.PRICE_HISTORY
+					: [],
 			};
 
 			const res = await fetch(
