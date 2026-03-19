@@ -2,6 +2,7 @@ import { showLoader } from "@amec/webasset/preloader";
 import { showMessage } from "@amec/webasset/utils";
 import { initApp } from "../utils.js";
 import $ from "jquery";
+import Chart from "chart.js/auto";
 window.$ = window.jQuery = $;
 import {
 	getProducts,
@@ -62,7 +63,14 @@ function loadData(data) {
 
 	data.IMAGES?.forEach((url) => addImageRow(url));
 	data.ATTRIBUTES?.forEach((a) => addAttributeRow(a.ATTR_NAME, a.ATTR_VALUE));
+
+	// โหลดตารางราคา
 	data.PRICE_HISTORY?.forEach((p) => addPriceRow(p));
+
+	// วาดกราฟราคา
+	if (data.PRICE_HISTORY) {
+		renderPriceChart(data.PRICE_HISTORY);
+	}
 }
 
 // ใน $(document).ready
@@ -135,62 +143,64 @@ window.addAttributeRow = (name = "", value = "") => {
         </div>`;
 	$("#attributes_container").append(html);
 };
-
 window.addPriceRow = (data = {}) => {
 	const rowId = `row_${Date.now()}_${Math.floor(Math.random() * 100)}`;
 	const q = data.QUOTATION || {};
-	let allOptions = [];
+
+	// ค้นหาชื่อ Vendor จาก ID
+	let vendorLabel = "Unknown Vendor";
 	vendorList.forEach((v) => {
 		v.VENDOR_CODES.forEach((code) => {
-			allOptions.push({
-				val: code.CODE_NUM,
-				text: `(${code.CODE_NUM})|${v.VND_NAME}`,
-			});
+			if (code.CODE_NUM == data.VND_ID) {
+				vendorLabel = `(${code.VND_ID}) ${v.VND_NAME}`;
+			}
 		});
 	});
-	const vendorOptions = allOptions
-		.map(
-			(opt) =>
-				`<option value="${opt.val}" ${data.VND_ID == opt.val ? "selected" : ""}>${opt.text}</option>`,
-		)
-		.join("");
+
+	// เตรียมปุ่ม Download File
+	const downloadBtn = q.QUOTATION_FILE
+		? `<a href="/uploads/quotations/${q.QUOTATION_FILE}" target="_blank" class="btn btn-xs btn-outline btn-info gap-1">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="box-arrow-in-down" />
+             </svg> Download
+           </a>`
+		: `<span class="text-gray-400 italic">No file attached</span>`;
+
+	const statusBadge = data.IS_ACTIVE
+		? '<span class="badge badge-success badge-sm">Active</span>'
+		: '<span class="badge badge-ghost badge-sm opacity-50">History</span>';
 
 	const html = `
         <tr class="price-row border-b align-top bg-white hover:bg-gray-50" id="${rowId}">
             <td class="p-3">
-                <div class="space-y-2">
-                    <select class="select select-bordered select-sm w-full vnd-id font-bold">${vendorOptions}</select>
-                    <select class="select select-bordered select-sm w-full is-active">
-                        <option value="true" ${data.IS_ACTIVE ? "selected" : ""}>Active Price</option>
-                        <option value="false" ${!data.IS_ACTIVE ? "selected" : ""}>History Only</option>
-                    </select>
+                <div class="font-bold text-sm text-gray-700">${vendorLabel}</div>
+                <div class="mt-1">${statusBadge}</div>
+            </td>
+            <td class="p-3">
+                <div class="text-blue-600 font-bold text-lg">
+                    ฿${(data.PRICE || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
                 </div>
             </td>
-            <td class="p-3">
-                <input type="number" step="0.01" class="input input-bordered input-sm w-full price-val text-blue-600 font-bold" value="${data.PRICE || ""}">
+            <td class="p-3 text-sm">
+                ${data.EFFECTIVE_DATE?.split("T")[0] || "-"}
             </td>
             <td class="p-3">
-                <input type="date" class="input input-bordered input-sm w-full effective-date" value="${data.EFFECTIVE_DATE?.split("T")[0] || ""}">
-            </td>
-            <td class="p-3">
-                <div class="bg-gray-100 p-3 rounded-lg grid grid-cols-2 gap-3 border text-xs">
-                    <div><label class="font-bold opacity-50">Quote No.</label><input type="text" class="input input-bordered input-xs w-full q-no" value="${q.QUOTATION_NO || ""}"></div>
-                    <div><label class="font-bold opacity-50">Quote Date</label><input type="date" class="input input-bordered input-xs w-full q-date" value="${q.QUOTATION_DATE?.split("T")[0] || ""}"></div>
-                    <div class="col-span-2">
-                        <label class="font-bold opacity-50">File (PDF/Image)</label>
-                        <input type="hidden" class="q-file" value="${q.QUOTATION_FILE || ""}">
-                        <input type="file" class="file-input file-input-bordered file-input-xs w-full" onchange="handleQuoteFileUpload(this)">
-                        <span class="text-[10px] text-blue-600 current-file-name">${q.QUOTATION_FILE || ""}</span>
+                <div class="bg-gray-50 p-3 rounded-lg border border-dashed flex justify-between items-center">
+                    <div class="space-y-1">
+                        <div class="text-[10px] uppercase font-bold opacity-50">Quote Details</div>
+                        <div class="text-xs font-semibold">No: ${q.QUOTATION_NO || "-"}</div>
+                        <div class="text-[10px] opacity-70">Date: ${q.QUOTATION_DATE?.split("T")[0] || "-"}</div>
+                    </div>
+                    <div class="text-right">
+                        ${downloadBtn}
                     </div>
                 </div>
             </td>
-            <td class="p-3 text-center"><button type="button" class="btn btn-ghost btn-xs text-error" onclick="$('#${rowId}').remove()">✕</button></td>
         </tr>`;
 	$("#price_history_container").append(html);
 };
 
 // --- Submit & File Logic ---
-
 function initSubmit() {
 	$("#productForm").on("submit", async function (e) {
 		e.preventDefault();
@@ -235,24 +245,27 @@ function initSubmit() {
 					}))
 					.get()
 					.filter((v) => v.ATTR_NAME.trim()),
-				PRICE_HISTORY: $(".price-row")
-					.map((i, el) => ({
-						VND_ID: $(el).find(".vnd-id").val(),
-						PRICE: parseFloat($(el).find(".price-val").val()) || 0,
-						EFFECTIVE_DATE: new Date(
-							$(el).find(".effective-date").val() || new Date(),
-						).toISOString(),
-						IS_ACTIVE: $(el).find(".is-active").val() === "true",
-						QUOTATION: {
-							QUOTATION_NO: $(el).find(".q-no").val(),
-							QUOTATION_DATE: new Date(
-								$(el).find(".q-date").val() || new Date(),
-							).toISOString(),
-							QUOTATION_FILE: $(el).find(".q-file").val(),
-						},
-					}))
-					.get()
-					.filter((v) => v.VND_ID),
+				// PRICE_HISTORY: $(".price-row")
+				// 	.map((i, el) => ({
+				// 		CODE_NUM: $(el).find(".vnd-id").val(),
+				// 		PRICE: parseFloat($(el).find(".price-val").val()) || 0,
+				// 		EFFECTIVE_DATE: new Date(
+				// 			$(el).find(".effective-date").val() || new Date(),
+				// 		).toISOString(),
+				// 		IS_ACTIVE: $(el).find(".is-active").val() === "true",
+				// 		QUOTATION: {
+				// 			QUOTATION_NO: $(el).find(".q-no").val(),
+				// 			QUOTATION_DATE: new Date(
+				// 				$(el).find(".q-date").val() || new Date(),
+				// 			).toISOString(),
+				// 			QUOTATION_FILE: $(el).find(".q-file").val(),
+				// 		},
+				// 	}))
+				// 	.get()
+				// 	.filter((v) => v.CODE_NUM),
+				PRICE_HISTORY: window.currentProductData
+					? window.currentProductData.PRICE_HISTORY
+					: [],
 			};
 
 			const res = await fetch(
@@ -314,28 +327,104 @@ function renderCategoryOptions(cats) {
 
 function applyPermission(permission) {
 	if (permission === "VIEWER") {
-		// 1. สั่ง Disable Input, Select, Textarea ทั้งหมดในฟอร์ม
+		// ... (โค้ดเดิมของคุณ) ...
 
-		$(
-			"#productForm input, #productForm select, #productForm textarea",
-		).prop("disabled", true);
-
-		// 2. ซ่อนปุ่มเพิ่ม/ลบ ต่างๆ (เช่น ปุ่ม Add Spec, Add Image)
-		$(".btn-outline, .btn-error, .btn-circle")
-			.filter(":contains('+'), :contains('✕'), :contains('×')")
-			.hide();
-
-		// 3. ปรับสไตล์ให้ดูเป็นโหมดอ่านอย่างเดียว (Viewer Mode)
-		$(".input, .select, .textarea").addClass(
-			"bg-gray-50 border-transparent shadow-none cursor-default",
-		);
-
-		// 4. เปลี่ยนหัวข้อหน้าจอให้ชัดเจน
-		const currentTitle = $(".text-3xl, .text-2xl").first().text();
-		$(".text-3xl, .text-2xl")
-			.first()
-			.html(
-				`<span class="badge badge-ghost mr-2">VIEWER MODE</span> ${currentTitle}`,
-			);
+		// เพิ่มเติม: ปรับส่วนรูปภาพให้คลิกดูรูปใหญ่ได้แทนการเปลี่ยนรูป
+		$("#images_container .file-input").hide();
+		$("#images_container .preview-box img").each(function () {
+			const url = $(this).attr("src");
+			if (url && !url.includes("placehold.co")) {
+				$(this).addClass(
+					"cursor-pointer hover:opacity-80 transition-all",
+				);
+				$(this).wrap(`<a href="${url}" target="_blank"></a>`);
+			}
+		});
 	}
+}
+
+// เพิ่มตัวแปร global สำหรับเก็บ instance ของ chart (กันการวาดทับ)
+let priceChartInstance = null;
+
+function renderPriceChart(priceHistory) {
+	const ctx = document.getElementById("priceChart").getContext("2d");
+
+	if (!priceHistory || priceHistory.length === 0) {
+		// ถ้าไม่มีข้อมูล ให้แสดงข้อความแทน
+		ctx.font = "14px Inter";
+		ctx.fillStyle = "#999";
+		ctx.textAlign = "center";
+		ctx.fillText(
+			"No price history available to display graph",
+			ctx.canvas.width / 2,
+			ctx.canvas.height / 2,
+		);
+		return;
+	}
+
+	// 1. เตรียมข้อมูล: เรียงลำดับตามวันที่ (เก่าไปใหม่)
+	const sortedData = [...priceHistory].sort(
+		(a, b) => new Date(a.EFFECTIVE_DATE) - new Date(b.EFFECTIVE_DATE),
+	);
+
+	// 2. จัดรูปแบบข้อมูลสำหรับ Labels (วันที่) และ Data (ราคา)
+	const labels = sortedData.map((item) => item.EFFECTIVE_DATE.split("T")[0]);
+	const prices = sortedData.map((item) => item.PRICE);
+
+	// ดึงชื่อ Vendor มาทำ Tooltip (ถ้าต้องการแยกสีตาม Vendor ต้องเขียน Logic เพิ่ม)
+	const vendors = sortedData.map((item) => {
+		const v = vendorList.find((v) =>
+			v.VENDOR_CODES.some((c) => c.CODE_NUM == item.VND_ID),
+		);
+		return v ? v.VND_NAME : "Unknown";
+	});
+
+	// 3. ทำลาย Chart เก่าทิ้งก่อนสร้างใหม่ (ถ้ามี)
+	if (priceChartInstance) {
+		priceChartInstance.destroy();
+	}
+
+	// 4. สร้าง Chart ใหม่
+	priceChartInstance = new Chart(ctx, {
+		type: "line",
+		data: {
+			labels: labels,
+			datasets: [
+				{
+					label: "Unit Price (฿)",
+					data: prices,
+					borderColor: "#2563eb", // สีน้ำเงิน Primary
+					backgroundColor: "rgba(37, 99, 235, 0.1)",
+					borderWidth: 3,
+					pointBackgroundColor: "#fff",
+					pointBorderColor: "#2563eb",
+					pointRadius: 5,
+					pointHoverRadius: 8,
+					fill: true,
+					tension: 0.3, // ความโค้งของเส้น
+				},
+			],
+		},
+		options: {
+			responsive: true,
+			maintainAspectRatio: false,
+			plugins: {
+				tooltip: {
+					callbacks: {
+						afterLabel: function (context) {
+							return `Vendor: ${vendors[context.dataIndex]}`;
+						},
+					},
+				},
+			},
+			scales: {
+				y: {
+					beginAtZero: false,
+					ticks: {
+						callback: (value) => "฿" + value.toLocaleString(),
+					},
+				},
+			},
+		},
+	});
 }
