@@ -180,102 +180,6 @@
                         
                         <div class="card bg-base-100 shadow-sm border border-base-200">
                             <div class="card-body">
-                                <h3 class="font-bold border-b pb-2 text-primary uppercase text-xs tracking-widest">Address Details (Thai)</h3>
-                                
-                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
-                                    <div class="form-control w-full md:col-span-3">
-                                        <label class="label"><span class="label-text font-medium text-gray-500">ที่อยู่ 1 (Address Line 1)</span></label>
-                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center"> 
-                                            <p id="view-ADDR_TH_LINE1" class="view-mode font-medium text-base px-1">-</p>
-                                            <input type="text" id="input-ADDR_TH_LINE1" name="ADDR_TH_LINE1" class="edit-mode input input-bordered w-full hidden">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-control w-full md:col-span-3">
-                                        <label class="label"><span class="label-text font-medium text-gray-500">ที่อยู่ 2 (Address Line 2)</span></label>
-                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-ADDR_TH_LINE2" class="view-mode font-medium text-base px-1">-</p>
-                                            <input type="text" id="input-ADDR_TH_LINE2" name="ADDR_TH_LINE2" class="edit-mode input input-bordered w-full hidden"> 
-                                        </div>
-                                    </div>
-
-                                    <div class="form-control w-full md:col-span-3">
-                                        <label class="label"><span class="label-text font-medium text-gray-500">ที่อยู่ 3 (Address Line 3)</span></label>
-                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-ADDR_TH_LINE3" class="view-mode font-medium text-base px-1">-</p>
-                                            <input type="text" id="input-ADDR_TH_LINE3" name="ADDR_TH_LINE3" class="edit-mode input input-bordered w-full hidden">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="view-mode grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                                    <div class="form-control w-full">
-                                        <label class="label"><span class="label-text font-medium text-gray-500">ตำบล/แขวง</span></label>
-                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-ADDR_TH_SUBDISTRICT" class="font-medium text-base px-1">-</p>
-                                        </div>
-                                    </div>
-                                    <div class="form-control w-full">
-                                        <label class="label"><span class="label-text font-medium text-gray-500">เขต / อำเภอ</span></label>
-                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-ADDR_TH_CITY" class="font-medium text-base px-1">-</p>
-                                        </div>
-                                    </div>
-                                    <div class="form-control w-full">
-                                        <label class="label"><span class="label-text font-medium text-gray-500">จังหวัด</span></label>
-                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-ADDR_TH_STATE" class="font-medium text-base px-1">-</p>
-                                        </div>
-                                    </div>
-                                    <div class="form-control w-full">
-                                        <label class="label"><span class="label-text font-medium text-gray-500">รหัสไปรษณีย์</span></label>
-                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-ADDR_TH_ZIPCODE" class="font-medium text-base px-1">-</p>
-                                        </div>
-                                    </div>
-                                    <div class="form-control w-full md:col-span-2">
-                                        <label class="label"><span class="label-text font-medium text-gray-500">ประเทศ</span></label>
-                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-ADDR_TH_COUNTRY" class="font-medium text-base px-1">-</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="edit-mode hidden grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 bg-indigo-50/50 p-4 rounded-lg border border-indigo-100">
-                                    <div class="form-control w-full">
-                                        <label class="label"><span class="label-text font-medium text-primary">จังหวัด</span></label>
-                                        <select id="input-ADDR_TH_STATE" name="ADDR_TH_STATE" class="select select-bordered w-full font-normal state-select"></select>
-                                    </div>
-                                    <div class="form-control w-full">
-                                        <label class="label"><span class="label-text font-medium text-primary">อำเภอ/เขต</span></label>
-                                        <select id="input-ADDR_TH_CITY" name="ADDR_TH_CITY" class="select select-bordered w-full font-normal city-select">
-                                            <option value="" disabled selected>เลือกอำเภอ</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-control w-full">
-                                        <label class="label"><span class="label-text font-medium text-primary">ตำบล/แขวง</span></label>
-                                        <select id="input-ADDR_TH_SUBDISTRICT" name="ADDR_TH_SUBDISTRICT" class="select select-bordered w-full font-normal subdistrict-select">
-                                            <option value="" disabled selected>เลือกตำบล</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-control w-full">
-                                        <label class="label"><span class="label-text font-medium text-primary">รหัสไปรษณีย์</span></label>
-                                        <input type="text" id="input-ADDR_TH_ZIPCODE" name="ADDR_ZIPCODE" class="input input-bordered w-full">
-                                    </div>
-                                    <div class="form-control w-full md:col-span-2">
-                                        <label class="label"><span class="label-text font-medium text-primary">ประเทศ</span></label>
-                                        <select name="ADDR_TH_COUNTRY" class="select select-bordered w-full">
-                                            <option value="66">Thailand</option>
-                                            <option value="1">United States</option>
-                                            <option value="81">Japan</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card bg-base-100 shadow-sm border border-base-200">
-                            <div class="card-body">
                                 <h3 class="font-bold border-b pb-2 text-primary uppercase text-xs tracking-widest">Address Details (English)</h3>
                                 
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
@@ -340,15 +244,21 @@
                                 <div class="edit-mode hidden grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 bg-indigo-50/50 p-4 rounded-lg border border-indigo-100">
                                     <div class="form-control w-full">
                                         <label class="label"><span class="label-text font-medium text-primary">State / Province</span></label>
-                                        <input type="text" id="input-ADDR_EN_STATE" name="ADDR_EN_STATE" class="input input-bordered w-full" >
+                                        <select name="EN_ADDR_STATE" class="select select-bordered w-full bg-white state-select"">
+                                        <option value="" disabled selected>Select State / Province</option>
+                                    </select>
                                     </div>
                                     <div class="form-control w-full">
                                         <label class="label"><span class="label-text font-medium text-primary">City / District</span></label>
-                                        <input type="text" id="input-ADDR_EN_CITY" name="ADDR_EN_CITY" class="input input-bordered w-full" >
+                                        <select name="EN_ADDR_CITY" class="select select-bordered w-full bg-white city-select">
+                                         <option value="" disabled selected>Select City / District</option>
+                                    </select>
                                     </div>
                                     <div class="form-control w-full">
                                         <label class="label"><span class="label-text font-medium text-primary">Sub-district</span></label>
-                                        <input type="text" id="input-ADDR_EN_SUBDISTRICT" name="ADDR_EN_SUBDISTRICT" class="input input-bordered w-full" placeholder="Sub-district">
+                                          <select name="EN_ADDR_SUBDISTRICT" class="select select-bordered w-full bg-white subdistrict-select">
+                                <option value="" disabled selected>Select Subdistrict</option>
+                            </select>
                                     </div>
                                     <div class="form-control w-full">
                                         <label class="label"><span class="label-text font-medium text-primary">Zip Code</span></label>
@@ -366,6 +276,96 @@
 
                             </div>
                         </div>
+                        
+                        <div class="card bg-base-100 shadow-sm border border-base-200">
+                            <div class="card-body">
+                                <h3 class="font-bold border-b pb-2 text-primary uppercase text-xs tracking-widest">Address Details (Thai)</h3>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                                    <div class="form-control w-full md:col-span-3">
+                                        <label class="label"><span class="label-text font-medium text-gray-500">ที่อยู่ 1 (Address Line 1)</span></label>
+                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center"> 
+                                            <p id="view-ADDR_TH_LINE1" class="view-mode font-medium text-base px-1">-</p>
+                                            <input type="text" id="input-ADDR_TH_LINE1" name="ADDR_TH_LINE1" class="edit-mode input input-bordered w-full hidden">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-control w-full md:col-span-3">
+                                        <label class="label"><span class="label-text font-medium text-gray-500">ที่อยู่ 2 (Address Line 2)</span></label>
+                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
+                                            <p id="view-ADDR_TH_LINE2" class="view-mode font-medium text-base px-1">-</p>
+                                            <input type="text" id="input-ADDR_TH_LINE2" name="ADDR_TH_LINE2" class="edit-mode input input-bordered w-full hidden"> 
+                                        </div>
+                                    </div>
+
+                                    <div class="form-control w-full md:col-span-3">
+                                        <label class="label"><span class="label-text font-medium text-gray-500">ที่อยู่ 3 (Address Line 3)</span></label>
+                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
+                                            <p id="view-ADDR_TH_LINE3" class="view-mode font-medium text-base px-1">-</p>
+                                            <input type="text" id="input-ADDR_TH_LINE3" name="ADDR_TH_LINE3" class="edit-mode input input-bordered w-full hidden">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="view-mode grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                                    <div class="form-control w-full">
+                                        <label class="label"><span class="label-text font-medium text-gray-500">ตำบล/แขวง</span></label>
+                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
+                                            <p id="view-ADDR_TH_SUBDISTRICT" class="font-medium text-base px-1">-</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-control w-full">
+                                        <label class="label"><span class="label-text font-medium text-gray-500">เขต / อำเภอ</span></label>
+                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
+                                            <p id="view-ADDR_TH_CITY" class="font-medium text-base px-1">-</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-control w-full">
+                                        <label class="label"><span class="label-text font-medium text-gray-500">จังหวัด</span></label>
+                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
+                                            <p id="view-ADDR_TH_STATE" class="font-medium text-base px-1">-</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-control w-full">
+                                        <label class="label"><span class="label-text font-medium text-gray-500">รหัสไปรษณีย์</span></label>
+                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
+                                            <p id="view-ADDR_TH_ZIPCODE" class="font-medium text-base px-1">-</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-control w-full md:col-span-2">
+                                        <label class="label"><span class="label-text font-medium text-gray-500">ประเทศ</span></label>
+                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
+                                            <p id="view-ADDR_TH_COUNTRY" class="font-medium text-base px-1">-</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="edit-mode hidden grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 bg-indigo-50/50 p-4 rounded-lg border border-indigo-100">
+                                    <div class="form-control w-full">
+                                        <label class="label"><span class="label-text font-medium text-primary">จังหวัด</span></label>
+                                       <input type="text" name="TH_ADDR_STATE" class="input input-bordered w-full  placeholder="ระบุจังหวัด" />
+                                    </div>
+                                    <div class="form-control w-full">
+                                        <label class="label"><span class="label-text font-medium text-primary">อำเภอ/เขต</span></label>
+                                      <input type="text" name="TH_ADDR_CITY" class="input input-bordered w-full" placeholder="ระบุอำเภอ/เขต" />
+                                    </div>
+                                    <div class="form-control w-full">
+                                        <label class="label"><span class="label-text font-medium text-primary">ตำบล/แขวง</span></label>
+                                       <input type="text" name="TH_ADDR_SUBDISTRICT" class="input input-bordered w-full" placeholder="ระบุตำบล/แขวง" />
+                                    </div>
+                                    <div class="form-control w-full">
+                                        <label class="label"><span class="label-text font-medium text-primary">รหัสไปรษณีย์</span></label>
+                                      <input type="text" name="TH_ADDR_ZIPCODE" class="input input-bordered w-full bg-white text-base-content" />
+                      
+                                    </div>
+                                    <div class="form-control w-full md:col-span-2">
+                                        <label class="label"><span class="label-text font-medium text-primary">ประเทศ</span></label>
+                                    <input type="text" name="TH_ADDR_COUNTRY" class="input input-bordered w-full" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
 
                     </div>
                 </div>
