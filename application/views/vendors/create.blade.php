@@ -20,27 +20,27 @@
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div class="form-control w-full">
-                                    <label class="label"><span class="label-text font-medium">Vendor Name (English) <span class="text-error">*</span></span></label>
+                                    <label class="label"><span class="label-text font-semibold">Vendor Name (English) <span class="text-error">*</span></span></label>
                                     <input type="text" name="VND_NAME" class="input input-bordered w-full" required placeholder="Company Name Ltd." />
                                 </div>
 
                                 <div class="form-control w-full">
-                                    <label class="label"><span class="label-text font-medium">Vendor Name (Thai)</span></label>
+                                    <label class="label"><span class="label-text font-semibold">Vendor Name (Thai)</span></label>
                                     <input type="text" name="VND_TNAME" class="input input-bordered w-full" placeholder="บริษัท ตัวอย่าง จำกัด" />
                                 </div>
 
                                 <div class="form-control w-full">
-                                    <label class="label"><span class="label-text font-medium">Sales Contact Person</span></label>
+                                    <label class="label"><span class="label-text font-semibold">Sales Contact Person</span></label>
                                     <input type="text" name="VND_SALE" class="input input-bordered w-full" />
                                 </div>
                                 
                                 <div class="form-control w-full">
-                                    <label class="label"><span class="label-text font-medium">Phone Number</span></label>
+                                    <label class="label"><span class="label-text font-semibold">Phone Number</span></label>
                                     <input type="text" name="ADDR_PHONE" class="input input-bordered w-full" />
                                 </div>
 
                                 <div class="form-control w-full md:col-span-2">
-                                    <label class="label"><span class="label-text font-medium">Website</span></label>
+                                    <label class="label"><span class="label-text font-semibold">Website</span></label>
                                     <input type="text" name="ADDR_WEB" class="input input-bordered w-full" placeholder="www.example.com" />
                                 </div>
                             </div>
@@ -86,17 +86,17 @@
                             <div id="vendor-code-container" class="mt-4 space-y-4 max-h-[450px] overflow-y-auto pr-2 custom-scrollbar">
                                 <div class="vendor-code-row grid grid-cols-1 md:grid-cols-12 gap-4 items-end bg-gray-50 p-4 rounded-lg border border-gray-100 relative">
                                     <div class="form-control w-full md:col-span-3">
-                                        <label class="label"><span class="label-text font-medium">Code<span class="text-error">*</span></span></label>
+                                        <label class="label"><span class="label-text font-semibold">Code<span class="text-error">*</span></span></label>
                                         <input type="text" name="CODE_NUM[]" class="input input-bordered w-full bg-white" required placeholder="e.g. 60002" />
                                     </div>
                                     <div class="form-control w-full md:col-span-2">
-                                        <label class="label"><span class="label-text font-medium">Currency</span></label>
+                                        <label class="label"><span class="label-text font-semibold">Currency</span></label>
                                         <select name="CODE_CURRENCY[]" class="select select-bordered w-full bg-white currency-select">
                                             <option value="" disabled selected>Select...</option>
                                         </select>
                                     </div>
                                     <div class="form-control w-full md:col-span-3">
-                                        <label class="label"><span class="label-text font-medium">Payment Term</span></label>
+                                        <label class="label"><span class="label-text font-semibold">Payment Term</span></label>
                                         <select name="CODE_PAY[]" class="select select-bordered w-full bg-white payment-select" required>
                                             <option value="" disabled selected>Select Payment Term...</option>
                                         </select>
@@ -126,32 +126,32 @@
                     <h3 class="font-bold border-b pb-2 text-primary uppercase text-xs tracking-widest">Address Details (English)</h3>
                     <input type="hidden" name="EN_ADDR_TYPE" value="E"> 
                     <div class="form-control w-full">
-                        <label class="label"><span class="label-text font-medium">Address Line 1</span></label>
+                        <label class="label"><span class="label-text font-semibold">Address Line 1</span></label>
                         <input type="text" name="EN_ADDR_LINE1" class="input input-bordered w-full" />
                     </div>
                     <div class="form-control w-full">
-                        <label class="label"><span class="label-text font-medium">Address Line 2</span></label>
+                        <label class="label"><span class="label-text font-semibold">Address Line 2</span></label>
                         <input type="text" name="EN_ADDR_LINE2" class="input input-bordered w-full" />
                     </div>
                     <div class="form-control w-full">
-                        <label class="label"><span class="label-text font-medium">Address Line 3</span></label>
+                        <label class="label"><span class="label-text font-semibold">Address Line 3</span></label>
                         <input type="text" name="EN_ADDR_LINE3" class="input input-bordered w-full" />
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div class="form-control w-full">
-                            <label class="label"><span class="label-text font-medium">State / Province</span></label>
-                            <select name="EN_ADDR_STATE" class="select select-bordered w-full bg-white state-select"">
+                            <label class="label"><span class="label-text font-semibold">State / Province</span></label>
+                            <select name="EN_ADDR_STATE" class="select select-bordered w-full bg-white state-select">
                                 <option value="" disabled selected>Select State / Province</option>
                             </select>
                         </div>
                         <div class="form-control w-full">
-                            <label class="label"><span class="label-text font-medium">City / District</span></label>
+                            <label class="label"><span class="label-text font-semibold">City / District</span></label>
                             <select name="EN_ADDR_CITY" class="select select-bordered w-full bg-white city-select">
                                 <option value="" disabled selected>Select City / District</option>
                             </select>
                         </div>
                         <div class="form-control w-full">
-                            <label class="label"><span class="label-text font-medium">Subdistrict</span></label>
+                            <label class="label"><span class="label-text font-semibold">Subdistrict</span></label>
                             <select name="EN_ADDR_SUBDISTRICT" class="select select-bordered w-full bg-white subdistrict-select">
                                 <option value="" disabled selected>Select Subdistrict</option>
                             </select>
@@ -159,11 +159,11 @@
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div class="form-control w-full">
-                            <label class="label"><span class="label-text font-medium">Zip Code</span></label>
+                            <label class="label"><span class="label-text font-semibold">Zip Code</span></label>
                             <input type="text" name="EN_ADDR_ZIPCODE" class="input input-bordered w-full " />
                         </div>
                         <div class="form-control w-full">
-                            <label class="label"><span class="label-text font-medium">Country</span></label>
+                            <label class="label"><span class="label-text font-semibold">Country</span></label>
                             <select name="EN_ADDR_COUNTRY" class="select select-bordered w-full">
                             
                             </select>
@@ -177,38 +177,38 @@
                     <h3 class="font-bold border-b pb-2 text-primary uppercase text-xs tracking-widest">Address Details (Thai)</h3>
                     <input type="hidden" name="TH_ADDR_TYPE" value="T"> 
                     <div class="form-control w-full">
-                        <label class="label"><span class="label-text font-medium">ที่อยู่ 1 (Address Line 1) <span class="text-error">*</span></span></label>
+                        <label class="label"><span class="label-text font-semibold">ที่อยู่ 1 (Address Line 1) <span class="text-error">*</span></span></label>
                         <input type="text" name="TH_ADDR_LINE1" class="input input-bordered w-full" required />
                     </div>
                     <div class="form-control w-full">
-                        <label class="label"><span class="label-text font-medium">ที่อยู่ 2 (Address Line 2)</span></label>
+                        <label class="label"><span class="label-text font-semibold">ที่อยู่ 2 (Address Line 2)</span></label>
                         <input type="text" name="TH_ADDR_LINE2" class="input input-bordered w-full" />
                     </div>
                     <div class="form-control w-full">
-                        <label class="label"><span class="label-text font-medium">ที่อยู่ 3 (Address Line 3)</span></label>
+                        <label class="label"><span class="label-text font-semibold">ที่อยู่ 3 (Address Line 3)</span></label>
                         <input type="text" name="TH_ADDR_LINE3" class="input input-bordered w-full" />
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div class="form-control w-full">
-                            <label class="label"><span class="label-text font-medium">จังหวัด</span></label>
-                            <input type="text" name="TH_ADDR_STATE" class="input input-bordered w-full  placeholder="ระบุจังหวัด" />
+                            <label class="label"><span class="label-text font-semibold">จังหวัด</span></label>
+                            <input type="text" name="TH_ADDR_STATE" class="input input-bordered w-full"  placeholder="ระบุจังหวัด" />
                         </div>
                         <div class="form-control w-full">
-                            <label class="label"><span class="label-text font-medium">อำเภอ/เขต</span></label>
+                            <label class="label"><span class="label-text font-semibold">อำเภอ/เขต</span></label>
                             <input type="text" name="TH_ADDR_CITY" class="input input-bordered w-full" placeholder="ระบุอำเภอ/เขต" />
                         </div>
                         <div class="form-control w-full">
-                            <label class="label"><span class="label-text font-medium">ตำบล/แขวง</span></label>
+                            <label class="label"><span class="label-text font-semibold">ตำบล/แขวง</span></label>
                             <input type="text" name="TH_ADDR_SUBDISTRICT" class="input input-bordered w-full" placeholder="ระบุตำบล/แขวง" />
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                          <div class="form-control w-full">
-                            <label class="label"><span class="label-text font-medium">รหัสไปรษณีย์</span></label>
+                            <label class="label"><span class="label-text font-semibold">รหัสไปรษณีย์</span></label>
                             <input type="text" name="TH_ADDR_ZIPCODE" class="input input-bordered w-full bg-white text-base-content" />
                         </div>
                         <div class="form-control w-full">
-                            <label class="label"><span class="label-text font-medium">ประเทศ</span></label>
+                            <label class="label"><span class="label-text font-semibold">ประเทศ</span></label>
                             <input type="text" name="TH_ADDR_COUNTRY" class="input input-bordered w-full" />
                         </div>
                     </div>
