@@ -218,14 +218,14 @@ $(document).ready(async () => {
         <div class="form-control w-full md:col-span-3">
             <label class="label"><span class="label-text font-medium text-gray-500">Code</span></label>
             <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                <p class="font-medium text-base px-1">${vendor.CODE_NUM || "-"}</p>
+                <p class="font-medium text-sm px-1">${vendor.CODE_NUM || "-"}</p>
             </div>
         </div>
 
         <div class="form-control w-full md:col-span-3">
             <label class="label"><span class="label-text font-medium text-gray-500">Currency</span></label>
             <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                <p class="font-medium text-base px-1">${vendor.CODE_CURRENCY || "-"}</p>
+                <p class="font-medium text-sm px-1">${vendor.CODE_CURRENCY || "-"}</p>
             </div>
         </div>
 
@@ -233,10 +233,10 @@ $(document).ready(async () => {
             <label class="label"><span class="label-text font-medium text-gray-500">Payment Term</span></label>
             
             <div class="view-mode min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                <p class="font-medium text-base px-1">${vendor.CODE_PAY || "-"}</p>
+                <p class="font-medium text-sm px-1">${vendor.CODE_PAY || "-"}</p>
             </div>
             
-            <select name="CODE_PAY[]" class="edit-mode hidden select select-bordered w-full h-[3rem] bg-white payment-select" required>
+            <select name="CODE_PAY[]" class="edit-mode hidden select select-bordered w-full h-[3rem] bg-white payment-select text-sm" required>
                 <option value="" disabled ${!vendor.CODE_PAY ? "selected" : ""}>Select Payment Term...</option>
                 ${paymentOptionsHTML}
             </select>
@@ -246,7 +246,7 @@ $(document).ready(async () => {
             <label class="label"><span class="label-text font-medium text-gray-500">Status</span></label>
             
             <div class="view-mode min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                <p class="font-medium text-base px-1">
+                <p class="font-medium text-sm px-1">
                     ${
 						vendor.CODE_STATUS == 1
 							? '<span class="text-emerald-600 font-semibold">Active</span>'
@@ -257,7 +257,8 @@ $(document).ready(async () => {
                 </p>
             </div>
 
-            <select name="CODE_STATUS[]" class="edit-mode hidden select select-bordered w-full h-[3rem] bg-white font-semibold ${vendor.CODE_STATUS == 1 ? "text-emerald-600" : "text-rose-500"}">
+            <select name="CODE_STATUS[]" class="edit-mode hidden select select-bordered w-full h-[3rem] bg-white font-semibold text-sm ${vendor.CODE_STATUS == 1 ? "text-emerald-600" : "text-rose-500"}"
+			onchange="this.classList.remove('text-emerald-600', 'text-rose-500'); this.classList.add(this.value == '1' ? 'text-emerald-600' : 'text-rose-500');">
                 <option value="1" class="text-emerald-600" ${vendor.CODE_STATUS == 1 ? "selected" : ""}>Active</option>
                 <option value="0" class="text-rose-500" ${vendor.CODE_STATUS == 0 ? "selected" : ""}>Inactive</option>
             </select>
