@@ -216,21 +216,21 @@ $(document).ready(async () => {
     <div class="vendor-code-row grid grid-cols-1 md:grid-cols-12 gap-4 items-end mb-4">
         
         <div class="form-control w-full md:col-span-3">
-            <label class="label"><span class="label-text font-medium text-gray-500">Code</span></label>
+            <label class="label"><span class="label-text font-semibold ">Code</span></label>
             <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
                 <p class="font-medium text-sm px-1">${vendor.CODE_NUM || "-"}</p>
             </div>
         </div>
 
         <div class="form-control w-full md:col-span-3">
-            <label class="label"><span class="label-text font-medium text-gray-500">Currency</span></label>
+            <label class="label"><span class="label-text font-semibold">Currency</span></label>
             <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
                 <p class="font-medium text-sm px-1">${vendor.CODE_CURRENCY || "-"}</p>
             </div>
         </div>
 
         <div class="form-control w-full md:col-span-3">
-            <label class="label"><span class="label-text font-medium text-gray-500">Payment Term</span></label>
+            <label class="label"><span class="label-text font-semibold">Payment Term</span></label>
             
             <div class="view-mode min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
                 <p class="font-medium text-sm px-1">${vendor.CODE_PAY || "-"}</p>
@@ -243,7 +243,7 @@ $(document).ready(async () => {
         </div>
 
         <div class="form-control w-full md:col-span-3">
-            <label class="label"><span class="label-text font-medium text-gray-500">Status</span></label>
+            <label class="label"><span class="label-text font-semibold">Status</span></label>
             
             <div class="view-mode min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
                 <p class="font-medium text-sm px-1">
@@ -477,13 +477,13 @@ $(document).on("change", 'select[name="EN_ADDR_COUNTRY"]', function () {
 
 	if (countryCode !== "66") {
 		stateParent.html(
-			'<label class="label"><span class="label-text font-medium">State / Province</span></label><input type="text" name="EN_ADDR_STATE" class="input input-bordered w-full"  />',
+			'<label class="label"><span class="label-text font-semibold">State / Province</span></label><input type="text" name="EN_ADDR_STATE" class="input input-bordered w-full"  />',
 		);
 		cityParent.html(
-			'<label class="label"><span class="label-text font-medium">City / District</span></label><input type="text" name="EN_ADDR_CITY" class="input input-bordered w-full"  />',
+			'<label class="label"><span class="label-text font-semibold">City / District</span></label><input type="text" name="EN_ADDR_CITY" class="input input-bordered w-full"  />',
 		);
 		subdistrictParent.html(
-			'<label class="label"><span class="label-text font-medium">Subdistrict</span></label><input type="text" name="EN_ADDR_SUBDISTRICT" class="input input-bordered w-full"  />',
+			'<label class="label"><span class="label-text font-semibold">Subdistrict</span></label><input type="text" name="EN_ADDR_SUBDISTRICT" class="input input-bordered w-full"  />',
 		);
 
 		// ปลดล็อก Zipcode ให้พิมพ์เองได้
@@ -491,13 +491,13 @@ $(document).on("change", 'select[name="EN_ADDR_COUNTRY"]', function () {
 	} else {
 		// ✅ ถ้ากลับมาเลือกประเทศไทย -> เปลี่ยน Input กลับเป็น Select เหมือนเดิม
 		stateParent.html(
-			'<label class="label"><span class="label-text font-medium">State / Province</span></label><select name="EN_ADDR_STATE" class="select select-bordered w-full bg-white state-select"><option value="" disabled selected>Select State / Province</option></select>',
+			'<label class="label"><span class="label-text font-semibold">State / Province</span></label><select name="EN_ADDR_STATE" class="select select-bordered w-full bg-white state-select"><option value="" disabled selected>Select State / Province</option></select>',
 		);
 		cityParent.html(
-			'<label class="label"><span class="label-text font-medium">City / District</span></label><select name="EN_ADDR_CITY" class="select select-bordered w-full bg-white city-select" disabled><option value="" disabled selected>Select City / District</option></select>',
+			'<label class="label"><span class="label-text font-semibold">City / District</span></label><select name="EN_ADDR_CITY" class="select select-bordered w-full bg-white city-select" disabled><option value="" disabled selected>Select City / District</option></select>',
 		);
 		subdistrictParent.html(
-			'<label class="label"><span class="label-text font-medium">Subdistrict</span></label><select name="EN_ADDR_SUBDISTRICT" class="select select-bordered w-full bg-white subdistrict-select" disabled><option value="" disabled selected>Select Subdistrict</option></select>',
+			'<label class="label"><span class="label-text font-semibold">Subdistrict</span></label><select name="EN_ADDR_SUBDISTRICT" class="select select-bordered w-full bg-white subdistrict-select" disabled><option value="" disabled selected>Select Subdistrict</option></select>',
 		);
 
 		// ล็อก Zipcode ไว้รอ Auto-fill

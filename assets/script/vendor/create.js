@@ -118,24 +118,24 @@ $(document).on("change", 'select[name="EN_ADDR_COUNTRY"]', function () {
 
 	if (countryCode !== "66") {
 		stateParent.html(
-			'<label class="label"><span class="label-text font-medium">State / Province</span></label><input type="text" name="EN_ADDR_STATE" class="input input-bordered w-full" placeholder="Enter State/Province" />',
+			'<label class="label"><span class="label-text font-semibold">State / Province</span></label><input type="text" name="EN_ADDR_STATE" class="input input-bordered w-full" placeholder="Enter State/Province" />',
 		);
 		cityParent.html(
-			'<label class="label"><span class="label-text font-medium">City / District</span></label><input type="text" name="EN_ADDR_CITY" class="input input-bordered w-full" placeholder="Enter City/District" />',
+			'<label class="label"><span class="label-text font-semibold">City / District</span></label><input type="text" name="EN_ADDR_CITY" class="input input-bordered w-full" placeholder="Enter City/District" />',
 		);
 		subdistrictParent.html(
-			'<label class="label"><span class="label-text font-medium">Subdistrict</span></label><input type="text" name="EN_ADDR_SUBDISTRICT" class="input input-bordered w-full" placeholder="Enter Subdistrict" />',
+			'<label class="label"><span class="label-text font-semibold">Subdistrict</span></label><input type="text" name="EN_ADDR_SUBDISTRICT" class="input input-bordered w-full" placeholder="Enter Subdistrict" />',
 		);
 		zipcodeEN.prop("readonly", false).val("");
 	} else {
 		stateParent.html(
-			'<label class="label"><span class="label-text font-medium">State / Province</span></label><select name="EN_ADDR_STATE" class="select select-bordered w-full bg-white state-select"><option value="" disabled selected>Select State / Province</option></select>',
+			'<label class="label"><span class="label-text font-semibold">State / Province</span></label><select name="EN_ADDR_STATE" class="select select-bordered w-full bg-white state-select"><option value="" disabled selected>Select State / Province</option></select>',
 		);
 		cityParent.html(
-			'<label class="label"><span class="label-text font-medium">City / District</span></label><select name="EN_ADDR_CITY" class="select select-bordered w-full bg-white city-select" disabled><option value="" disabled selected>Select City / District</option></select>',
+			'<label class="label"><span class="label-text font-semibold">City / District</span></label><select name="EN_ADDR_CITY" class="select select-bordered w-full bg-white city-select" disabled><option value="" disabled selected>Select City / District</option></select>',
 		);
 		subdistrictParent.html(
-			'<label class="label"><span class="label-text font-medium">Subdistrict</span></label><select name="EN_ADDR_SUBDISTRICT" class="select select-bordered w-full bg-white subdistrict-select" disabled><option value="" disabled selected>Select Subdistrict</option></select>',
+			'<label class="label"><span class="label-text font-semibold">Subdistrict</span></label><select name="EN_ADDR_SUBDISTRICT" class="select select-bordered w-full bg-white subdistrict-select" disabled><option value="" disabled selected>Select Subdistrict</option></select>',
 		);
 
 		zipcodeEN.prop("readonly", true).val("");
