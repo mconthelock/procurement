@@ -31,7 +31,7 @@
                                     <div class="form-control w-full">
                                         <label class="label"><span class="label-text font-medium text-gray-500">Vendor Name (English)</span></label>
                                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-VND_NAME" class="view-mode font-medium text-base px-1">-</p>
+                                            <p id="view-VND_NAME" class="view-mode font-medium text-sm px-1">-</p>
                                             <input type="text" id="input-VND_NAME" name="VND_NAME" class="edit-mode input input-bordered w-full hidden" >
                                         </div>
                                     </div>
@@ -39,7 +39,7 @@
                                     <div class="form-control w-full">
                                         <label class="label"><span class="label-text font-medium text-gray-500">Vendor Name (Thai)</span></label>
                                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-VND_TNAME" class="view-mode font-medium text-base px-1">-</p>
+                                            <p id="view-VND_TNAME" class="view-mode font-medium text-sm  px-1">-</p>
                                             <input type="text" id="input-VND_TNAME" name="VND_TNAME" class="edit-mode input input-bordered w-full hidden" >
                                         </div>
                                     </div>
@@ -47,7 +47,7 @@
                                     <div class="form-control w-full">
                                         <label class="label"><span class="label-text font-medium text-gray-500">Sales Contact Person</span></label>
                                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-VND_SALE" class="view-mode font-medium text-base px-1">-</p>
+                                            <p id="view-VND_SALE" class="view-mode font-medium text-sm  px-1">-</p>
                                             <input type="text" id="input-VND_SALE" name="VND_SALE" class="edit-mode input input-bordered w-full hidden" >
                                         </div>
                                     </div>
@@ -55,7 +55,7 @@
                                     <div class="form-control w-full">
                                         <label class="label"><span class="label-text font-medium text-gray-500">Phone Number</span></label>
                                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-ADDR_PHONE" class="view-mode font-medium text-base px-1">-</p>
+                                            <p id="view-ADDR_PHONE" class="view-mode font-medium text-sm  px-1">-</p>
                                             <input type="text" id="input-ADDR_PHONE" name="ADDR_PHONE" class="edit-mode input input-bordered w-full hidden" >
                                         </div>
                                     </div>
@@ -73,21 +73,21 @@
                                     <div class="view-mode form-control w-full">
                                         <label class="label"><span class="label-text font-medium text-gray-500">Registered By</span></label>
                                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-VND_REGNAME" class="font-medium text-base px-1">-</p>
+                                            <p id="view-VND_REGNAME" class="font-medium text-sm  px-1">-</p>
                                         </div>
                                     </div>
 
                                     <div class="view-mode form-control w-full">
                                         <label class="label"><span class="label-text font-medium text-gray-500">Registered Date</span></label>
                                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-VND_REGDATE" class="font-medium text-base px-1">-</p>
+                                            <p id="view-VND_REGDATE" class="font-medium text-sm  px-1">-</p>
                                         </div>
                                     </div>
 
                                     <div class="view-mode form-control w-full">
                                         <label class="label"><span class="label-text font-medium text-gray-500">Last Updated</span></label>
                                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-VND_LASTUPDATE" class="font-medium text-base px-1">-</p>
+                                            <p id="view-VND_LASTUPDATE" class="font-medium text-sm  px-1">-</p>
                                         </div>
                                     </div>
 
@@ -104,10 +104,10 @@
                                     </button>
                                 </div>
                                 
-                                <div id="existing-files-container" class="mt-4 space-y-3 max-h-[200px] overflow-y-auto pr-2 custom-scrollbar">
+                                <div id="existing-files-container" class="mt-4 space-y-3 max-h-[130px] overflow-y-auto pr-2 custom-scrollbar">
                                 </div>
                                 
-                                <div id="edit-attachment-container" class="edit-mode mt-4 space-y-3 max-h-[200px] overflow-y-auto pr-2 custom-scrollbar hidden">
+                                <div id="edit-attachment-container" class="edit-mode mt-4 space-y-3 max-h-[130px] overflow-y-auto pr-2 custom-scrollbar hidden">
                                     <div class="form-control w-full flex-row items-center gap-3 file-row">
                                         <input type="file" name="vendor_file[]" class="file-input file-input-bordered file-input-primary w-full max-w-md" />
                                         <button type="button" class="btn btn-error btn-sm btn-square btn-remove-file hidden">
@@ -124,7 +124,7 @@
 
             <input type="radio" name="vendor_tabs" role="tab" class="tab font-semibold text-sm whitespace-nowrap px-6" aria-label="🔢 Vendor Codes" />
             <div role="tabpanel" class="tab-content bg-white border-base-300 p-8">
-                <div class="min-h-[550px] content-start">
+                <div class="min-h-[550px] content-start ">
                     <div class="grid grid-cols-1 gap-6 pb-4">
                         <div class="card bg-base-100 shadow-sm border border-base-200">
                             <div class="card-body">
@@ -139,7 +139,7 @@
                                 <div id="view-vendor-code-container" class="mt-4 pr-2">
                                 </div>
                                 
-                                <div id="edit-vendor-code-container" class="edit-mode mt-4 pr-2 hidden">
+                                <div id="edit-vendor-code-container" class="edit-mode mt-4 pr-2 max-h-[270px] overflow-y-auto pr-2 custom-scrollbar hidden">
                                     <div class="vendor-code-row grid grid-cols-1 md:grid-cols-12 gap-4 items-end bg-gray-50 p-4 rounded-lg border border-gray-100 relative mb-4">
                                         <div class="form-control w-full md:col-span-3">
                                             <label class="label"><span class="label-text font-medium">Code<span class="text-error">*</span></span></label>
@@ -186,7 +186,7 @@
                                     <div class="form-control w-full md:col-span-3">
                                         <label class="label"><span class="label-text font-medium text-gray-500">Address Line 1</span></label>
                                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-ADDR_EN_LINE1" class="view-mode font-medium text-base px-1">-</p>
+                                            <p id="view-ADDR_EN_LINE1" class="view-mode font-medium text-sm  px-1">-</p>
                                             <input type="text" id="input-ADDR_EN_LINE1" name="ADDR_EN_LINE1" class="edit-mode input input-bordered w-full hidden">
                                         </div>
                                     </div>
@@ -194,7 +194,7 @@
                                     <div class="form-control w-full md:col-span-3">
                                         <label class="label"><span class="label-text font-medium text-gray-500">Address Line 2</span></label>
                                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-ADDR_EN_LINE2" class="view-mode font-medium text-base px-1">-</p>
+                                            <p id="view-ADDR_EN_LINE2" class="view-mode font-medium text-sm  px-1">-</p>
                                             <input type="text" id="input-ADDR_EN_LINE2" name="ADDR_EN_LINE2" class="edit-mode input input-bordered w-full hidden">
                                         </div>
                                     </div>
@@ -202,7 +202,7 @@
                                     <div class="form-control w-full md:col-span-3">
                                         <label class="label"><span class="label-text font-medium text-gray-500">Address Line 3</span></label>
                                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-ADDR_EN_LINE3" class="view-mode font-medium text-base px-1">-</p>
+                                            <p id="view-ADDR_EN_LINE3" class="view-mode font-medium text-sm  px-1">-</p>
                                             <input type="text" id="input-ADDR_EN_LINE3" name="ADDR_EN_LINE3" class="edit-mode input input-bordered w-full hidden">
                                         </div>
                                     </div>
@@ -212,65 +212,75 @@
                                     <div class="form-control w-full">
                                         <label class="label"><span class="label-text font-medium text-gray-500">Sub-district</span></label>
                                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-ADDR_EN_SUBDISTRICT" class="font-medium text-base px-1">-</p>
+                                            <p id="view-ADDR_EN_SUBDISTRICT" class="font-medium text-sm  px-1">-</p>
                                         </div>
                                     </div>
                                     <div class="form-control w-full">
                                         <label class="label"><span class="label-text font-medium text-gray-500">City / District</span></label>
                                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-ADDR_EN_CITY" class="font-medium text-base px-1">-</p>
+                                            <p id="view-ADDR_EN_CITY" class="font-medium text-sm  px-1">-</p>
                                         </div>
                                     </div>
                                     <div class="form-control w-full">
                                         <label class="label"><span class="label-text font-medium text-gray-500">State / Province</span></label>
                                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-ADDR_EN_STATE" class="font-medium text-base px-1">-</p>
+                                            <p id="view-ADDR_EN_STATE" class="font-medium text-sm  px-1">-</p>
                                         </div>
                                     </div>
                                     <div class="form-control w-full">
                                         <label class="label"><span class="label-text font-medium text-gray-500">Zip Code</span></label>
                                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-ADDR_EN_ZIPCODE" class="font-medium text-base px-1">-</p>
+                                            <p id="view-ADDR_EN_ZIPCODE" class="font-medium text-sm  px-1">-</p>
                                         </div>
                                     </div>
                                     <div class="form-control w-full md:col-span-2">
                                         <label class="label"><span class="label-text font-medium text-gray-500">Country</span></label>
                                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-ADDR_EN_COUNTRY" class="font-medium text-base px-1">-</p>
+                                            <p id="view-ADDR_EN_COUNTRY" class="font-medium text-sm  px-1">-</p>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="edit-mode hidden grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 bg-indigo-50/50 p-4 rounded-lg border border-indigo-100">
+                                <div class="edit-mode hidden  grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                                     <div class="form-control w-full">
-                                        <label class="label"><span class="label-text font-medium text-primary">State / Province</span></label>
-                                        <select name="EN_ADDR_STATE" class="select select-bordered w-full bg-white state-select"">
+                                        <label class="label"><span class="label-text font-medium text-gray-500">State / Province</span></label>
+                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
+                                        <select name="EN_ADDR_STATE" class="select select-bordered w-full bg-white state-select">
                                         <option value="" disabled selected>Select State / Province</option>
-                                    </select>
+                                         </select>
+                                        </div>
                                     </div>
                                     <div class="form-control w-full">
-                                        <label class="label"><span class="label-text font-medium text-primary">City / District</span></label>
+                                        <label class="label"><span class="label-text font-medium text-gray-500">City / District</span></label>
+                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
                                         <select name="EN_ADDR_CITY" class="select select-bordered w-full bg-white city-select">
                                          <option value="" disabled selected>Select City / District</option>
-                                    </select>
+                                         </select>
+                                        </div>
                                     </div>
                                     <div class="form-control w-full">
-                                        <label class="label"><span class="label-text font-medium text-primary">Sub-district</span></label>
-                                          <select name="EN_ADDR_SUBDISTRICT" class="select select-bordered w-full bg-white subdistrict-select">
-                                <option value="" disabled selected>Select Subdistrict</option>
-                            </select>
+                                        <label class="label"><span class="label-text font-medium text-gray-500">Sub-district</span></label>
+                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
+                                        <select name="EN_ADDR_SUBDISTRICT" class="select select-bordered w-full bg-white subdistrict-select">
+                                            <option value="" disabled selected>Select Subdistrict</option>
+                                        </select>
+                                        </div>
                                     </div>
                                     <div class="form-control w-full">
-                                        <label class="label"><span class="label-text font-medium text-primary">Zip Code</span></label>
-                                        <input type="text" id="input-ADDR_EN_ZIPCODE" name="ADDR_EN_ZIPCODE" class="input input-bordered w-full">
+                                        <label class="label"><span class="label-text font-medium text-gray-500">Zip Code</span></label>
+                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
+                                        <input type="text" id="input-EN_ADDR_ZIPCODE" name="EN_ADDR_ZIPCODE" class="input input-bordered w-full">
+                                        </div>
                                     </div>
                                     <div class="form-control w-full md:col-span-2">
-                                        <label class="label"><span class="label-text font-medium text-primary">Country</span></label>
-                                        <select name="ADDR_EN_COUNTRY" class="select select-bordered w-full">
+                                        <label class="label"><span class="label-text font-medium text-gray-500">Country</span></label>
+                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
+                                        <select name="EN_ADDR_COUNTRY" class="select select-bordered w-full">
                                             <option value="66">Thailand</option>
                                             <option value="1">United States</option>
                                             <option value="81">Japan</option>
                                         </select>
+                                    </div>
                                     </div>
                                 </div>
 
@@ -285,7 +295,7 @@
                                     <div class="form-control w-full md:col-span-3">
                                         <label class="label"><span class="label-text font-medium text-gray-500">ที่อยู่ 1 (Address Line 1)</span></label>
                                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center"> 
-                                            <p id="view-ADDR_TH_LINE1" class="view-mode font-medium text-base px-1">-</p>
+                                            <p id="view-ADDR_TH_LINE1" class="view-mode font-medium text-sm  px-1">-</p>
                                             <input type="text" id="input-ADDR_TH_LINE1" name="ADDR_TH_LINE1" class="edit-mode input input-bordered w-full hidden">
                                         </div>
                                     </div>
@@ -293,7 +303,7 @@
                                     <div class="form-control w-full md:col-span-3">
                                         <label class="label"><span class="label-text font-medium text-gray-500">ที่อยู่ 2 (Address Line 2)</span></label>
                                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-ADDR_TH_LINE2" class="view-mode font-medium text-base px-1">-</p>
+                                            <p id="view-ADDR_TH_LINE2" class="view-mode font-medium text-sm  px-1">-</p>
                                             <input type="text" id="input-ADDR_TH_LINE2" name="ADDR_TH_LINE2" class="edit-mode input input-bordered w-full hidden"> 
                                         </div>
                                     </div>
@@ -301,7 +311,7 @@
                                     <div class="form-control w-full md:col-span-3">
                                         <label class="label"><span class="label-text font-medium text-gray-500">ที่อยู่ 3 (Address Line 3)</span></label>
                                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-ADDR_TH_LINE3" class="view-mode font-medium text-base px-1">-</p>
+                                            <p id="view-ADDR_TH_LINE3" class="view-mode font-medium text-sm e px-1">-</p>
                                             <input type="text" id="input-ADDR_TH_LINE3" name="ADDR_TH_LINE3" class="edit-mode input input-bordered w-full hidden">
                                         </div>
                                     </div>
@@ -311,56 +321,65 @@
                                     <div class="form-control w-full">
                                         <label class="label"><span class="label-text font-medium text-gray-500">ตำบล/แขวง</span></label>
                                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-ADDR_TH_SUBDISTRICT" class="font-medium text-base px-1">-</p>
+                                            <p id="view-ADDR_TH_SUBDISTRICT" class="font-medium text-sm  px-1">-</p>
                                         </div>
                                     </div>
                                     <div class="form-control w-full">
                                         <label class="label"><span class="label-text font-medium text-gray-500">เขต / อำเภอ</span></label>
                                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-ADDR_TH_CITY" class="font-medium text-base px-1">-</p>
+                                            <p id="view-ADDR_TH_CITY" class="font-medium text-sm  px-1">-</p>
                                         </div>
                                     </div>
                                     <div class="form-control w-full">
                                         <label class="label"><span class="label-text font-medium text-gray-500">จังหวัด</span></label>
                                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-ADDR_TH_STATE" class="font-medium text-base px-1">-</p>
+                                            <p id="view-ADDR_TH_STATE" class="font-medium text-sm  px-1">-</p>
                                         </div>
                                     </div>
                                     <div class="form-control w-full">
                                         <label class="label"><span class="label-text font-medium text-gray-500">รหัสไปรษณีย์</span></label>
                                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-ADDR_TH_ZIPCODE" class="font-medium text-base px-1">-</p>
+                                            <p id="view-ADDR_TH_ZIPCODE" class="font-medium text-sm  px-1">-</p>
                                         </div>
                                     </div>
                                     <div class="form-control w-full md:col-span-2">
                                         <label class="label"><span class="label-text font-medium text-gray-500">ประเทศ</span></label>
                                         <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
-                                            <p id="view-ADDR_TH_COUNTRY" class="font-medium text-base px-1">-</p>
+                                            <p id="view-ADDR_TH_COUNTRY" class="font-medium text-sm e px-1">-</p>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="edit-mode hidden grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 bg-indigo-50/50 p-4 rounded-lg border border-indigo-100">
+                                <div class="edit-mode hidden grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 ">
                                     <div class="form-control w-full">
-                                        <label class="label"><span class="label-text font-medium text-primary">จังหวัด</span></label>
-                                       <input type="text" name="TH_ADDR_STATE" class="input input-bordered w-full  placeholder="ระบุจังหวัด" />
+                                        <label class="label"><span class="label-text font-medium text-gray-500">จังหวัด</span></label>
+                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
+                                            <input type="text" name="TH_ADDR_STATE" class="input input-bordered w-full"  placeholder="ระบุจังหวัด" />
+                                        </div>
                                     </div>
                                     <div class="form-control w-full">
-                                        <label class="label"><span class="label-text font-medium text-primary">อำเภอ/เขต</span></label>
-                                      <input type="text" name="TH_ADDR_CITY" class="input input-bordered w-full" placeholder="ระบุอำเภอ/เขต" />
+                                        <label class="label"><span class="label-text font-medium text-gray-500">อำเภอ/เขต</span></label>
+                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
+                                        <input type="text" name="TH_ADDR_CITY" class="input input-bordered w-full" placeholder="ระบุอำเภอ/เขต" />
+                                        </div>
                                     </div>
                                     <div class="form-control w-full">
-                                        <label class="label"><span class="label-text font-medium text-primary">ตำบล/แขวง</span></label>
-                                       <input type="text" name="TH_ADDR_SUBDISTRICT" class="input input-bordered w-full" placeholder="ระบุตำบล/แขวง" />
+                                        <label class="label"><span class="label-text font-medium text-gray-500">ตำบล/แขวง</span></label>
+                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
+                                             <input type="text" name="TH_ADDR_SUBDISTRICT" class="input input-bordered w-full" placeholder="ระบุตำบล/แขวง" />
+                                        </div>
                                     </div>
                                     <div class="form-control w-full">
-                                        <label class="label"><span class="label-text font-medium text-primary">รหัสไปรษณีย์</span></label>
-                                      <input type="text" name="TH_ADDR_ZIPCODE" class="input input-bordered w-full bg-white text-base-content" />
-                      
+                                        <label class="label"><span class="label-text font-medium text-gray-500">รหัสไปรษณีย์</span></label>
+                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
+                                            <input type="text" name="TH_ADDR_ZIPCODE" class="input input-bordered w-full bg-white text-base-content" />
+                                        </div>
                                     </div>
                                     <div class="form-control w-full md:col-span-2">
-                                        <label class="label"><span class="label-text font-medium text-primary">ประเทศ</span></label>
-                                    <input type="text" name="TH_ADDR_COUNTRY" class="input input-bordered w-full" />
+                                        <label class="label"><span class="label-text font-medium text-gray-500">ประเทศ</span></label>
+                                        <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
+                                         <input type="text" name="TH_ADDR_COUNTRY" class="input input-bordered w-full" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
