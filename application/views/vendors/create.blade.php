@@ -87,7 +87,7 @@
                                 <div class="vendor-code-row grid grid-cols-1 md:grid-cols-12 gap-4 items-end bg-gray-50 p-4 rounded-lg border border-gray-100 relative">
                                     <div class="form-control w-full md:col-span-3">
                                         <label class="label"><span class="label-text font-medium">Code<span class="text-error">*</span></span></label>
-                                        <input type="text" name="CODE_NUM[]" class="input input-bordered w-full bg-white" required placeholder="e.g. VND001" />
+                                        <input type="text" name="CODE_NUM[]" class="input input-bordered w-full bg-white" required placeholder="e.g. 60002" />
                                     </div>
                                     <div class="form-control w-full md:col-span-2">
                                         <label class="label"><span class="label-text font-medium">Currency</span></label>
@@ -165,9 +165,7 @@
                         <div class="form-control w-full">
                             <label class="label"><span class="label-text font-medium">Country</span></label>
                             <select name="EN_ADDR_COUNTRY" class="select select-bordered w-full">
-                                <option value="66">Thailand</option>
-                                <option value="1">United States</option>
-                                <option value="81">Japan</option>
+                            
                             </select>
                         </div>
                     </div>
@@ -239,38 +237,6 @@
 @section('scripts')
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="{{ $_ENV['APP_JS'] }}/create.js?ver={{ $GLOBALS['version'] }}"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            
-            // ==============================================
-            // สคริปต์การแนบไฟล์ 
-            // ==============================================
-            const fileContainer = document.getElementById('attachment-container');
-            const btnAddFile = document.getElementById('btnAddFile');
-
-            if (btnAddFile && fileContainer) {
-                btnAddFile.addEventListener('click', function () {
-                    const row = document.createElement('div');
-                    row.className = 'form-control w-full flex-row items-center gap-3 file-row mt-3';
-                    
-                    row.innerHTML = `
-                        <input type="file" name="vendor_file[]" class="file-input file-input-bordered file-input-primary w-full max-w-md" />
-                        <button type="button" class="btn btn-error btn-sm btn-square btn-remove-file">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                        </button>
-                    `;
-                    
-                    row.querySelector('.btn-remove-file').addEventListener('click', function() {
-                        row.remove();
-                    });
-
-                    fileContainer.appendChild(row);
-                    fileContainer.scrollTop = fileContainer.scrollHeight;
-                });
-            }
-        });
-    </script>
-    
     <style>
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;

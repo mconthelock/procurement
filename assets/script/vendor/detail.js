@@ -6,6 +6,7 @@ import { getVendors } from "../service/index.js";
 import { getAddressMST } from "../service/addressth.js";
 import { getPayments } from "../service/payment.js";
 import { getCurrencies } from "../service/currency.js";
+import { getCountry } from "../service/country.js";
 import { log } from "three";
 import { el } from "@faker-js/faker";
 
@@ -15,8 +16,9 @@ const statusBadges = {
 	2: { class: "badge-error", text: "Inactive" },
 };
 let addressData = [];
-const payments = await getPayments();
-const vendorContainer = $("#edit-vendor-code-container");
+let payments = await getPayments();
+let vendorContainer = $("#edit-vendor-code-container");
+let countrymst = [];
 function getUniqueValues(dataArray, key) {
 	return [...new Set(dataArray.map((item) => item[key]))];
 }
@@ -36,6 +38,15 @@ $(document).ready(async () => {
 			currencySelects.append(optionHTML);
 		});
 
+		countrymst = await getCountry();
+		const countrySelect = $('select[name="EN_ADDR_COUNTRY"]');
+		countrySelect.empty();
+
+		countrymst.forEach((country) => {
+			const optionHTML = `<option value="${country.code}">${country.name_en}</option>`;
+			countrySelect.append(optionHTML);
+		});
+
 		// ล็อก Dropdown อำเภอและตำบลไว้ก่อนตั้งแต่เริ่มต้น
 		$(".city-select").prop("disabled", true);
 		$(".subdistrict-select").prop("disabled", true);
@@ -45,7 +56,7 @@ $(document).ready(async () => {
 			.addClass("bg-gray-100");
 
 		// --- สเตปที่ 1: ใส่ข้อมูลจังหวัดลงใน Dropdown ที่มีคลาส .state-select ---
-		const provinces = getUniqueValues(addressData, "province");
+		const provinces = getUniqueValues(addressData, "province_en");
 		$(".state-select").each(function () {
 			const $thisProv = $(this);
 			provinces.forEach((prov) => {
@@ -202,33 +213,48 @@ $(document).ready(async () => {
 							.join("");
 					}
 					const htmlContent = `
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end bg-gray-50 p-4 rounded-lg border border-gray-100 mb-4">
-                <div class="form-control w-full md:col-span-3">
-                    <label class="label"><span class="label-text font-medium text-gray-500">Code</span></label>
-                    <div class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-800 font-semibold h-[3rem] flex items-center">${vendor.CODE_NUM || "-"}</div>
-                </div>
-                <div class="form-control w-full md:col-span-3">
-                    <label class="label"><span class="label-text font-medium text-gray-500">Currency</span></label>
-                    <div class="px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-800 h-[3rem] flex items-center">${vendor.CODE_CURRENCY || "-"}</div>
-                </div>
-                <div class="form-control w-full md:col-span-3">
-                    <label class="label"><span class="label-text font-medium text-gray-500">Payment Term</span></label>
-                    <div class="view-mode px-4 py-3 bg-white border border-gray-200 rounded-lg text-gray-800 h-[3rem] flex items-center">${vendor.CODE_PAY || "-"}</div>
-					    <select name="CODE_PAY[]" class="edit-mode select select-bordered w-full bg-white payment-select hidden" required>
-                    <option value="" disabled ${!vendor.CODE_PAY ? "selected" : ""}>Select Payment Term...</option>
-                    ${paymentOptionsHTML}
-                </select>
-                </div>
-			<div class="form-control w-full md:col-span-3">
+    <div class="vendor-code-row grid grid-cols-1 md:grid-cols-12 gap-4 items-end mb-4">
+        
+        <div class="form-control w-full md:col-span-3">
+            <label class="label"><span class="label-text font-medium text-gray-500">Code</span></label>
+            <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
+                <p class="font-medium text-base px-1">${vendor.CODE_NUM || "-"}</p>
+            </div>
+        </div>
+
+        <div class="form-control w-full md:col-span-3">
+            <label class="label"><span class="label-text font-medium text-gray-500">Currency</span></label>
+            <div class="min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
+                <p class="font-medium text-base px-1">${vendor.CODE_CURRENCY || "-"}</p>
+            </div>
+        </div>
+
+        <div class="form-control w-full md:col-span-3">
+            <label class="label"><span class="label-text font-medium text-gray-500">Payment Term</span></label>
+            
+            <div class="view-mode min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
+                <p class="font-medium text-base px-1">${vendor.CODE_PAY || "-"}</p>
+            </div>
+            
+            <select name="CODE_PAY[]" class="edit-mode hidden select select-bordered w-full h-[3rem] bg-white payment-select" required>
+                <option value="" disabled ${!vendor.CODE_PAY ? "selected" : ""}>Select Payment Term...</option>
+                ${paymentOptionsHTML}
+            </select>
+        </div>
+
+        <div class="form-control w-full md:col-span-3">
             <label class="label"><span class="label-text font-medium text-gray-500">Status</span></label>
-  <div class="view-mode px-4 py-3 bg-white border border-gray-200 rounded-lg h-[3rem] flex items-center">
-                ${
-					vendor.CODE_STATUS == 1
-						? '<span class="text-emerald-600 font-semibold">Active</span>'
-						: vendor.CODE_STATUS == 0
-							? '<span class="text-rose-500 font-semibold">Inactive</span>'
-							: "-"
-				}
+            
+            <div class="view-mode min-h-[3rem] px-4 py-2 bg-gray-50 border border-gray-100 rounded-lg flex items-center">
+                <p class="font-medium text-base px-1">
+                    ${
+						vendor.CODE_STATUS == 1
+							? '<span class="text-emerald-600 font-semibold">Active</span>'
+							: vendor.CODE_STATUS == 0
+								? '<span class="text-rose-500 font-semibold">Inactive</span>'
+								: "-"
+					}
+                </p>
             </div>
 
             <select name="CODE_STATUS[]" class="edit-mode hidden select select-bordered w-full h-[3rem] bg-white font-semibold ${vendor.CODE_STATUS == 1 ? "text-emerald-600" : "text-rose-500"}">
@@ -236,6 +262,7 @@ $(document).ready(async () => {
                 <option value="0" class="text-rose-500" ${vendor.CODE_STATUS == 0 ? "selected" : ""}>Inactive</option>
             </select>
         </div>
+        
     </div>
 `;
 					vendorContainer.append(htmlContent);
@@ -429,54 +456,57 @@ $(document).on("click", "#cancel-edit", async function (e) {
 // ==========================================================
 $(document).on("change", 'select[name="EN_ADDR_COUNTRY"]', function () {
 	const countryCode = $(this).val();
-	const $wrapper = $(this).closest(".tab-content");
+	const wrapper = $(this).closest(".tab-content");
+	const matchedCountry = countrymst.find((c) => c.code === countryCode);
 
 	// หา div ที่ครอบช่อง State, City, Subdistrict อยู่
-	const $stateParent = $wrapper
+	const stateParent = wrapper
 		.find('[name="EN_ADDR_STATE"]')
 		.closest(".form-control");
-	const $cityParent = $wrapper
+	const cityParent = wrapper
 		.find('[name="EN_ADDR_CITY"]')
 		.closest(".form-control");
-	const $subdistrictParent = $wrapper
+	const subdistrictParent = wrapper
 		.find('[name="EN_ADDR_SUBDISTRICT"]')
 		.closest(".form-control");
-	const $zipcodeEN = $wrapper.find('input[name="EN_ADDR_ZIPCODE"]');
+	const zipcodeEN = wrapper.find('input[name="EN_ADDR_ZIPCODE"]');
+	const countryTH = wrapper
+		.find('input[name="TH_ADDR_COUNTRY"]')
+		.val(matchedCountry.name_th);
 
 	if (countryCode !== "66") {
-		// ❌ ถ้าไม่ใช่ประเทศไทย -> เปลี่ยน Select เป็น Input เพื่อให้พิมพ์เอง
-		$stateParent.html(
-			'<label class="label"><span class="label-text font-medium">State / Province</span></label><input type="text" name="EN_ADDR_STATE" class="input input-bordered w-full" placeholder="Enter State/Province" />',
+		stateParent.html(
+			'<label class="label"><span class="label-text font-medium">State / Province</span></label><input type="text" name="EN_ADDR_STATE" class="input input-bordered w-full"  />',
 		);
-		$cityParent.html(
-			'<label class="label"><span class="label-text font-medium">City / District</span></label><input type="text" name="EN_ADDR_CITY" class="input input-bordered w-full" placeholder="Enter City/District" />',
+		cityParent.html(
+			'<label class="label"><span class="label-text font-medium">City / District</span></label><input type="text" name="EN_ADDR_CITY" class="input input-bordered w-full"  />',
 		);
-		$subdistrictParent.html(
-			'<label class="label"><span class="label-text font-medium">Subdistrict</span></label><input type="text" name="EN_ADDR_SUBDISTRICT" class="input input-bordered w-full" placeholder="Enter Subdistrict" />',
+		subdistrictParent.html(
+			'<label class="label"><span class="label-text font-medium">Subdistrict</span></label><input type="text" name="EN_ADDR_SUBDISTRICT" class="input input-bordered w-full"  />',
 		);
 
 		// ปลดล็อก Zipcode ให้พิมพ์เองได้
-		$zipcodeEN.prop("readonly", false).val("");
+		zipcodeEN.prop("readonly", false).val("");
 	} else {
 		// ✅ ถ้ากลับมาเลือกประเทศไทย -> เปลี่ยน Input กลับเป็น Select เหมือนเดิม
-		$stateParent.html(
+		stateParent.html(
 			'<label class="label"><span class="label-text font-medium">State / Province</span></label><select name="EN_ADDR_STATE" class="select select-bordered w-full bg-white state-select"><option value="" disabled selected>Select State / Province</option></select>',
 		);
-		$cityParent.html(
+		cityParent.html(
 			'<label class="label"><span class="label-text font-medium">City / District</span></label><select name="EN_ADDR_CITY" class="select select-bordered w-full bg-white city-select" disabled><option value="" disabled selected>Select City / District</option></select>',
 		);
-		$subdistrictParent.html(
+		subdistrictParent.html(
 			'<label class="label"><span class="label-text font-medium">Subdistrict</span></label><select name="EN_ADDR_SUBDISTRICT" class="select select-bordered w-full bg-white subdistrict-select" disabled><option value="" disabled selected>Select Subdistrict</option></select>',
 		);
 
 		// ล็อก Zipcode ไว้รอ Auto-fill
-		$zipcodeEN.prop("readonly", true).val("");
+		zipcodeEN.prop("readonly", true).val("");
 
 		// เติมข้อมูลจังหวัดกลับเข้าไปใหม่
 		const provinces = getUniqueValues(addressData, "province_en");
-		const $stateSelect = $wrapper.find('select[name="EN_ADDR_STATE"]');
+		const stateSelect = wrapper.find('select[name="EN_ADDR_STATE"]');
 		provinces.forEach((prov) => {
-			$stateSelect.append(new Option(prov, prov));
+			stateSelect.append(new Option(prov, prov));
 		});
 	}
 });
@@ -484,22 +514,20 @@ $(document).on("change", 'select[name="EN_ADDR_COUNTRY"]', function () {
 // --- สเตปที่ 1: เลือก State/Province ---
 $(document).on("change", 'select[name="EN_ADDR_STATE"]', function () {
 	const selectedProvinceEN = $(this).val();
-	const $wrapper = $(this).closest(".tab-content");
+	const wrapper = $(this).closest(".tab-content");
 
-	const $selCityEN = $wrapper.find('select[name="EN_ADDR_CITY"]');
-	const $selSubdistrictEN = $wrapper.find(
-		'select[name="EN_ADDR_SUBDISTRICT"]',
-	);
+	const selCityEN = wrapper.find('select[name="EN_ADDR_CITY"]');
+	const selSubdistrictEN = wrapper.find('select[name="EN_ADDR_SUBDISTRICT"]');
 
-	$selCityEN
+	selCityEN
 		.html(
 			'<option value="" disabled selected>Select City / District</option>',
 		)
 		.prop("disabled", false);
-	$selSubdistrictEN
+	selSubdistrictEN
 		.html('<option value="" disabled selected>Select Subdistrict</option>')
 		.prop("disabled", true);
-	$wrapper.find('input[name="EN_ADDR_ZIPCODE"]').val("");
+	wrapper.find('input[name="EN_ADDR_ZIPCODE"]').val("");
 
 	const filteredCities = addressData.filter(
 		(item) => item.province_en === selectedProvinceEN,
@@ -507,35 +535,33 @@ $(document).on("change", 'select[name="EN_ADDR_STATE"]', function () {
 
 	// 👉 AUTO-FILL: จังหวัดภาษาไทย
 	if (filteredCities.length > 0) {
-		$wrapper
+		wrapper
 			.find('input[name="TH_ADDR_STATE"]')
 			.val(filteredCities[0].province_th);
 	}
-	$wrapper.find('input[name="TH_ADDR_CITY"]').val("");
-	$wrapper.find('input[name="TH_ADDR_SUBDISTRICT"]').val("");
-	$wrapper.find('input[name="TH_ADDR_ZIPCODE"]').val("");
+	wrapper.find('input[name="TH_ADDR_CITY"]').val("");
+	wrapper.find('input[name="TH_ADDR_SUBDISTRICT"]').val("");
+	wrapper.find('input[name="TH_ADDR_ZIPCODE"]').val("");
 
 	const citiesEN = getUniqueValues(filteredCities, "district_en");
 	citiesEN.forEach((city) => {
-		$selCityEN.append(new Option(city, city));
+		selCityEN.append(new Option(city, city));
 	});
 });
 
 // --- สเตปที่ 2: เลือก City/District ---
 $(document).on("change", 'select[name="EN_ADDR_CITY"]', function () {
-	const $wrapper = $(this).closest(".tab-content");
-	const selectedProvinceEN = $wrapper
+	const wrapper = $(this).closest(".tab-content");
+	const selectedProvinceEN = wrapper
 		.find('select[name="EN_ADDR_STATE"]')
 		.val();
 	const selectedCityEN = $(this).val();
 
-	const $selSubdistrictEN = $wrapper.find(
-		'select[name="EN_ADDR_SUBDISTRICT"]',
-	);
-	$selSubdistrictEN
+	const selSubdistrictEN = wrapper.find('select[name="EN_ADDR_SUBDISTRICT"]');
+	selSubdistrictEN
 		.html('<option value="" disabled selected>Select Subdistrict</option>')
 		.prop("disabled", false);
-	$wrapper.find('input[name="EN_ADDR_ZIPCODE"]').val("");
+	wrapper.find('input[name="EN_ADDR_ZIPCODE"]').val("");
 
 	const filteredSubdistricts = addressData.filter(
 		(item) =>
@@ -545,29 +571,29 @@ $(document).on("change", 'select[name="EN_ADDR_CITY"]', function () {
 
 	// 👉 AUTO-FILL: อำเภอภาษาไทย
 	if (filteredSubdistricts.length > 0) {
-		$wrapper
+		wrapper
 			.find('input[name="TH_ADDR_CITY"]')
 			.val(filteredSubdistricts[0].district_th);
 	}
-	$wrapper.find('input[name="TH_ADDR_SUBDISTRICT"]').val("");
-	$wrapper.find('input[name="TH_ADDR_ZIPCODE"]').val("");
+	wrapper.find('input[name="TH_ADDR_SUBDISTRICT"]').val("");
+	wrapper.find('input[name="TH_ADDR_ZIPCODE"]').val("");
 
 	const subdistrictsEN = getUniqueValues(
 		filteredSubdistricts,
 		"sub_district_en",
 	);
 	subdistrictsEN.forEach((sub) => {
-		$selSubdistrictEN.append(new Option(sub, sub));
+		selSubdistrictEN.append(new Option(sub, sub));
 	});
 });
 
 // --- สเตปที่ 3: เลือก Subdistrict ---
 $(document).on("change", 'select[name="EN_ADDR_SUBDISTRICT"]', function () {
-	const $wrapper = $(this).closest(".tab-content");
-	const selectedProvinceEN = $wrapper
+	const wrapper = $(this).closest(".tab-content");
+	const selectedProvinceEN = wrapper
 		.find('select[name="EN_ADDR_STATE"]')
 		.val();
-	const selectedCityEN = $wrapper.find('select[name="EN_ADDR_CITY"]').val();
+	const selectedCityEN = wrapper.find('select[name="EN_ADDR_CITY"]').val();
 	const selectedSubdistrictEN = $(this).val();
 
 	const matchedAddress = addressData.find(
@@ -579,49 +605,36 @@ $(document).on("change", 'select[name="EN_ADDR_SUBDISTRICT"]', function () {
 
 	// 👉 AUTO-FILL: ตำบลภาษาไทย + Zipcode
 	if (matchedAddress) {
-		$wrapper
+		wrapper
 			.find('input[name="EN_ADDR_ZIPCODE"]')
 			.val(matchedAddress.zipcode);
-		$wrapper
+		wrapper
 			.find('input[name="TH_ADDR_SUBDISTRICT"]')
 			.val(matchedAddress.sub_district_th);
-		$wrapper
+		wrapper
 			.find('input[name="TH_ADDR_ZIPCODE"]')
 			.val(matchedAddress.zipcode);
 	}
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-	// ==============================================
-	// สคริปต์การแนบไฟล์
-	// ==============================================
-	const fileContainer = document.getElementById("edit-attachment-container");
-	const btnAddFile = document.getElementById("btnAddFile");
+$(document).on("click", "#btnAddFile", function (e) {
+	e.preventDefault();
+	const $fileContainer = $("#edit-attachment-container");
+	const rowHtml = `
+        <div class="form-control w-full flex-row items-center gap-3 file-row mt-3">
+            <input type="file" name="vendor_file[]" class="file-input file-input-bordered file-input-primary w-full max-w-md" />
+            <button type="button" class="btn btn-error btn-sm btn-square btn-remove-file">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+        </div>
+    `;
+	$fileContainer.append(rowHtml);
+	$fileContainer.scrollTop($fileContainer[0].scrollHeight);
+});
 
-	if (btnAddFile && fileContainer) {
-		btnAddFile.addEventListener("click", function () {
-			const row = document.createElement("div");
-			row.className =
-				"form-control w-full flex-row items-center gap-3 file-row mt-3";
-
-			row.innerHTML = `
-                        <input type="file" name="vendor_file[]" class="file-input file-input-bordered file-input-primary w-full max-w-md" />
-                        <button type="button" class="btn btn-error btn-sm btn-square btn-remove-file">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                        </button>
-                    `;
-
-			row.querySelector(".btn-remove-file").addEventListener(
-				"click",
-				function () {
-					row.remove();
-				},
-			);
-
-			fileContainer.appendChild(row);
-			fileContainer.scrollTop = fileContainer.scrollHeight;
-		});
-	}
+$(document).on("click", ".btn-remove-file", function (e) {
+	e.preventDefault();
+	$(this).closest(".file-row").remove();
 });
 
 $("#btnAddVendorCode").on("click", function () {
