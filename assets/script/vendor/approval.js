@@ -7,16 +7,16 @@ import { createBtn, activatedBtnRow } from "@amec/webasset/components/buttons";
 import { createTable } from "@amec/webasset/dataTable";
 import { initApp, tableOpt } from "../utils.js";
 import { getVendors, getTemplate, exportExcel } from "../service/index.js";
-
-import { extractDataForExport } from "./excel-data.js";
+import { getVendorsApv } from "../service/approval.js";
+import { extractApvDataForExport } from "./excel-data.js";
 
 var table;
 $(document).ready(async () => {
 	try {
 		await showLoader();
 		await initApp({ submenu: ".nav-vendors" });
-		const data = await getVendors();
-		const options = await tableVendorOption(data);
+		const data = await getVendorsApv();
+		const options = await tableVendorApvOption(data);
 		table = await createTable(options);
 	} catch (error) {
 		console.error(error);
@@ -26,50 +26,43 @@ $(document).ready(async () => {
 	}
 });
 
-async function tableVendorOption(data) {
+async function tableVendorApvOption(data) {
 	const opt = { ...tableOpt };
 	opt.data = data;
 	opt.columns = [
-		{ data: "VND_NAME", title: "Name" },
+		{ data: "FRM_NO", title: "Form No." },
+		{ data: "FRM_VNDNAME", title: "Vendor Name" },
 		{
-			data: "VENDOR_ADDRESS",
-			title: "Address",
-			render: (data) => {
-				if (data.length === 0) return "-";
-				return data.map((addr) => addr.ADDR_COUNTRY).join(", ");
-			},
+			data: "FRM_REQNAME",
+			title: "Requester",
 		},
 		{
-			data: "ADDR_PHONE",
-			title: "Contact",
+			data: "FRM_REQDATE",
+			title: "Request Date",
 		},
 		{
-			data: "VENDOR_CODES",
-			title: "Code",
-			render: (data) => {
-				if (data.length === 0) return "-";
-				return data.map((code) => code.CODE_NUM).join(", ");
-			},
+			data: "FRM_REQTIME",
+			title: "Request Time",
 		},
 		{
-			data: "VND_STATUS",
+			data: "FRM_STATUS",
 			title: "Status",
 			render: (data) => {
 				const statusMap = {
-					0: `<div class="badge badge-warning">Creating</div>`,
-					1: `<div class="badge badge-success">Active</div>`,
-					2: `<div class="badge badge-error">Inactive</div>`,
+					1: `<div class="badge badge-warning">Running</div>`,
+					2: `<div class="badge badge-success">Approve</div>`,
+					3: `<div class="badge badge-error">Reject</div>`,
 				};
 				return statusMap[data] || "Unknown";
 			},
 		},
 		{
-			data: "VND_ID",
+			data: "FRM_ID",
 			title: "Actions",
 			className: "text-center",
 			orderable: false,
 			render: (data, type, row) => {
-				return `<a href="/procurement/vendors/detail/${data}" class="btn btn-sm btn-ghost btn-circle text-lg text-primary hover:text-xl"><i class="fi fi-rr-settings-sliders"></i></a>`;
+				return `<a href="/procurement/vendors/form/${data}" class="btn btn-sm btn-ghost btn-circle text-lg text-primary hover:text-xl"><i class="fi fi-rr-settings-sliders"></i></a>`;
 			},
 		},
 	];
@@ -79,7 +72,7 @@ async function tableVendorOption(data) {
 			baseInitComplete.call(this, settings, json);
 		}
 		const exportExcel = await createBtn({
-			id: "export-vendor",
+			id: "export-vendor-apv",
 			title: "Export Excel",
 			icon: "fi fi-rr-file-excel text-xl",
 			className: "btn-neutral",
@@ -93,15 +86,15 @@ async function tableVendorOption(data) {
 	return opt;
 }
 
-$(document).on("click", "#export-vendor", async function () {
+$(document).on("click", "#export-vendor-apv", async function () {
 	try {
 		await activatedBtnRow($(this), true);
 		const data = table.data().toArray();
-		const result = await extractDataForExport(data);
+		const result = await extractApvDataForExport(data);
 		console.log(result);
-		const template = await getTemplate("export_vendors.xlsx");
+		const template = await getTemplate("export_vendors_apv.xlsx");
 		await exportExcel(result, template, {
-			filename: "Vendors List.xlsx",
+			filename: "Form Vendor Approval List.xlsx",
 		});
 	} catch (error) {
 		console.error(error);

@@ -16,9 +16,26 @@ class Vendors extends MY_Controller {
         ]);
     }
     public function create()
-{
+    {
      $this->views('Vendors/create', [
         'title' => 'Create New Vendor'
     ]); 
-}
+    }
+
+    public function approval($id = '')
+    {
+     $this->views('Vendors/approval', [
+        'id' => $id,
+        'title' => 'Vendor Approval'
+    ]); 
+    }
+
+    public function form($id = '')
+    {
+     $this->views('Vendors/frmapv', [
+        'id' => $id,
+        'title' => 'Vendor Approval'
+    ]); 
+    }
+
 }
