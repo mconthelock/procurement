@@ -8,6 +8,7 @@ assets/dist
 application/cache
 application/logs
 application/vendor
+application/models
 
 docs/dist
 docs/.vitepress/cache
