@@ -254,35 +254,22 @@ $(document).on("change", 'select[name="EN_ADDR_SUBDISTRICT"]', function () {
 	}
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-	// ==============================================
-	// สคริปต์การแนบไฟล์
-	// ==============================================
-	const fileContainer = document.getElementById("attachment-container");
-	const btnAddFile = document.getElementById("btnAddFile");
+$(document).on("click", "#btnAddFile", function (e) {
+	e.preventDefault();
+	const $fileContainer = $("#attachment-container");
+	const rowHtml = `
+        <div class="form-control w-full flex-row items-center gap-3 file-row mt-3">
+            <input type="file" name="vendor_file[]" class="file-input file-input-bordered file-input-primary w-full max-w-md" />
+            <button type="button" class="btn btn-error btn-sm btn-square btn-remove-file">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+        </div>
+    `;
+	$fileContainer.append(rowHtml);
+	$fileContainer.scrollTop($fileContainer[0].scrollHeight);
+});
 
-	if (btnAddFile && fileContainer) {
-		btnAddFile.addEventListener("click", function () {
-			const row = document.createElement("div");
-			row.className =
-				"form-control w-full flex-row items-center gap-3 file-row mt-3";
-
-			row.innerHTML = `
-                        <input type="file" name="vendor_file[]" class="file-input file-input-bordered file-input-primary w-full max-w-md" />
-                        <button type="button" class="btn btn-error btn-sm btn-square btn-remove-file">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                        </button>
-                    `;
-
-			row.querySelector(".btn-remove-file").addEventListener(
-				"click",
-				function () {
-					row.remove();
-				},
-			);
-
-			fileContainer.appendChild(row);
-			fileContainer.scrollTop = fileContainer.scrollHeight;
-		});
-	}
+$(document).on("click", ".btn-remove-file", function (e) {
+	e.preventDefault();
+	$(this).closest(".file-row").remove();
 });

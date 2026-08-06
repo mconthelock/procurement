@@ -8,6 +8,8 @@ assets/dist
 application/cache
 application/logs
 application/vendor
+application/models
+/.agents
 
 docs/dist
 docs/.vitepress/cache
@@ -16,3 +18,5 @@ backup
 package-lock.json
 application/composer.lock
 db.json
+
+skills-lock.json
