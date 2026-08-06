@@ -26,6 +26,8 @@
     "datatables.net-buttons": "^3.2.5",
     "datatables.net-buttons-dt": "^3.2.5",
     "datatables.net-dt": "^2.1.8",
+    "datatables.net-fixedcolumns": "^6.0.0",
+    "datatables.net-fixedcolumns-dt": "^6.0.0",
     "datatables.net-responsive-dt": "^3.0.3",
     "datatables.net-select": "^3.0.1",
     "dayjs": "^1.11.13",
