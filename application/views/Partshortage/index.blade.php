@@ -25,7 +25,7 @@
         
         <!-- Right Section -->
         <div class="col-span-1 flex flex-col items-start md:items-end w-full">
-            <div class="bg-slate-50 border border-slate-300 p-3 rounded-lg text-xs text-left shadow-sm w-full md:w-auto">
+            <div class=" hidden bg-slate-50 border border-slate-300 p-3 rounded-lg text-xs text-left shadow-sm w-full md:w-auto">
                 <div class="font-bold mb-2 text-slate-700 border-b border-slate-200 pb-1"><i class="fas fa-info-circle mr-1"></i> Type of reason</div>
                 <ul class="space-y-1 text-slate-600">
                     <li><span class="font-bold">A</span> = Usage volume increasing</li>
