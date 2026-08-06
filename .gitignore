@@ -18,3 +18,5 @@ backup
 package-lock.json
 application/composer.lock
 db.json
+
+skills-lock.json
