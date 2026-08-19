@@ -1,5 +1,15 @@
 import "@flaticon/flaticon-uicons/css/all/all.css";
 import dayjs from "dayjs";
+import { initApp } from "./utils";
+
+$(async function () {
+	try {
+		const app = await initApp();
+	} catch (error) {
+		console.log(error);
+		showMessage(error.message);
+	}
+});
 
 $(document).on("click", ".msg-close", function (e) {
 	e.preventDefault();

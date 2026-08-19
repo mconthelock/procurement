@@ -20,7 +20,7 @@
     <script src="{{ $_ENV['APP_ENV'] }}/script.js"></script>
 </head>
 
-<body class="flex flex-col min-h-screen">
+<body menuTitle="{{ $title ?? '' }}" class="flex flex-col min-h-screen">
     <input type="hidden" id="appid" value="{{ $_ENV['APP_ID'] }}">
     <!-- Navbar -->
     <div id="navbar" class="max-w-full!"></div>

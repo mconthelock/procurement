@@ -1,15 +1,15 @@
 import { showLoader } from "@amec/webasset/preloader";
 import { showMessage } from "@amec/webasset/utils";
 import { initApp } from "../utils.js";
-import $ from "jquery";
-import Chart from "chart.js/auto";
-window.$ = window.jQuery = $;
-import {
-	getProducts,
-	getCategories,
-	getVendors,
-	getCategoryAttributes,
-} from "../service/index.js";
+// import $ from "jquery";
+// import Chart from "chart.js/auto";
+// window.$ = window.jQuery = $;
+// import {
+// 	getProducts,
+// 	getCategories,
+// 	getVendors,
+// 	getCategoryAttributes,
+// } from "../service/index.js";
 
 let vendorList = [];
 let originalProductData = null;
