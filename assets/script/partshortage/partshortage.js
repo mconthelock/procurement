@@ -209,7 +209,7 @@ async function initMyTable() {
 				{ data: "total" },
 				{ data: "vcode" },
 				{ data: "vname" },
-				{ data: "po" },
+				{ data: "po", className: "font-bold" },
 				{ data: "pord" },
 				{ data: "pline" },
 				{ data: "poqty" },
