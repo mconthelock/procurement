@@ -19,7 +19,7 @@
         <div class="col-span-1 lg:col-span-2">
             <h1 class="header-title uppercase tracking-wider underline decoration-red-600 decoration-4 underline-offset-4 mb-3">Bulk part shortage Report</h1>
             <div id="topic-bm" class="text-blue-700 font-bold text-lg mb-4 bg-blue-50 inline-block px-3 py-1 rounded-md border border-blue-100">
-                Data B/M : 05X/26 (20260424)
+                Data B/M : MMX/YY (YYYYMMDD)
             </div>
             
             <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-2">

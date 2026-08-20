@@ -1,49 +1,15 @@
-import { showbgLoader } from "@amec/webasset/preloader";
+import { showbgLoader, showLoader } from "@amec/webasset/preloader";
 import { initApp } from "../utils.js";
 
 // Import Dependencies
 import "../../style/partshortage/partshortage.css";
 import { createTable } from "@amec/webasset/dataTable";
-import { showMessage } from "@amec/webasset/utils";
+import { showMessage, showErrorMessage } from "@amec/webasset/utils";
 import { setDatePicker } from "@amec/webasset/flatpickr";
 import { currentUser } from "@amec/webasset/api/amec";
 import { fetchUtils } from "@amec/webasset/api/fetch-utils";
-
-/**
- * formatDbDateForDisplay formats a date string from the database format (YYYY-MM-DD) to a more user-friendly display format (DD-MMM-YY).
- * @param {string|Date} value - The date value to format.
- * @returns {string} - The formatted date string.
- */
-function formatDbDateForDisplay(value) {
-	if (!value) return "";
-
-	const rawValue = String(value).trim();
-	const dateMatch = rawValue.match(/^(\d{4})-(\d{2})-(\d{2})(?:[ T].*)?$/);
-	if (!dateMatch) return rawValue;
-
-	const monthNames = [
-		"Jan",
-		"Feb",
-		"Mar",
-		"Apr",
-		"May",
-		"Jun",
-		"Jul",
-		"Aug",
-		"Sep",
-		"Oct",
-		"Nov",
-		"Dec",
-	];
-
-	const year = dateMatch[1];
-	const month = Number(dateMatch[2]) - 1;
-	const day = Number(dateMatch[3]);
-
-	if (month < 0 || month > 11) return rawValue;
-
-	return `${day}-${monthNames[month]}-${year.slice(-2)}`;
-}
+import { appReady } from "../apps.js"; // Import appReady from apps.js
+import { formatDbDateForDisplay, JobItemDTO } from "./JobItemDTO.js";
 
 /**
  * convertScheduleCode converts a schedule code from the format YYYYMMJ to a more readable format.
@@ -89,7 +55,7 @@ const fetchShortageHeaderProd = async () => {
 		return data;
 	} catch (error) {
 		console.error("Error fetching shortage/headerprod:", error);
-		showMessage("Error fetching shortage data", "error");
+		showErrorMessage(error);
 		return null;
 	}
 };
@@ -105,50 +71,19 @@ const fetchShortageData = async () => {
 		const data = await response.json();
 		if (data.status === "success" && data.items) {
 			// แปลงชื่อคีย์จาก API ให้ตรงกับ Mock Data เดิม
-			const mappedData = data.items.map((row, index) => ({
-				id: index + 1, // เพิ่ม ID เพื่อใช้ในการอัปเดตข้อมูล
-				no: index + 1, // สร้างเลขลำดับ
-				buyer: row.BUYER || "",
-				jobItem: row.JOBITEM || "",
-				item: row.ITEM || "",
-				desc: row.DESCRIPTION || "",
-				drawing: row.DRAWING || "",
-				onhand: row.ONHAND || 0,
-				allocate: row.ALLOCAT || 0,
-				balance: row.BALANCE || 0,
-				before: row.QTY_N5 || 0,
-				shortA: row.QTY_N4 || 0,
-				shortB: row.QTY_N3 || 0,
-				shortC: row.QTY_N2 || 0,
-				shortX: row.QTY_N1 || 0,
-				total: row.TOTAL_SHORT || 0,
-				vcode: row.VENCODE || "",
-				vname: row.VNDNAM || "",
-				po: row.PONO || "",
-				pord: row.PORD || "",
-				pline: row.PLINE || "",
-				poqty: row.PO_RQ || "",
-				poremain: row.REMAIN_PO || "",
-				duedate: row.DUEDATE || "",
-				etd: formatDbDateForDisplay(row.ETD) || "",
-				eta: formatDbDateForDisplay(row.ETA) || "",
-				shipmode: row.SHIP_MODE || "",
-				arvamec: formatDbDateForDisplay(row.ARV_AMEC) || "",
-				arvqty: row.ARV_QTY || 0,
-				invno: row.INV_NO || "",
-				comment: row.COMMENT_PUR || "",
-				nextreply: formatDbDateForDisplay(row.NEXT_REPLY) || "",
-				cause: row.CAUSE_OF || "",
-				remark: row.REMARK || "",
-				updatedate: formatDbDateForDisplay(row.UPDATE_DATE) || "",
-			}));
+			console.log("Fetched shortage/report data:", data.items);
+
+			// ใช้คำสั่ง .map() แล้วส่ง Object แถวนั้นๆ โยนเข้าไปใน DTO
+			const mappedData = data.items.map(
+				(row, index) => new JobItemDTO(row, index),
+			);
 
 			return mappedData;
 		}
 		return [];
 	} catch (error) {
 		console.error("Error fetching shortage/report:", error);
-		showMessage("Error fetching shortage report", "error");
+		showErrorMessage(error);
 		return null;
 	}
 };
@@ -189,9 +124,9 @@ async function initMyTable() {
                 <th rowspan="2">PO QTY</th>
                 <th rowspan="2">PO REMAIN</th>
                 <th rowspan="2">DUE DATE</th>
-                <th colspan="11" class="bg-yellow-100 text-red-600 font-bold tracking-wide shadow-inner"><i class="fi fi-br-square-p text-gray-600 mr-1"></i>INCHARGE BY PUR DEPARTMENT</th>
+                <th colspan="10" class="px-4 py-3 text-center font-bold text-white bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 border-b border-transparent shadow-sm"><div class="flex items-center justify-center gap-2 drop-shadow-sm"><i class="fi fi-br-square-p text-gray-600 mr-1"></i>INCHARGE BY PUR DEPARTMENT</div></th>
             </tr>
-            <tr>
+            <tr class="text-left text-sm font-semibold text-amber-900 border-b border-amber-200">
     `;
 
 	// 3. วนลูปเพื่อสร้างส่วนหัวของ SHORTAGE (แทนที่ @if ของ Blade)
@@ -206,7 +141,7 @@ async function initMyTable() {
 						? `Before ${convertScheduleCode(value)}`
 						: convertScheduleCode(value);
 				theadHTML += `<th class="bg-purple-200">${displayValue}</th>`;
-				console.log(theadHTML);
+				// console.log(theadHTML);
 			});
 	} else {
 		// ค่า Default กรณีไม่มีข้อมูล
@@ -221,17 +156,16 @@ async function initMyTable() {
 
 	// 4. ต่อด้วยส่วนหัวของ INCHARGE BY PUR DEPARTMENT
 	theadHTML += `
-                <th class="bg-yellow-100"><i class="fi fi-rr-calendar-days text-gray-500 mr-1"></i>ETD</th>
-                <th class="bg-yellow-100"><i class="fi fi-rr-calendar-days text-gray-500 mr-1"></i>ETA</th>
-                <th class="bg-yellow-100"><i class="fi fi-rs-ship text-gray-500 mr-1"></i>SHIP MODE</th>
-                <th class="bg-yellow-100"><i class="fi fi-rr-calendar-days text-gray-500 mr-1"></i>ARV AMec</th>
-                <th class="bg-yellow-100">ARV Q'TY</th>
-                <th class="bg-yellow-100">Inv.No.</th>
-                <th class="bg-yellow-100">Comment from PUR.</th>
-                <th class="bg-yellow-100"><i class="fi fi-rr-calendar-days text-gray-500 mr-1"></i>Next reply</th>
-                <th class="bg-yellow-100">cause of<br>shortage</th>
-                <th class="bg-yellow-100 text-fuchsia-600">REMARK</th>
-				<th class="bg-yellow-100">update_date</th>
+                <th class="bg-amber-50 px-4 py-3 whitespace-nowrap"><i class="fi fi-rr-calendar-days text-gray-500 mr-1"></i>ETD</th>
+                <th class="bg-amber-50 px-4 py-3 whitespace-nowrap"><i class="fi fi-rr-calendar-days text-gray-500 mr-1"></i>ETA</th>
+                <th class="bg-amber-50 px-4 py-3 whitespace-nowrap"><i class="fi fi-rs-ship text-gray-500 mr-1"></i>SHIP MODE</th>
+                <th class="bg-amber-50 px-4 py-3 whitespace-nowrap"><i class="fi fi-rr-calendar-days text-gray-500 mr-1"></i>ARV AMec</th>
+                <th class="bg-amber-50 px-4 py-3 whitespace-nowrap">ARV Q'TY</th>
+                <th class="bg-amber-50 px-4 py-3 whitespace-nowrap">Inv.No.</th>
+                <th class="bg-amber-50 px-4 py-3 whitespace-nowrap">Comment from PUR.</th>
+                <th class="bg-amber-50 px-4 py-3 whitespace-nowrap"><i class="fi fi-rr-calendar-days text-gray-500 mr-1"></i>Next reply</th>
+                <th class="bg-amber-50 px-4 py-3 whitespace-nowrap">cause of<br>shortage</th>
+                <th class="bg-amber-50 px-4 py-3 whitespace-nowrap text-fuchsia-600">REMARK</th>
             </tr>
         </thead>
     `;
@@ -291,7 +225,6 @@ async function initMyTable() {
 				{ data: "nextreply", className: "editable" },
 				{ data: "cause", className: "editable" },
 				{ data: "remark", className: "editable" },
-				{ data: "updatedate" },
 			],
 			//เพิ่มฟังก์ชัน createdRow และ drawCallback สำหรับการจัดการ rowspan
 			createdRow: function (row, data, dataIndex) {
@@ -383,14 +316,14 @@ async function initMyTable() {
 }
 
 $(async function () {
-	// 🌟 1. เปิดหน้าจอ Loading ทันทีที่เริ่มฟังก์ชัน
-	// $("#loadingOverlay").removeClass("hidden");
 	try {
-		await showbgLoader();
-		await initApp({ submenu: ".navmenu-newinq" });
+		//await showbgLoader();
+		await appReady; // Ensure the app is ready before proceeding
+		showLoader({ show: true });
 		// Fetch current user information
 		const user = await currentUser();
 		console.log("Current User:", user);
+		console.log("Current User:", user.empno);
 		// Define which columns are dates to use Flatpickr
 		const dateColumns = ["etd", "eta", "arvamec", "nextreply"];
 		const table = await initMyTable(); // Initialize the table after fetching header data
@@ -434,7 +367,7 @@ $(async function () {
 				isSaved = true;
 				// Validate ARV Q'TY against PO REMAIN
 				if (colName === "arvqty") {
-					const arvQty = parseFloat(newValue) || 0;
+					const arvQty = parseFloat(newValue) || 0; // Ensure it's a number
 
 					if (arvQty > poRemain) {
 						showMessage(
@@ -442,7 +375,11 @@ $(async function () {
 							"warning",
 							"toast-end",
 						);
-						cell.data(originalValue).draw(false); // Reset to original value
+						if (typeof originalValue === "string") {
+							cell.data(0).draw(false); // Reset to 0 if originalValue is not a number
+						} else {
+							cell.data(originalValue).draw(false); // Reset to original value
+						}
 						activeInput = null; // Reset the active input reference
 						return; // Exit the function early to prevent saving
 					}
@@ -461,6 +398,7 @@ $(async function () {
 
 			let input;
 
+			// Check if the column is a date column to use Flatpickr
 			if (dateColumns.includes(colName)) {
 				input = $(
 					`<input type="text" class="inline-edit-input fdate">`,
@@ -512,6 +450,7 @@ $(async function () {
 					handleSave($(this).val());
 				});
 			} else {
+				console.log("Editing text field:", colName);
 				//text input for other editable fields
 				input = $(`<input type="text" class="inline-edit-input">`).val(
 					originalValue,
@@ -546,7 +485,7 @@ $(async function () {
 				console.log("Cell Object:", cellObject);
 				console.log("Cell Index:", cellObject.index().row); //แถวที่ถูกแก้ไข
 				console.log("Row Data:", rowData);
-				console.log("Cell Node Data:", cellObject.data());
+				console.log("Cell Node Data:", cellObject.data()); //แสดงค่าที่ถูกแก้ไขแล้ว
 
 				$(cellNode).removeClass("opacity-50 cursor-wait"); // Remove the visual cue for saving
 
@@ -561,7 +500,7 @@ $(async function () {
 					);
 
 				/**
-				 *
+				 * buildPurTrackingPayload constructs the payload for the API request based on the current field, row data, and value.
 				 * @param {string} currentField
 				 * @param {object} currentRowData
 				 * @param {*} currentValue
@@ -572,16 +511,17 @@ $(async function () {
 					currentRowData,
 					currentValue,
 				) => {
+					// Mapping of editable fields to API fields
 					const fieldMap = {
 						etd: "ETD",
 						eta: "ETA",
-						shipmode: "SHIPMODE",
-						arvamec: "ARVAMEC",
-						arvqty: "ARVQTY",
-						invno: "INVNO",
-						comment: "COMMENT",
-						nextreply: "NEXTREPLY",
-						cause: "CAUSE",
+						shipmode: "SHIP_MODE",
+						arvamec: "ARV_AMEC",
+						arvqty: "ARV_QTY",
+						invno: "INV_NO",
+						comment: "COMMENT_PUR",
+						nextreply: "NEXT_REPLY",
+						cause: "CAUSE_OF",
 						remark: "REMARK",
 					};
 
@@ -593,64 +533,41 @@ $(async function () {
 						PORD: currentRowData.pord,
 						PPROD: currentRowData.item,
 						PLINE: currentRowData.pline,
+						USER_UPDATE: user.empno,
 						[apiField]: currentValue,
 					};
 				};
 
 				// create data
-				if (rowData.updatedate == "") {
-					const createData = buildPurTrackingPayload(
-						field,
-						rowData,
-						value,
-					);
-					// Call the API to create a new record
-					if (createData) {
-						const apiUrl = `${process.env.APP_API}/shortage/short-pur-tracking`;
-						try {
-							const result = await fetchUtils({
-								url: apiUrl,
-								method: "POST",
-								data: createData,
-							});
-							console.log("Created successfully:", result);
-							showMessage("Data saved successfully", "success");
-						} catch (error) {
-							console.error("Error creating data:", error);
-						}
-					}
-				} else {
-					// Call the API to update the existing record
-					const updateData = buildPurTrackingPayload(
-						field,
-						rowData,
-						value,
-					);
-					if (updateData) {
-						const apiUrl = `${process.env.APP_API}/shortage/short-pur-tracking`;
-						try {
-							const result = await fetchUtils({
-								url: apiUrl,
-								method: "PATCH",
-								data: updateData,
-							});
-							console.log("Updated successfully:", result);
-							showMessage("Data updated successfully", "success");
-						} catch (error) {
-							console.error("Error updating data:", error);
-							showMessage("Error updating data", "error");
-						}
+				console.log(
+					`Row ID: ${id} has no existing record. Proceeding to create a new record...`,
+				);
+				const createData = buildPurTrackingPayload(
+					field,
+					rowData,
+					value,
+				);
+				// Call the API to create a new record
+				if (createData) {
+					const apiUrl = `${process.env.APP_API}/shortage/short-pur-tracking`;
+					try {
+						const result = await fetchUtils({
+							url: apiUrl,
+							method: "POST",
+							data: createData,
+						});
+						console.log("Created successfully:", result);
+						showMessage("Data saved successfully", "success");
+					} catch (error) {
+						console.error("Error creating data:", error);
 					}
 				}
-
-				// showMessage("Data saved successfully", "success");
 			}, 400);
 		}
 	} catch (error) {
 		console.log(error);
 	} finally {
 		// 🌟 2. ปิดหน้าจอ Loading หลังจากโหลดข้อมูลเสร็จสิ้น
-		//$("#loadingOverlay").addClass("hidden");
-		//showbgLoader({ show: false });
+		showLoader({ show: false });
 	}
 });
