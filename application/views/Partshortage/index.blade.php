@@ -1,25 +1,25 @@
 @extends('layouts/template')
 
 @section('contents')
+<!-- Container for the entire page content -->
 <div class="bg-white rounded-xl shadow-sm p-4">
+    <!-- Breadcrumb Navigation -->
+    <nav class="text-sm mb-4" aria-label="Breadcrumb">
+        <ol class="list-reset flex text-gray-600">
+            <li><a href="{{ $_ENV['APP_ENV'] }}/dashboard" class="text-blue-600 hover:text-blue-800">Dashboard</a></li>
+            <li><span class="mx-2">/</span></li>
+            <li><a href="{{ $_ENV['APP_ENV'] }}/partshortage" class="text-blue-600 hover:text-blue-800">Part Shortage</a></li>
+            <li><span class="mx-2">/</span></li>
+            <li class="text-gray-500">Bulk Part Shortage Report</li>
+        </ol>
+    </nav>
 <!-- Responsive Header Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 items-start bg-white p-4 rounded-xl shadow-sm border border-slate-200">
         <!-- Left Section -->
         <div class="col-span-1 lg:col-span-2">
             <h1 class="header-title uppercase tracking-wider underline decoration-red-600 decoration-4 underline-offset-4 mb-3">Bulk part shortage Report</h1>
-            <div class="text-blue-700 font-bold text-lg mb-4 bg-blue-50 inline-block px-3 py-1 rounded-md border border-blue-100">
-                Data B/M : 05X/26 (20260424)
-            </div>
-            
-            <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-2">
-                <span class="font-bold text-slate-700 bg-slate-100 px-3 py-1 rounded">(1). Bulk Part shortage</span>
-                <div class="flex items-center gap-2">
-                    <!--<div class="bg-yellow-300 px-4 py-1 border border-yellow-500 rounded text-sm shadow-inner font-mono">xxxxxx</div>
-                    <div class="bg-yellow-300 px-3 py-1 border border-yellow-500 rounded text-sm font-bold shadow-inner">S</div>--->
-                    <!--<span class="text-red-600 font-bold ml-2 animate-pulse flex items-center gap-1">
-                        <i class="fas fa-exclamation-triangle"></i> Serious shortage
-                    </span>--->
-                </div>
+            <div id="topic-bm" class="text-blue-700 font-bold text-lg mb-4 bg-blue-50 inline-block px-3 py-1 rounded-md border border-blue-100">
+                Data B/M : MMX/YY (YYYYMMDD)
             </div>
         </div>
         
@@ -41,46 +41,7 @@
 
     <!-- Table Container -->
         <table id="shortageTable" class="display nowrap w-full text-sm">
-            <thead>
-                <tr>
-                    <th rowspan="2">NO</th>
-                    <th rowspan="2">BUYER</th>
-                    <th rowspan="2">Job<br>Item</th>
-                    <th rowspan="2">ITEM</th>
-                    <th rowspan="2">DESCRIPTION</th>
-                    <th rowspan="2">DRAWING</th>
-                    <th rowspan="2">ONHAND</th>
-                    <th rowspan="2">ALLOCATE</th>
-                    <th rowspan="2">BALANCE</th>
-                    <th colspan="5" class="bg-purple-200 shadow-inner"><i class="fi fi-rr-time-quarter-past text-gray-600 mr-1"></i>SHORTAGE</th>
-                    <th rowspan="2">Total<br>Shortage</th>
-                    <th rowspan="2">Vender Code</th>
-                    <th rowspan="2">Vender Name</th>
-                    <th rowspan="2">PO</th>
-                    <th rowspan="2">PO QTY</th>
-                    <th rowspan="2">PO REMAIN</th>
-                    <th rowspan="2">DUE DATE</th>
-                    <th colspan="10" class="bg-yellow-100 text-red-600 font-bold tracking-wide shadow-inner"><i class="fi fi-br-square-p text-gray-600 mr-1"></i>INCHARGE BY PUR DEPARTMENT</th>
-                </tr>
-                <tr>
-                    <th class="bg-purple-200">Before 202604X</th>
-                    <th class="bg-purple-200">202604A</th>
-                    <th class="bg-purple-200">202604B</th>
-                    <th class="bg-purple-200">202604C</th>
-                    <th class="bg-purple-200">202605X</th>
-                    
-                    <th class="bg-yellow-100"><i class="fi fi-rr-calendar-days text-gray-500 mr-1"></i>ETD</th>
-                    <th class="bg-yellow-100"><i class="fi fi-rr-calendar-days text-gray-500 mr-1"></i>ETA</th>
-                    <th class="bg-yellow-100"><i class="fi fi-rs-ship text-gray-500 mr-1"></i>SHIP MODE</th>
-                    <th class="bg-yellow-100"><i class="fi fi-rr-calendar-days text-gray-500 mr-1"></i>ARV AMec</th>
-                    <th class="bg-yellow-100">ARV Q'TY</th>
-                    <th class="bg-yellow-100">Inv.No.</th>
-                    <th class="bg-yellow-100">Comment from PUR.</th>
-                    <th class="bg-yellow-100"><i class="fi fi-rr-calendar-days text-gray-500 mr-1"></i>Next reply</th>
-                    <th class="bg-yellow-100">cause of<br>shortage</th>
-                    <th class="bg-yellow-100 text-fuchsia-600">REMARK</th>
-                </tr>
-            </thead>
+            {{-- Table header will be dynamically generated by DataTables --}}
             <tbody>
             </tbody>
         </table>
@@ -93,7 +54,14 @@
         </div>
     </div>
 
-</div>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-gray-800 bg-opacity-50 z-[9999] flex flex-col justify-center items-center hidden">
+        <!-- Spinner -->
+        <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-white mb-4"></div>
+        <!-- ข้อความ -->
+        <h2 class="text-white text-xl font-semibold">กำลังโหลดข้อมูล กรุณารอสักครู่...</h2>
+    </div>
+</div><!-- End of Container -->
 @endsection
 
 @section('scripts')
