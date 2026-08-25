@@ -21,17 +21,6 @@
             <div id="topic-bm" class="text-blue-700 font-bold text-lg mb-4 bg-blue-50 inline-block px-3 py-1 rounded-md border border-blue-100">
                 Data B/M : MMX/YY (YYYYMMDD)
             </div>
-            
-            <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-2">
-                <span class="font-bold text-slate-700 bg-slate-100 px-3 py-1 rounded">(1). Bulk Part shortage</span>
-                <div class="flex items-center gap-2">
-                    <!--<div class="bg-yellow-300 px-4 py-1 border border-yellow-500 rounded text-sm shadow-inner font-mono">xxxxxx</div>
-                    <div class="bg-yellow-300 px-3 py-1 border border-yellow-500 rounded text-sm font-bold shadow-inner">S</div>--->
-                    <!--<span class="text-red-600 font-bold ml-2 animate-pulse flex items-center gap-1">
-                        <i class="fas fa-exclamation-triangle"></i> Serious shortage
-                    </span>--->
-                </div>
-            </div>
         </div>
         
         <!-- Right Section -->

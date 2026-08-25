@@ -1,5 +1,5 @@
 /**
- * formatDbDateForDisplay formats a date string from the database format (YYYY-MM-DD) to a more user-friendly display format.
+ * formatDbDateForDisplay formats a date string from the database format (YYYY-MM-DD or YYYYMMDD) to a more user-friendly display format.
  * example: 19-Aug-26, 19/08/2026, 2026-08-19, 19 Aug 2026, 19 ส.ค. 2569
  * console.log(formatDbDateForDisplay(dbDateWithTime));
  * Output: 19-Aug-26
@@ -20,10 +20,14 @@ export function formatDbDateForDisplay(value, format = "DD-MMM-YY") {
 
 	const rawValue = String(value).trim();
 
-	// ปรับ Regex ให้ดึงกลุ่มเวลา (ชั่วโมง นาที วินาที) ออกมาด้วย ถ้าข้อมูลมีเวลาแนบมา (รองรับทั้งเว้นวรรค และตัว T)
-	const dateMatch = rawValue.match(
-		/^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2})(?::(\d{2}))?(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?)?/,
-	);
+	// รองรับทั้ง YYYY-MM-DD และ YYYYMMDD รวมถึงเวลาที่ต่อท้ายมาได้
+	const dateMatch =
+		rawValue.match(
+			/^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2})(?::(\d{2}))?(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?)?/,
+		) ||
+		rawValue.match(
+			/^(\d{4})(\d{2})(\d{2})(?:[ T](\d{2}):(\d{2})(?::(\d{2}))?(?:\.\d+)?(?:Z|[+-]\d{2}:?\d{2})?)?/,
+		);
 	if (!dateMatch) return rawValue;
 
 	const year = dateMatch[1];
@@ -89,6 +93,8 @@ export function formatDbDateForDisplay(value, format = "DD-MMM-YY") {
 			return `${paddedDay} ${monthNamesEn[month]} ${year}`;
 		case "DD MMM YYYY HH:MM":
 			return `${paddedDay} ${monthNamesEn[month]} ${year}${timeString}`;
+		case "DD-MMM-YY":
+			return `${paddedDay}-${monthNamesEn[month]}-${year.slice(-2)}`;
 
 		case "TH":
 			const thaiYear = Number(year) + 543;
@@ -97,9 +103,8 @@ export function formatDbDateForDisplay(value, format = "DD-MMM-YY") {
 			const thaiYearTime = Number(year) + 543;
 			return `${day} ${monthNamesTh[month]} ${thaiYearTime}${timeString}`;
 
-		case "DD-MMM-YY":
 		default:
-			return `${day}-${monthNamesEn[month]}-${year.slice(-2)}`;
+			return `${paddedDay}-${monthNamesEn[month]}-${year.slice(-2)}`;
 	}
 }
 
@@ -150,6 +155,5 @@ export class JobItemDTO {
 		this.eta = formatDbDateForDisplay(row.ETA);
 		this.arvamec = formatDbDateForDisplay(row.ARV_AMEC);
 		this.nextreply = formatDbDateForDisplay(row.NEXT_REPLY);
-		//this.updatedate = formatDbDateForDisplay(row.UPDATE_DATE);
 	}
 }

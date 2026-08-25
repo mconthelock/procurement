@@ -63,7 +63,8 @@ const fetchShortageHeaderProd = async () => {
 // Fetch shortage/report API
 const fetchShortageData = async () => {
 	try {
-		const apiUrl = `${process.env.APP_API}/shortage/report`;
+		//const apiUrl = `${process.env.APP_API}/shortage/report`;
+		const apiUrl = `${process.env.APP_API}/shortage/report-inv`;
 		const response = await fetch(apiUrl);
 		if (!response.ok) {
 			throw new Error(`API Error: ${response.status}`);
@@ -124,7 +125,7 @@ async function initMyTable() {
                 <th rowspan="2">PO QTY</th>
                 <th rowspan="2">PO REMAIN</th>
                 <th rowspan="2">DUE DATE</th>
-                <th colspan="10" class="px-4 py-3 text-center font-bold text-white bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 border-b border-transparent shadow-sm"><div class="flex items-center justify-center gap-2 drop-shadow-sm"><i class="fi fi-br-square-p text-gray-600 mr-1"></i>INCHARGE BY PUR DEPARTMENT</div></th>
+                <th colspan="10" class="px-4 py-3 text-center font-bold text-white bg-gradient-to-r via-indigo-500 to-purple-600 border-b border-transparent shadow-sm"><div class="flex items-center justify-center gap-2 drop-shadow-sm"><i class="fi fi-br-square-p text-gray-600 mr-1"></i>INCHARGE BY PUR DEPARTMENT</div></th>
             </tr>
             <tr class="text-left text-sm font-semibold text-amber-900 border-b border-amber-200">
     `;
@@ -213,7 +214,12 @@ async function initMyTable() {
 				{ data: "pord" },
 				{ data: "pline" },
 				{ data: "poqty" },
-				{ data: "poremain" },
+				{
+					data: "poremain",
+					createdCell: function (td) {
+						td.classList.add("font-bold", "!text-red-600");
+					},
+				},
 				{ data: "duedate" },
 				{ data: "etd", className: "editable" },
 				{ data: "eta", className: "editable" },
@@ -227,12 +233,13 @@ async function initMyTable() {
 				{ data: "remark", className: "editable" },
 			],
 			//เพิ่มฟังก์ชัน createdRow และ drawCallback สำหรับการจัดการ rowspan
+			// row: คือ Element <tr> ของแถวนั้น (เป็น DOM Node)
+			// data: คือ ข้อมูลดิบ (JSON object/array) ของแถวนั้น
+			// dataIndex: คือ ลำดับ Index ของแถวนั้น
 			createdRow: function (row, data, dataIndex) {
-				/*if (data.poremain !== "" && parseInt(data.poremain) < 500) {
-					$(row).addClass("row-green");
-				}*/
-				/*if (data.serious !== "") {
-					$("td:eq(3)", row).addClass("bg-yellow-100");
+				console.log("Created Row Data:", data);
+				/*if (data.arvQty < data.poremain) {
+					$(row).addClass("bg-red-100 text-red-700 font-bold");
 				}*/
 			},
 			drawCallback: function (settings) {
@@ -246,7 +253,7 @@ async function initMyTable() {
 				// อ้างอิงตามลำดับ columns ของคุณ:
 				//อ้างอิงตามลำดับ columns ของคุณ: 0=NO, 1=BUYER, 2=JobItem, 3=ITEM, 4=DESCRIPTION, 5=DRAWING, 6=ONHAND, 7=ALLOCATE, 8=BALANCE, 9=Before, 10=YYYYMMJ, 11=YYYYMMJ, 12=YYYYMMJ, 13=YYYYMMJ, 14=TotalShortage, 15=VenderCode, 16=VenderName
 				var columnsToMerge = [
-					1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+					1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16,
 				];
 
 				columnsToMerge.forEach(function (colIndex) {
@@ -322,7 +329,7 @@ $(async function () {
 		showLoader({ show: true });
 		// Fetch current user information
 		const user = await currentUser();
-		console.log("Current User:", user);
+		// console.log("Current User:", user);
 		console.log("Current User:", user.empno);
 		// Define which columns are dates to use Flatpickr
 		const dateColumns = ["etd", "eta", "arvamec", "nextreply"];
@@ -347,7 +354,6 @@ $(async function () {
 				return;
 
 			const cell = table.cell(this);
-			console.log("Clicked Cell:", cell);
 			const originalValue = cell.data() || "";
 			const cellNode = cell.node();
 			const colIndex = cell.index().column;
@@ -478,10 +484,7 @@ $(async function () {
 		 */
 		function updateDataBackend(id, field, value, cellNode, cellObject) {
 			setTimeout(async () => {
-				const rowData = table.row(cellObject.index().row).data(); // Get the updated row data after the cell has been changed
-				console.log(
-					`[Mock AJAX Request] Update Row ID: ${id}, Field: ${field}, Value: ${value}`,
-				);
+				const rowData = table.row(cellObject.index().row).data(); // Get the updated row data after the cell has been updated
 				console.log("Cell Object:", cellObject);
 				console.log("Cell Index:", cellObject.index().row); //แถวที่ถูกแก้ไข
 				console.log("Row Data:", rowData);
@@ -556,7 +559,6 @@ $(async function () {
 							method: "POST",
 							data: createData,
 						});
-						console.log("Created successfully:", result);
 						showMessage("Data saved successfully", "success");
 					} catch (error) {
 						console.error("Error creating data:", error);
