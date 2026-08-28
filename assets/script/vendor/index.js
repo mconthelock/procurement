@@ -18,11 +18,9 @@ var table;
 select2();
 $(document).ready(async () => {
 	try {
-		// await showLoader();
-		// await initApp({ submenu: ".nav-vendors" });
-		// const data = await getVendors();
-		// const options = await tableVendorOption(data);
-		// table = await createTable(options);
+		await showLoader();
+		await reloadTable();
+		await bindEvents();
 	} catch (error) {
 		console.error(error);
 		await showMessage(error.message || "Error initializing app");
