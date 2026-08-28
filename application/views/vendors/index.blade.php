@@ -1,31 +1,49 @@
 @extends('layouts/template')
 
 @section('contents')
-<div class="flex justify-between items-center mb-2 w-full">
-        
-        <h2 class="card-title text-2xl m-0">{{ $title ?? 'Vendors Management' }}</h2>
-        
-        <!-- <button type="button" class="btn btn-primary btn-sm w-auto">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-            </svg>
-            Add New Vendor
-        </button> -->
-        <a href="{{ $_ENV['APP_ENV'] }}/Vendors/create" class="btn btn-primary btn-sm w-auto">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-        </svg>
-        Add New Vendor
-    </a>
-        
-    </div>
+    <div class="space-y-6">
+        <section
+            class="grid gap-4 xl:grid-cols-[1fr_auto] xl:items-end rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+                <label class="form-control w-full" id="requirements-assignee-filter-wrap">
+                    <div class="label pb-2">
+                        <span class="label-text text-xs font-semibold uppercase tracking-wide text-slate-500">Search</span>
+                    </div>
+                    <input id="table-search" type="text" class="input input-bordered w-full" placeholder="Search...">
+                </label>
 
-    <div class="divider m-0"></div>
-    <div class="tableArea">
-        @include('layouts/datatable_load')
-        <table id="table" class="table table-zebra display text-xs"></table>
+                <label class="form-control w-full" for="table-status-filter">
+                    <div class="label pb-2">
+                        <span class="label-text text-xs font-semibold uppercase tracking-wide text-slate-500">Status</span>
+                    </div>
+                    <select id="table-status-filter" class="select select-bordered w-full s2">
+                        <option value="">All</option>
+                    </select>
+                </label>
+                <label class="form-control w-full" for="table-country-filter">
+                    <div class="label pb-2">
+                        <span class="label-text text-xs font-semibold uppercase tracking-wide text-slate-500">Country</span>
+                    </div>
+                    <select id="table-country-filter" class="select select-bordered w-full s2">
+                        <option value="">All</option>
+                    </select>
+                </label>
+            </div>
+            <div class="flex items-center gap-3">
+                <button id="reset-filter" class="btn btn-soft" type="button"><i
+                        class="fi fi-br-rotate-right text-xl"></i>Reset Filters</button>
+
+            </div>
+        </section>
+
+        {{-- Datatable --}}
+        <section class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div class="overflow-hidden tableArea">
+                @include('layouts/datatable_load')
+                <table id="table" class="table table-zebra display text-xs"></table>
+            </div>
+        </section>
     </div>
-     
 @endsection
 
 @section('scripts')

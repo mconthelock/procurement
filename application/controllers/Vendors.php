@@ -7,7 +7,7 @@ class Vendors extends MY_Controller {
     }
 
     public function index(){
-        $this->views('Vendors/index');
+        $this->views('vendors/index');
     }
 
     public function detail($id = ''){
@@ -19,7 +19,7 @@ class Vendors extends MY_Controller {
     {
      $this->views('Vendors/create', [
         'title' => 'Create New Vendor'
-    ]); 
+    ]);
     }
 
     public function approval($id = '')
@@ -27,7 +27,7 @@ class Vendors extends MY_Controller {
      $this->views('Vendors/approval', [
         'id' => $id,
         'title' => 'Vendor Approval'
-    ]); 
+    ]);
     }
 
     public function form($id = '')
@@ -35,7 +35,7 @@ class Vendors extends MY_Controller {
      $this->views('Vendors/frmapv', [
         'id' => $id,
         'title' => 'Vendor Approval'
-    ]); 
+    ]);
     }
 
 }

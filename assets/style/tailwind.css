@@ -108,3 +108,7 @@
 		@apply text-center!;
 	}
 }
+
+i.fi {
+	@apply flex items-center justify-center;
+}
