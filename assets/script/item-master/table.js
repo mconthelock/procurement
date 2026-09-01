@@ -4,6 +4,7 @@ import { getItemMaster } from "./data";
 import { showErrorMessage } from "@amec/webasset/utils";
 import { displayEmpImage } from "@amec/webasset/indexDB";
 import { showLoader } from "@amec/webasset/preloader";
+import { modalItemMaster } from "./modal";
 
 /**
  * Create table item master
@@ -130,7 +131,7 @@ export const tableItemMaster = {
 			const tr = $(this).closest("tr");
 			const rowData = self.row(tr);
 			console.log("Row data:", rowData);
-			// You can add more logic here to handle the action button click
+			modalItemMaster.data = rowData;
 		});
 	},
 };
@@ -172,6 +173,9 @@ const columns = [
 		title: "BUYER",
 		width: "300px",
 		render: function (data, type, row) {
+			if (!row.BUYER) {
+				return `<span class="text-gray-400">N/A</span>`;
+			}
 			return `<div class="flex gap-5 items-center">
                 <div class="avatar border-0 tooltip-html tooltip-primary" data-html="${row.BUYERNAME} (${row.BUYER})">
                     <div class="w-10 ring-primary ring-offset-base-100 rounded-full ring-2 ring-offset-2">

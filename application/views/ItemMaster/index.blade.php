@@ -12,7 +12,7 @@
     </div>
 </div>
 <div class="space-y-6">
-    <section class="flex flex-col gap-5 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+    <form id="form-filter" class="flex flex-col gap-5 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
         <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             <label class="fieldset w-full" for="purcode">
                 <legend class="fieldset-legend text-xs font-semibold uppercase tracking-wide text-slate-500">Purcode
@@ -45,12 +45,12 @@
             </label>
         </div>
         <div class="flex items-center gap-3">
-            <button id="btn-search" class="btn btn-primary" type="button"><i
+            <button id="btn-search" class="btn btn-primary" type="submit"><i
                     class="fi fi-br-search text-xl"></i>Search</button>
             <button id="reset-filter" class="btn btn-soft" type="button"><i
                     class="fi fi-br-rotate-right text-xl"></i>Reset Filters</button>
         </div>
-    </section>
+    </form>
 
     {{-- Datatable --}}
     <section class="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm min-h-[60vh]">
