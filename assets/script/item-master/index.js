@@ -41,7 +41,8 @@ $(async function () {
 	}
 });
 
-$(document).on("click", "#btn-search", async function () {
+$(document).on("submit", "#form-filter", async function (e) {
+	e.preventDefault();
 	try {
 		const buyer = $("#buyer").val();
 		const country = $("#country").val();
