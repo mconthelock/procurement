@@ -33,3 +33,18 @@ export async function getCountry() {
 		method: "GET",
 	});
 }
+
+/**
+ * @author Sutthipong Tangmongkhoncharoen (24008)
+ * @since 2026-09-01
+ * @description Save country origin
+ * @param {CreateCountryOriginDto} data
+ * @returns
+ */
+export async function saveOrigin(data) {
+	return await fetchUtils({
+		url: `${process.env.APP_API}/workload/country-origin`,
+		method: "POST",
+		data: data,
+	});
+}
