@@ -11,10 +11,10 @@ export async function getItemMaster(data) {
 /**
  * @author Sutthipong Tangmongkhoncharoen (24008)
  * @since 2026-08-31
- * @description Get buyer
+ * @description Get Planner
  * @returns
  */
-export async function getBuyer() {
+export async function getPlanner() {
 	return await fetchUtils({
 		url: `${process.env.APP_API}/datacenter/k850mp`,
 		method: "GET",
@@ -46,5 +46,18 @@ export async function saveOrigin(data) {
 		url: `${process.env.APP_API}/workload/country-origin`,
 		method: "POST",
 		data: data,
+	});
+}
+
+/**
+ * @author Sutthipong Tangmongkhoncharoen (24008)
+ * @since 2026-09-02
+ * @description Get country origin bulk list
+ * @returns
+ */
+export async function getOriginBulkList() {
+	return await fetchUtils({
+		url: `${process.env.APP_API}/workload/country-origin/bulk-list`,
+		method: "GET",
 	});
 }
