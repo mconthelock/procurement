@@ -44,10 +44,10 @@
                 <select id="country" class="select select-bordered w-full s2" placeholder="Select country" disabled>
                 </select>
             </label>
-            <label class="fieldset w-full" for="buyer">
-                <legend class="fieldset-legend text-xs font-semibold uppercase tracking-wide text-slate-500">Buyer
+            <label class="fieldset w-full" for="planner">
+                <legend class="fieldset-legend text-xs font-semibold uppercase tracking-wide text-slate-500">Planner
                 </legend>
-                <select id="buyer" class="select select-bordered w-full s2" placeholder="Select buyer" disabled>
+                <select id="planner" class="select select-bordered w-full s2" placeholder="Select planner" disabled>
                 </select>
             </label>
             <label class="fieldset w-full" for="status">
@@ -62,6 +62,8 @@
                     class="fi fi-br-search text-xl"></i>Search</button>
             <button id="reset-filter" class="btn btn-soft" type="button" disabled><i
                     class="fi fi-br-rotate-right text-xl"></i>Reset Filters</button>
+            <button id="origin-bulk-list" class="btn btn-success ml-auto" type="button" disabled><i
+                    class="fi fi-rr-file-excel text-xl"></i>Country of Origin (BULK List)</button>
         </div>
     </form>
 

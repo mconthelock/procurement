@@ -1,24 +1,26 @@
 import { showErrorMessage, showMessage } from "@amec/webasset/utils";
 import { initApp } from "../utils";
 import { tableItemMaster } from "./table";
-import { getBuyer, getCountry } from "./data";
+import { getPlanner, getCountry, getOriginBulkList } from "./data";
 import select2 from "select2";
 import { clearSelect2, setSelect2 } from "@amec/webasset/select2";
 import { modalItemMaster } from "./modal";
+import { defaultExcel, exportExcel } from "@amec/webasset/excel";
+import { showLoader } from "@amec/webasset/preloader";
 
 select2();
 $(async function () {
 	try {
 		await initApp();
 		tableItemMaster.init();
-		const buyers = await getBuyer();
+		const planners = await getPlanner();
 		const country = await getCountry();
 		modalItemMaster.init();
 		await setSelect2({
-			id: "#buyer",
-			data: buyers.data.map((buyer) => ({
-				id: buyer.K85M02,
-				text: `${buyer.K85M04} ${buyer.K85M05} (${buyer.K85M02})`,
+			id: "#planner",
+			data: planners.data.map((planner) => ({
+				id: planner.K85M02,
+				text: `${planner.K85M04} ${planner.K85M05} (${planner.K85M02})`,
 			})),
 		});
 		await setSelect2({
@@ -45,14 +47,14 @@ $(async function () {
 $(document).on("submit", "#form-filter", async function (e) {
 	e.preventDefault();
 	try {
-		const buyer = $("#buyer").val();
+		const planner = $("#planner").val();
 		const country = $("#country").val();
 		const purcode = $("#purcode").val();
 		const partname = $("#partname").val();
 		const status = $("#status").val();
 		const drawing = $("#drawing").val();
 
-		if (!buyer && !country && !purcode && !partname && !status && !drawing) {
+		if (!planner && !country && !purcode && !partname && !status && !drawing) {
 			showMessage("Please select at least one filter to search.", "warning");
 			return;
 		}
@@ -61,7 +63,7 @@ $(document).on("submit", "#form-filter", async function (e) {
 		table.column("ITEM:name").search(purcode || "", false, false);
 		table.column("PARTNAME:name").search(partname || "", false, false);
 		table.column("COUNTRY:name").search(country || "", false, false);
-		table.column("BUYER:name").search(buyer || "", false, false);
+		table.column("PLANNER_CODE:name").search(planner || "", false, false);
 		table.column("STATUS:name").search(status || "", false, false);
 		table.column("DRAW_FORMULA:name").search(drawing || "", false, false);
 		table.draw();
@@ -73,7 +75,7 @@ $(document).on("submit", "#form-filter", async function (e) {
 
 $(document).on("click", "#reset-filter", async function () {
 	try {
-		clearSelect2("#buyer");
+		clearSelect2("#planner");
 		clearSelect2("#country");
 		clearSelect2("#status");
 		$("#purcode").val("");
@@ -84,5 +86,38 @@ $(document).on("click", "#reset-filter", async function () {
 	} catch (error) {
 		console.error("Reset Filter Error:", error);
 		showErrorMessage(error.message);
+	}
+});
+
+$(document).on("click", "#origin-bulk-list", async function () {
+	try {
+		showLoader();
+		const res = await getOriginBulkList();
+		if (!res.status) {
+			throw new Error(res.message);
+		}
+		const workboox = await defaultExcel({
+			data: res.data,
+			column: [
+				{ key: "PLANNER", header: "Planner" },
+				{ key: "BULK_CODE", header: "BULK Code" },
+				{ key: "DRAWING", header: "DWG" },
+				{ key: "PARTNAME", header: "Part Name" },
+				{ key: "VENDOR", header: "Vendor" },
+				{ key: "VENDOR_NAME", header: "Vendor Name" },
+				{ key: "TRADING", header: "Trading" },
+				{ key: "PROCESS", header: "Process" },
+				{ key: "MANUFACTURER", header: "Manufacturer" },
+				{ key: "COUNTRY", header: "Country of Origin" },
+				{ key: "MFG_NAME", header: "Manufacturer Name" },
+				{ key: "MFG_ADDRESS", header: "Manufacturer Address" },
+			],
+		});
+		exportExcel(workboox, "Country_of_Origin_BULK_List.xlsx");
+	} catch (error) {
+		console.error("Origin Bulk List Error:", error);
+		showErrorMessage(error.message);
+	} finally {
+		showLoader({ show: false });
 	}
 });
