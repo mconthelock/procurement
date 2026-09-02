@@ -35,6 +35,7 @@ $(async function () {
 				{ id: "IZ", text: "Inactive" },
 			],
 		});
+		$("#form-filter").find("input, select, button").prop("disabled", false);
 	} catch (error) {
 		console.error("Initialization Error:", error);
 		showErrorMessage(error.message);
@@ -49,8 +50,9 @@ $(document).on("submit", "#form-filter", async function (e) {
 		const purcode = $("#purcode").val();
 		const partname = $("#partname").val();
 		const status = $("#status").val();
+		const drawing = $("#drawing").val();
 
-		if (!buyer && !country && !purcode && !partname && !status) {
+		if (!buyer && !country && !purcode && !partname && !status && !drawing) {
 			showMessage("Please select at least one filter to search.", "warning");
 			return;
 		}
@@ -61,6 +63,7 @@ $(document).on("submit", "#form-filter", async function (e) {
 		table.column("COUNTRY:name").search(country || "", false, false);
 		table.column("BUYER:name").search(buyer || "", false, false);
 		table.column("STATUS:name").search(status || "", false, false);
+		table.column("DRAW_FORMULA:name").search(drawing || "", false, false);
 		table.draw();
 	} catch (error) {
 		console.error("Search Error:", error);
@@ -75,6 +78,7 @@ $(document).on("click", "#reset-filter", async function () {
 		clearSelect2("#status");
 		$("#purcode").val("");
 		$("#partname").val("");
+		$("#drawing").val("");
 		const table = tableItemMaster.get();
 		table.columns().search("").draw();
 	} catch (error) {

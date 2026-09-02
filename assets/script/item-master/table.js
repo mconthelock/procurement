@@ -35,9 +35,18 @@ export const tableItemMaster = {
 		this.handleInstance();
 		return this.instance.row(tr).data();
 	},
-	updateRow(tr, data) {
+	updateRow(id, data) {
+		// this.handleInstance();
+		// this.instance.row(tr).data(data).draw(false);
 		this.handleInstance();
-		this.instance.row(tr).data(data).draw(false);
+
+		const row = this.instance.row(function (idx, rowData) {
+			return rowData.ITEM == id;
+		});
+
+		if (row.any()) {
+			row.data(data).draw(false);
+		}
 	},
 	preload(show = true) {
 		this.skeleton = dataTableSkeleton({
@@ -81,6 +90,7 @@ export const tableItemMaster = {
 							const uniqueBuyers = [...new Set(buyers)];
 							const buyerImages = [];
 							for (const b of uniqueBuyers) {
+								if (!b) continue; // Skip if buyer is null or undefined
 								const img = await displayEmpImage(b);
 								buyerImages.push({ buyer: b, image: img });
 							}
@@ -130,7 +140,6 @@ export const tableItemMaster = {
 		$(document).on("click", ".actions", function () {
 			const tr = $(this).closest("tr");
 			const rowData = self.row(tr);
-			console.log("Row data:", rowData);
 			modalItemMaster.data = rowData;
 		});
 	},
@@ -144,14 +153,43 @@ const columns = [
 		width: "100px",
 	},
 	{
+		data: "DRAW_FORMULA",
+		name: "DRAW_FORMULA",
+		title: "DRAWING",
+		width: "100px",
+		className: "text-nowrap",
+	},
+	{
 		data: "PARTNAME",
 		name: "PARTNAME",
 		title: "PART NAME",
 	},
 	{
+		data: "TYPE",
+		name: "TYPE",
+		title: "TYPE",
+		searchable: false,
+		orderable: false,
+		render: function (data, type, row) {
+			const typeMapping = {
+				1: "Bulk",
+				2: "JOP",
+				3: "JOP",
+				5: "N/A",
+				A: "Stock",
+				B: "Sub con Part",
+				C: "Sub con Part",
+			};
+			if (type === "display") {
+				return typeMapping[data] || "N/A";
+			}
+			return data;
+		},
+	},
+	{
 		data: "COUNTRY",
 		name: "COUNTRY",
-		title: "COUNTRY",
+		title: "COUNTRY OF ORIGIN",
 	},
 	{
 		data: "STATUS",
