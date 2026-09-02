@@ -1,5 +1,5 @@
 import { getBaseURL } from "./utils";
-const API_BASE = getBaseURL();
+const API_BASE = getBaseURL("MOCK_API");
 
 export async function getCategories(id = "") {
 	// ถ้ามี ID ให้เช็กว่าเป็น ID ของระบบ หรือเป็น CATEGORY_ID

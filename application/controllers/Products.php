@@ -3,7 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Products extends MY_Controller {
     public function index() {
         $permission = $_GET['permission'] ?? 'EDIT';
-        echo $permission;
         $this->views('Products/index', [
             'title' => 'Product Management',
             'permission' =>  $permission

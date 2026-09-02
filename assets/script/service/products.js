@@ -1,5 +1,5 @@
 import { getBaseURL } from "./utils";
-const API_BASE = getBaseURL();
+const API_BASE = getBaseURL("MOCK_API");
 export async function getProducts(id = "") {
 	// ตรวจสอบว่า process.env.MOCK_API คือ http://localhost:3002
 	const response = await fetch(`${API_BASE}/products/${id}`);
