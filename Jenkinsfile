@@ -11,14 +11,14 @@ pipeline {
                 script {
                     if (env.BRANCH_NAME == 'develop') {
                         env.TARGET_DIR = '/var/amecweb/wwwroot/development/procurement'
-                        env.ENV_CRED_ID = 'procurement-env-dev'
+                        env.ENV_DIR = '/var/amecweb/file/env/procurement/.env.procurement-env-dev'
                         env.NODE_ENV = 'development'
                         env.DEPLOY_ENV = 'development'
                         echo ">>> MR merged → develop → DEPLOY DEVELOPMENT"
 
                     } else if (env.BRANCH_NAME == 'main') {
                         env.TARGET_DIR = '/var/amecweb/wwwroot/production/procurement'
-                        env.ENV_CRED_ID = 'procurement-env-prod'
+                        env.ENV_DIR = '/var/amecweb/file/env/procurement/.env.procurement-env-prod'
                         env.NODE_ENV = 'development'
                         env.DEPLOY_ENV = 'production'
 
@@ -40,21 +40,23 @@ pipeline {
 
         stage('Install & Build') {
             steps {
-                withCredentials([file(credentialsId: "${env.ENV_CRED_ID}", variable: 'ENV_FILE')]) {
-                    withCredentials([usernamePassword(credentialsId: 'gitlab-auth-id', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
-                        sh '''
-                            cp ${ENV_FILE} .env
+                withCredentials([usernamePassword(credentialsId: 'gitlab-auth-id', passwordVariable: 'GIT_PASS', usernameVariable: 'GIT_USER')]) {
+                    sh '''
+                        if [ ! -f "${ENV_DIR}" ]; then
+                            echo "❌ Environment file not found: ${ENV_DIR}"
+                            exit 1
+                        fi
+                        cp ${ENV_DIR} .env
 
-                            git config --global url."https://${GIT_USER}:${GIT_PASS}@webhub.mitsubishielevatorasia.co.th/".insteadOf "https://webhub.mitsubishielevatorasia.co.th/"
+                        git config --global url."https://${GIT_USER}:${GIT_PASS}@webhub.mitsubishielevatorasia.co.th/".insteadOf "https://webhub.mitsubishielevatorasia.co.th/"
 
-                            npm install --include=dev
-                            npm update @amec/webasset
-                            npm run build
-                            npm run docs:build
+                        npm install --include=dev
+                        npm update @amec/webasset
+                        npm run build
+                        npm run docs:build
 
-                            git config --global --unset url."https://${GIT_USER}:${GIT_PASS}@webhub.mitsubishielevatorasia.co.th/".insteadOf
-                        '''
-                    }
+                        git config --global --unset url."https://${GIT_USER}:${GIT_PASS}@webhub.mitsubishielevatorasia.co.th/".insteadOf
+                    '''
                 }
             }
         }
