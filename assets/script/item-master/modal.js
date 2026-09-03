@@ -361,7 +361,7 @@ const planningParams = (data) => [
 	},
 	{
 		text: "PLANNER CODE",
-		value: data.PLANNER || "",
+		value: data.PLANNER_CODE || "",
 	},
 	{
 		text: "MINIMUM BALANCE",
