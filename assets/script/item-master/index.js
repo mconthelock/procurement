@@ -31,6 +31,16 @@ $(async function () {
 			})),
 		});
 		await setSelect2({
+			id: "#type",
+			data: [
+				{ id: "1", text: "Bulk" },
+				{ id: "2,3", text: "JOP" },
+				{ id: "5", text: "N/A" },
+				{ id: "A", text: "Stock" },
+				{ id: "B,C", text: "Sub con Part" },
+			],
+		});
+		await setSelect2({
 			id: "#status",
 			data: [
 				{ id: "IM", text: "Active" },
@@ -53,8 +63,9 @@ $(document).on("submit", "#form-filter", async function (e) {
 		const partname = $("#partname").val();
 		const status = $("#status").val();
 		const drawing = $("#drawing").val();
+		const type = $("#type").val();
 
-		if (!planner && !country && !purcode && !partname && !status && !drawing) {
+		if (!planner && !country && !purcode && !partname && !status && !drawing && !type) {
 			showMessage("Please select at least one filter to search.", "warning");
 			return;
 		}
@@ -65,6 +76,7 @@ $(document).on("submit", "#form-filter", async function (e) {
 		table.column("COUNTRY:name").search(country || "", false, false);
 		table.column("PLANNER_CODE:name").search(planner || "", false, false);
 		table.column("STATUS:name").search(status || "", false, false);
+		table.column("TYPE:name").search(type.includes(",") ? type.split(",") : [type] || "", false, false);
 		table.column("DRAW_FORMULA:name").search(drawing || "", false, false);
 		table.draw();
 	} catch (error) {
@@ -78,6 +90,7 @@ $(document).on("click", "#reset-filter", async function () {
 		clearSelect2("#planner");
 		clearSelect2("#country");
 		clearSelect2("#status");
+		clearSelect2("#type");
 		$("#purcode").val("");
 		$("#partname").val("");
 		$("#drawing").val("");
