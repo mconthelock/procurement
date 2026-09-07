@@ -50,6 +50,12 @@
                 <select id="planner" class="select select-bordered w-full s2" placeholder="Select planner" disabled>
                 </select>
             </label>
+            <label class="fieldset w-full" for="type">
+                <legend class="fieldset-legend text-xs font-semibold uppercase tracking-wide text-slate-500">Type
+                </legend>
+                <select id="type" class="select select-bordered w-full s2" placeholder="Select type" disabled>
+                </select>
+            </label>
             <label class="fieldset w-full" for="status">
                 <legend class="fieldset-legend text-xs font-semibold uppercase tracking-wide text-slate-500">Status
                 </legend>
