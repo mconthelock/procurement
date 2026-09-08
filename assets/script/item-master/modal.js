@@ -10,6 +10,13 @@ import { currentUser } from "@amec/webasset/api/amec";
 export const modalItemMaster = {
 	id: "modal-item-master",
 	_data: null,
+	_contries: null,
+	get contries() {
+		return this._contries;
+	},
+	set contries(value) {
+		this._contries = value;
+	},
 	get data() {
 		return this._data;
 	},
@@ -57,6 +64,7 @@ export const modalItemMaster = {
 							flag: item.flag.png,
 						};
 					});
+					self.contries = countryData;
 					await setSelect2({
 						id: "origin-country",
 						data: countryData,
@@ -82,6 +90,7 @@ export const modalItemMaster = {
 					if (!requiredForm("#country-info")) {
 						return;
 					}
+					const mode = $("input[name='country-mode']:checked").val();
 					const country = $("#origin-country").val();
 					const originType = $("#origin-type").val();
 					const mfgName = $("#mfg-name").val();
@@ -90,6 +99,7 @@ export const modalItemMaster = {
 						BULKCODE: self.data.ITEM,
 						ORIGIN_TYPE: originType,
 						COUNTRY: country,
+						COUNTRY_MODE: mode,
 						MFG_NAME: mfgName,
 						MFG_ADDRESS: mfgAddress,
 					};
@@ -128,6 +138,29 @@ export const modalItemMaster = {
 					$("#country-info").html(countryInfo(self.data, false));
 				} catch (error) {
 					console.error("Error canceling origin edit:", error);
+					showErrorMessage(error.message);
+				}
+			});
+		/**
+		 * @author Sutthipong Tangmongkhoncharoen(24008)
+		 * @since 2026-09-08
+		 * @description Handles the change event for the country mode radio buttons.
+		 */
+		$(document)
+			.off("change", "input[name='country-mode']")
+			.on("change", "input[name='country-mode']", async function () {
+				try {
+					const value = $(this).val();
+					await setSelect2({
+						id: "origin-country",
+						data: self.contries,
+						flag: true,
+						destroy: true,
+						multiple: value == 1,
+						defaultValue: self.data.COUNTRY,
+					});
+				} catch (error) {
+					console.error("Error handling country mode change:", error);
 					showErrorMessage(error.message);
 				}
 			});
@@ -267,12 +300,22 @@ const originTypeOptions = [
 
 function countryInfo(data, editable = false) {
 	let country = `<span>${data.COUNTRY || "-"}</span>`;
+	let countryMode = `<span>${data.COUNTRY_MODE == 1 ? "Group" : "Single" || "-"}</span>`;
 	let originType = `<span>${originTypeOptions.find((option) => option.id == data.ORIGIN_TYPE)?.text || "-"}</span>`;
 	let mfgName = `<span>${data.MFG_NAME || "-"}</span>`;
 	let mfgAddress = `<span>${data.MFG_ADDRESS || "-"}</span>`;
 	let btn = "";
 	if (editable) {
-		country = `<select id="origin-country" class="select w-full req" name="country" placeholder="Select Country" data-message="Please select a country"></select>`;
+		countryMode = `<div class="flex gap-5">
+            <label class="label cursor-pointer text-black">
+            <input type="radio" name="country-mode" class="radio" value="0" ${data.COUNTRY_MODE == 0 ? "checked" : ""}> Single
+            </label>
+            <label class="label cursor-pointer text-black">
+            <input type="radio" name="country-mode" class="radio" value="1" ${data.COUNTRY_MODE == 1 ? "checked" : ""}> Group
+            </label>
+        </div>
+        `;
+		country = `<select id="origin-country" class="select w-full max-w-64 req" name="country" placeholder="Select Country" data-message="Please select a country"></select>`;
 		originType = `<select id="origin-type" class="select w-full req" name="origin-type" placeholder="Select Origin Type" data-message="Please select an origin type"></select>`;
 		mfgName = `<textarea id="mfg-name" name="mfg-name" class="textarea w-full" placeholder="Enter Manufacturer Name">${data.MFG_NAME || ""}</textarea>`;
 		mfgAddress = `<textarea id="mfg-address" name="mfg-address" class="textarea w-full" placeholder="Enter Manufacturer Address">${data.MFG_ADDRESS || ""}</textarea>`;
@@ -281,7 +324,12 @@ function countryInfo(data, editable = false) {
         <button class="btn btn-neutral w-full" id="cancel-origin">Cancel</button>
         `;
 	}
-	return `<label class="fieldset w-full" for="origin-country">
+	return `    
+            <label class="fieldset w-full" for="country-mode">
+                <legend class="fieldset-legend text-xs font-semibold uppercase tracking-wide text-slate-500">Mode</legend>
+                ${countryMode}
+            </label>
+            <label class="fieldset w-full" for="origin-country">
                 <legend class="fieldset-legend text-xs font-semibold uppercase tracking-wide text-slate-500">Country</legend>
                 ${country}
             </label>
