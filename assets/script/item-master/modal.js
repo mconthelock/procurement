@@ -69,7 +69,10 @@ export const modalItemMaster = {
 						id: "origin-country",
 						data: countryData,
 						flag: true,
-						defaultValue: self.data.COUNTRY,
+						defaultValue: self.data.COUNTRY.includes("/")
+							? self.data.COUNTRY.split("/")
+							: self.data.COUNTRY,
+						multiple: self.data.COUNTRY_MODE == 1,
 					});
 					await setSelect2({
 						id: "origin-type",
@@ -117,6 +120,7 @@ export const modalItemMaster = {
 					const data = {
 						...self.data,
 						COUNTRY: country,
+						COUNTRY_MODE: mode,
 						ORIGIN_TYPE: originType,
 						MFG_NAME: mfgName,
 						MFG_ADDRESS: mfgAddress,
@@ -157,7 +161,9 @@ export const modalItemMaster = {
 						flag: true,
 						destroy: true,
 						multiple: value == 1,
-						defaultValue: self.data.COUNTRY,
+						defaultValue: self.data.COUNTRY.includes("/")
+							? self.data.COUNTRY.split("/")
+							: self.data.COUNTRY,
 					});
 				} catch (error) {
 					console.error("Error handling country mode change:", error);

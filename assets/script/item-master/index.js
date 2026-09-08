@@ -27,10 +27,11 @@ $(async function () {
 		});
 		await setSelect2({
 			id: "#country",
-			data: country.data.map((country) => ({
-				id: country.COUNTRY,
-				text: country.COUNTRY,
-			})),
+			data:
+				country.data?.map((country) => ({
+					id: country.COUNTRY,
+					text: country.COUNTRY,
+				})) || [],
 		});
 		await setSelect2({
 			id: "#type",

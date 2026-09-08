@@ -187,6 +187,7 @@ export const modalUpload = {
 					.map((row) => ({
 						...row,
 						CREATEBY: user.empno,
+						COUNTRY_MODE: 0,
 						ORIGIN_TYPE:
 							row.ORIGIN_TYPE == "Trading"
 								? 1
@@ -197,6 +198,10 @@ export const modalUpload = {
 										: null,
 					}))
 					.filter((row) => row.BULKCODE && row.COUNTRY);
+				if (mapData.length === 0) {
+					showMessage("No valid data to upload.", "warning");
+					return;
+				}
 				const res = await uploadOrigin(mapData);
 				if (!res.status) {
 					throw new Error(res.message);
