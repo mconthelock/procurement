@@ -78,7 +78,7 @@ $(document).on("submit", "#form-filter", async function (e) {
 		table.column("COUNTRY:name").search(country || "", false, false);
 		table.column("PLANNER_CODE:name").search(planner || "", false, false);
 		table.column("STATUS:name").search(status || "", false, false);
-		table.column("TYPE:name").search(type.includes(",") ? type.split(",") : [type] || "", false, false);
+		table.column("TYPE:name").search(type.includes(",") ? type.split(",") : type ? [type] : "", false, false);
 		table.column("DRAW_FORMULA:name").search(drawing || "", false, false);
 		table.draw();
 	} catch (error) {
