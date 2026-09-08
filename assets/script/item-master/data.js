@@ -61,3 +61,18 @@ export async function getOriginBulkList() {
 		method: "GET",
 	});
 }
+
+/**
+ * @author Sutthipong Tangmongkhoncharoen (24008)
+ * @since 2026-09-08
+ * @description upload country origin
+ * @param {CreateCountryOriginDto[]} data
+ * @returns
+ */
+export async function uploadOrigin(data) {
+	return await fetchUtils({
+		url: `${process.env.APP_API}/workload/country-origin/upload-excel`,
+		method: "POST",
+		data: data,
+	});
+}

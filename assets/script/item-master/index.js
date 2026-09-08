@@ -7,6 +7,7 @@ import { clearSelect2, setSelect2 } from "@amec/webasset/select2";
 import { modalItemMaster } from "./modal";
 import { defaultExcel, exportExcel } from "@amec/webasset/excel";
 import { showLoader } from "@amec/webasset/preloader";
+import { modalUpload } from "./modal-upload";
 
 select2();
 $(async function () {
@@ -16,6 +17,7 @@ $(async function () {
 		const planners = await getPlanner();
 		const country = await getCountry();
 		modalItemMaster.init();
+		modalUpload.init();
 		await setSelect2({
 			id: "#planner",
 			data: planners.data.map((planner) => ({
@@ -132,5 +134,14 @@ $(document).on("click", "#origin-bulk-list", async function () {
 		showErrorMessage(error.message);
 	} finally {
 		showLoader({ show: false });
+	}
+});
+
+$(document).on("click", "#import-excel", async function () {
+	try {
+		modalUpload.show(true);
+	} catch (error) {
+		console.error("Import Excel Error:", error);
+		showErrorMessage(error.message);
 	}
 });
