@@ -7,6 +7,7 @@ import { clearSelect2, setSelect2 } from "@amec/webasset/select2";
 import { modalItemMaster } from "./modal";
 import { defaultExcel, exportExcel } from "@amec/webasset/excel";
 import { showLoader } from "@amec/webasset/preloader";
+import { modalUpload } from "./modal-upload";
 
 select2();
 $(async function () {
@@ -16,6 +17,7 @@ $(async function () {
 		const planners = await getPlanner();
 		const country = await getCountry();
 		modalItemMaster.init();
+		modalUpload.init();
 		await setSelect2({
 			id: "#planner",
 			data: planners.data.map((planner) => ({
@@ -25,10 +27,21 @@ $(async function () {
 		});
 		await setSelect2({
 			id: "#country",
-			data: country.data.map((country) => ({
-				id: country.COUNTRY,
-				text: country.COUNTRY,
-			})),
+			data:
+				country.data?.map((country) => ({
+					id: country.COUNTRY,
+					text: country.COUNTRY,
+				})) || [],
+		});
+		await setSelect2({
+			id: "#type",
+			data: [
+				{ id: "1", text: "Bulk" },
+				{ id: "2,3", text: "JOP" },
+				{ id: "5", text: "N/A" },
+				{ id: "A", text: "Stock" },
+				{ id: "B,C", text: "Sub con Part" },
+			],
 		});
 		await setSelect2({
 			id: "#status",
@@ -53,8 +66,9 @@ $(document).on("submit", "#form-filter", async function (e) {
 		const partname = $("#partname").val();
 		const status = $("#status").val();
 		const drawing = $("#drawing").val();
+		const type = $("#type").val();
 
-		if (!planner && !country && !purcode && !partname && !status && !drawing) {
+		if (!planner && !country && !purcode && !partname && !status && !drawing && !type) {
 			showMessage("Please select at least one filter to search.", "warning");
 			return;
 		}
@@ -65,6 +79,7 @@ $(document).on("submit", "#form-filter", async function (e) {
 		table.column("COUNTRY:name").search(country || "", false, false);
 		table.column("PLANNER_CODE:name").search(planner || "", false, false);
 		table.column("STATUS:name").search(status || "", false, false);
+		table.column("TYPE:name").search(type.includes(",") ? type.split(",") : type ? [type] : "", false, false);
 		table.column("DRAW_FORMULA:name").search(drawing || "", false, false);
 		table.draw();
 	} catch (error) {
@@ -78,6 +93,7 @@ $(document).on("click", "#reset-filter", async function () {
 		clearSelect2("#planner");
 		clearSelect2("#country");
 		clearSelect2("#status");
+		clearSelect2("#type");
 		$("#purcode").val("");
 		$("#partname").val("");
 		$("#drawing").val("");
@@ -119,5 +135,14 @@ $(document).on("click", "#origin-bulk-list", async function () {
 		showErrorMessage(error.message);
 	} finally {
 		showLoader({ show: false });
+	}
+});
+
+$(document).on("click", "#import-excel", async function () {
+	try {
+		modalUpload.show(true);
+	} catch (error) {
+		console.error("Import Excel Error:", error);
+		showErrorMessage(error.message);
 	}
 });

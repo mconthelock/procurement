@@ -50,6 +50,12 @@
                 <select id="planner" class="select select-bordered w-full s2" placeholder="Select planner" disabled>
                 </select>
             </label>
+            <label class="fieldset w-full" for="type">
+                <legend class="fieldset-legend text-xs font-semibold uppercase tracking-wide text-slate-500">Type
+                </legend>
+                <select id="type" class="select select-bordered w-full s2" placeholder="Select type" disabled>
+                </select>
+            </label>
             <label class="fieldset w-full" for="status">
                 <legend class="fieldset-legend text-xs font-semibold uppercase tracking-wide text-slate-500">Status
                 </legend>
@@ -62,8 +68,12 @@
                     class="fi fi-br-search text-xl"></i>Search</button>
             <button id="reset-filter" class="btn btn-soft" type="button" disabled><i
                     class="fi fi-br-rotate-right text-xl"></i>Reset Filters</button>
-            <button id="origin-bulk-list" class="btn btn-success ml-auto" type="button" disabled><i
-                    class="fi fi-rr-file-excel text-xl"></i>Country of Origin (BULK List)</button>
+            <div class="ml-auto">
+                <button id="import-excel" class="btn btn-outline" type="button" disabled><i
+                        class="fi fi-rr-file-excel text-xl"></i>Import excel</button>
+                <button id="origin-bulk-list" class="btn btn-success" type="button" disabled><i
+                        class="fi fi-rr-file-excel text-xl"></i>Country of Origin (BULK List)</button>
+            </div>
         </div>
     </form>
 

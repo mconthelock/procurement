@@ -168,8 +168,6 @@ const columns = [
 		data: "TYPE",
 		name: "TYPE",
 		title: "TYPE",
-		searchable: false,
-		orderable: false,
 		className: "text-center",
 		type: "string",
 		render: function (data, type, row) {
