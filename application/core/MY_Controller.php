@@ -1,20 +1,23 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
-    use Coolpraz\PhpBlade\PhpBlade;
+    use duncan3dc\Laravel\BladeInstance;
     class MY_Controller extends CI_Controller {
 
     protected $views = APPPATH . 'views';
     protected $cache = APPPATH . 'cache';
     protected $blade;
     protected $callback;
-    
+
     public function __construct(){
         parent::__construct();
-        $this->blade = new PhpBlade($this->views, $this->cache);
+        $this->blade = new BladeInstance($this->views, $this->cache);
         $this->callback = $_ENV['APP_HOST'].'/form/authen/index/'.$_ENV['APP_ID'].'/';
         $GLOBALS['version'] = $_ENV['STATE'] == 'production' ? $_ENV['VERSION'] :  time();
-        // $this->load->database();
+    }
+
+    public function views($view_name, $data = array()){
+        echo $this->blade->render($view_name, $data);
     }
 
     public function session_expire(){
@@ -32,10 +35,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     public function isAjaxRequest() {
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
-    }
-
-    public function views($view_name, $data = array()){
-        echo $this->blade->view()->make($view_name, $data);
     }
 
     protected function _var_dump($data){

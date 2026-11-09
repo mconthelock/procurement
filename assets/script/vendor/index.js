@@ -13,11 +13,11 @@ import { extractDataForExport } from "./excel-data.js";
 var table;
 $(document).ready(async () => {
 	try {
-		await showLoader();
-		await initApp({ submenu: ".nav-vendors" });
-		const data = await getVendors();
-		const options = await tableVendorOption(data);
-		table = await createTable(options);
+		// await showLoader();
+		// await initApp({ submenu: ".nav-vendors" });
+		// const data = await getVendors();
+		// const options = await tableVendorOption(data);
+		// table = await createTable(options);
 	} catch (error) {
 		console.error(error);
 		await showMessage(error.message || "Error initializing app");

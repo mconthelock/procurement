@@ -13,10 +13,9 @@
     "vitepress": "^2.0.0-alpha.12"
   },
   "dependencies": {
-    "@amec/webasset": "git+https://webhub.mitsubishielevatorasia.co.th/wsd/webasset.git",
+    "@amec/webasset": "git+https://github.com/sutthipongjab/webasset.git",
     "@fancyapps/ui": "^5.0.36",
     "@flaticon/flaticon-uicons": "^3.3.1",
-    "@fontsource/kanit": "^5.1.0",
     "@fontsource/roboto": "^5.1.0",
     "@fortawesome/fontawesome-free": "^6.7.2",
     "@zxing/browser": "^0.1.5",

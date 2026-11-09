@@ -10,7 +10,6 @@
     <meta name="appstatus" content="{{ $_ENV['STATE'] }}">
     <meta name="theme-color" content="#C0C0C0">
     <title>AMEC PROCUREMENT</title>
-
     <link rel="manifest" href="{{ $_ENV['APP_ENV'] }}/manifest.json">
     <link rel="shortcut icon" href="{{ $_ENV['APP_IMG'] }}/favicon.ico">
     <link rel="apple-touch-icon" href="{{ $_ENV['APP_IMG'] }}/favicon.ico">
@@ -28,11 +27,9 @@
         <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
         <div class="drawer-content flex flex-col items-center justify-start w-full h-full">
             <!-- Page content here -->
-            <div class="flex-1 flex flex-col w-full px-4 my-5 md:px-4">
-                <div class="card min-h-[calc(100vh-3rem)] bg-primary/5 border border-primary/30" id="main-contents">
-                    <div class="card-body">
-                        @yield('contents')
-                    </div>
+            <div class="flex-1 flex flex-col w-full px-4 my-5 md:px-8">
+                <div class="min-h-[calc(100vh-3rem)]" id="main-contents">
+                    @yield('contents')
                 </div>
             </div>
         </div>
