@@ -1,6 +1,7 @@
 @extends('layouts/template')
 
 @section('contents')
+    @include('layouts/header')
     <div class="flex flex-col">
         <main class="w-full">
             <div class="flex flex-col w-full">
