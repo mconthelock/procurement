@@ -27,7 +27,7 @@
         <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
         <div class="drawer-content flex flex-col items-center justify-start w-full h-full">
             <!-- Page content here -->
-            <div class="flex-1 flex flex-col w-full px-4 my-5 md:px-8">
+            <div class="flex-1 flex flex-col w-full px-2 my-5 md:px-4">
                 <div class="min-h-[calc(100vh-3rem)]" id="main-contents">
                     @yield('contents')
                 </div>

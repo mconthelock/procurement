@@ -7,50 +7,51 @@
 }
 
 @plugin "daisyui/theme" {
-	name: "light";
+	name: "mitsubishi";
 	default: true;
 	prefersdark: false;
 	color-scheme: light;
+
+	/* Surfaces & Base Content */
 	--color-base-100: #ffffff;
 	--color-base-200: #f2f2f2;
 	--color-base-300: #e6e6e6;
-	--color-base-content: #1e293b;
+	--color-base-content: #333333;
+
+	/* Brand Accents */
 	--color-primary: #000000;
-	--color-primary-content: #4d4d4d;
+	--color-primary-content: #ffffff;
 	--color-secondary: #4d4d4d;
-	--color-secondary-content: #dddddd;
-	--color-accent: #e60012;
+	--color-secondary-content: #ffffff;
+	--color-accent: #0038ff;
 	--color-accent-content: #ffffff;
-	--color-neutral: #808080;
+	--color-neutral: #1a1a1a;
 	--color-neutral-content: #ffffff;
+
+	/* Semantic Feedback */
 	--color-info: #0038ff;
 	--color-info-content: #ffffff;
 	--color-success: #00c25d;
-	--color-success-content: #000000;
+	--color-success-content: #ffffff;
 	--color-warning: #f3ba00;
 	--color-warning-content: #000000;
 	--color-error: #cc0000;
 	--color-error-content: #ffffff;
+
+	/* Strict Zero Border Radius Policy */
 	--radius-selector: 0px;
 	--radius-field: 0px;
 	--radius-box: 0px;
-	--size-selector: 0.25rem;
-	--size-field: 0.25rem;
 	--border: 1px;
 	--depth: 0;
 	--noise: 0;
 }
 
-/* ==========================================================================
-   Scan project templates, views, scripts for Tailwind classes
-   ========================================================================== */
+/* Scan project templates and scripts for Tailwind classes */
 @source "../../application/views/**/*.php";
 @source "../../application/controllers/**/*.php";
-@source "../style/**/*.css";
 @source "../script/**/*.js";
-@source "../../design/**/*.html";
 @source "../../index.php";
-@source "../../.env";
 @source "../../node_modules/@amec/webasset/src/**/*.js";
 
 /* Webasset Fonts & Tooltips */
@@ -64,6 +65,72 @@
 		"Noto Sans", "Noto Sans Thai", "Helvetica Neue", Arial, sans-serif;
 	--font-head: Roboto, "Helvetica Neue", Arial, sans-serif;
 
+	/* Overwrite Default Radiuses to 0px (Strict Sharp Edge Standard) */
+	--radius-none: 0px;
+	--radius-xs: 0px;
+	--radius-sm: 0px;
+	--radius-md: 0px;
+	--radius-lg: 0px;
+	--radius-xl: 0px;
+	--radius-2xl: 0px;
+	--radius-3xl: 0px;
+	--radius-full: 9999px; /* Preserved only for tiny indicator dots */
+
+	/* Overwrite Surfaces & Containers using DaisyUI theme tokens */
+	--color-surface: var(--color-base-100);
+	--color-surface-dim: #dbdbdb;
+	--color-surface-bright: #ffffff;
+	--color-surface-subtle: var(--color-base-200);
+	--color-surface-card: var(--color-base-100);
+	--color-surface-footer: #dbdbdb;
+	--color-surface-container-lowest: #ffffff;
+	--color-surface-container-low: var(--color-base-200);
+	--color-surface-container: var(--color-base-300);
+	--color-surface-container-high: #cccccc;
+	--color-surface-container-highest: #b3b3b3;
+	--color-on-surface: var(--color-primary);
+	--color-on-surface-variant: var(--color-base-content);
+	--color-outline: #666666;
+	--color-outline-variant: #cccccc;
+	--color-border-light: var(--color-base-300);
+	--color-border-medium: #cccccc;
+	--color-border-dark: var(--color-primary);
+
+	/* Overwrite Text Colors */
+	--color-text-white: #ffffff;
+	--color-text-dark: var(--color-primary);
+	--color-text-body: var(--color-base-content);
+	--color-text-muted: #666666;
+	--color-muted: #808080;
+
+	/* Overwrite Brand & Accent Colors */
+	--color-accent-red: #ff0000;
+	--color-accent-red-text: var(--color-error);
+	--color-accent-red-hover: var(--color-error);
+	--color-accent-blue: var(--color-accent);
+	--color-accent-blue-text: #0023a1;
+	--color-accent-blue-hover: #0023a1;
+
+	/* Overwrite Semantic Status Tokens */
+	--color-status-reject-bg: #fff0f0;
+	--color-status-reject-text: #cc0000;
+	--color-status-reject-border: #ff9999;
+	--color-status-pending-bg: #fff8ba;
+	--color-status-pending-text: #9b7704;
+	--color-status-pending-border: #f3ba00;
+	--color-status-success-bg: #ccf7e1;
+	--color-status-success-text: #007639;
+	--color-status-success-border: #59e59c;
+
+	/* Essential Green scale tokens used in policy/footer */
+	--color-green-20: #ccf7e1;
+	--color-green-80: #007639;
+
+	/* Font Family & Typography Aliases */
+	--font-hero-title: var(--font-head);
+	--font-headline-lg: var(--font-head);
+	--font-headline-md: var(--font-head);
+	--font-headline-sm: var(--font-head);
 	--font-h1: var(--font-head);
 	--font-h2: var(--font-head);
 	--font-h3: var(--font-head);
@@ -73,82 +140,108 @@
 	--font-caption: var(--font-sans);
 	--font-label-md: var(--font-sans);
 	--font-label-sm: var(--font-sans);
+	--font-ui: var(--font-sans);
+	--font-meta-tag: var(--font-sans);
+	--font-data-mono: var(--font-mono);
 
-	--color-surface-subtle: #f2f2f2;
-	--color-surface-card: #ffffff;
-	--color-surface-footer: #dbdbdb;
-	--color-border-light: #e6e6e6;
-	--color-border-medium: #cccccc;
-	--color-border-dark: #000000;
-
+	/* Typography Scale */
+	--text-hero-title: 3.5rem;
+	--text-hero-title--line-height: 1.15;
+	--text-hero-title--font-weight: 500;
 	--text-h1: 2.75rem;
 	--text-h1--line-height: 1.2;
-	--text-h1--letter-spacing: -0.01em;
 	--text-h1--font-weight: 500;
-
-	/* Headline Medium / Heading 2 */
-	--text-headline-md: 2rem;
-	--text-headline-md--line-height: 1.25;
-	--text-headline-md--font-weight: 500;
-
 	--text-h2: 2rem;
 	--text-h2--line-height: 1.25;
 	--text-h2--font-weight: 500;
-
-	/* Headline Small / Heading 3 */
-	--text-headline-sm: 1.5rem;
-	--text-headline-sm--line-height: 1.3;
-	--text-headline-sm--font-weight: 500;
-
 	--text-h3: 1.5rem;
 	--text-h3--line-height: 1.3;
 	--text-h3--font-weight: 500;
-
-	/* Body Regular & Variants */
 	--text-body-lg: 1.125rem;
 	--text-body-lg--line-height: 1.6;
-	--text-body-lg--font-weight: 400;
-
 	--text-body-md: 1rem;
 	--text-body-md--line-height: 1.6;
-	--text-body-md--font-weight: 400;
-
 	--text-body-sm: 0.875rem;
 	--text-body-sm--line-height: 1.5;
-	--text-body-sm--font-weight: 400;
-
 	--text-caption: 0.75rem;
 	--text-caption--line-height: 1.4;
-	--text-caption--font-weight: 400;
+	--text-meta-tag: 0.8125rem;
+	--text-meta-tag--line-height: 1.2;
+	--text-meta-tag--font-weight: 700;
+	--text-data-mono: 0.875rem;
+	--text-data-mono--line-height: 1.4;
+	--text-data-mono--font-weight: 600;
 
-	--text-label-md: 1rem;
-	--text-label-md--line-height: 1.5;
-	--text-label-md--font-weight: 400;
+	/* Overwrite Spacing & Layout Constraints */
+	--spacing-space-xs: 0.25rem;
+	--spacing-space-sm: 0.5rem;
+	--spacing-space-md: 1rem;
+	--spacing-space-lg: 1.5rem;
+	--spacing-space-xl: 2.5rem;
+	--spacing-space-2xl: 3rem;
+	--spacing-space-3xl: 4rem;
 
-	--text-label-sm: 0.8125rem;
-	--text-label-sm--line-height: 1.2;
-	--text-label-sm--font-weight: 700;
+	--spacing-gutter: 1.5rem;
+	--spacing-gutter-sm: 1rem;
+	--spacing-container-header: 1380px;
+	--spacing-container-footer: 1440px;
+	--spacing-container-content: 1280px;
+
+	/* Breakpoints */
+	--breakpoint-mobile: 980px;
+	--breakpoint-desktop: 981px;
+
+	/* Elevation Shadows */
+	--shadow-none: none;
+	--shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.08);
+	--shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+	--shadow-modal: 0 10px 30px rgba(0, 0, 0, 0.25);
+
+	/* Z-Index */
+	--z-header: 1000;
+	--z-dropdown: 1010;
+	--z-gotop: 900;
+	--z-modal: 2000;
 }
 
 /* ==========================================================================
-   Base Layer: Global Resets & Defaults using DaisyUI Tokens
+   Base Layer & Element Level Styling
    ========================================================================== */
 @layer base {
-	*,
-	::after,
-	::before,
-	::backdrop,
-	::file-selector-button {
-		border-color: var(--color-base-300, currentColor);
-	}
-
 	body {
-		@apply font-sans text-base-content;
+		font-family: var(--font-sans);
+		color: var(--color-base-content);
 		background-color: #f4f5f7;
 		margin: 0;
 		padding: 0;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
+	}
+
+	h1 {
+		font-size: var(--text-h1);
+		line-height: 1.2;
+		font-weight: 500;
+		letter-spacing: -0.01em;
+		color: var(--color-primary);
+	}
+
+	h2 {
+		font-size: var(--text-h2);
+		line-height: 1.25;
+		font-weight: 500;
+		color: var(--color-primary);
+	}
+
+	h3 {
+		font-size: var(--text-h3);
+		line-height: 1.3;
+		font-weight: 500;
+		color: var(--color-primary);
+	}
+
+	a {
+		transition: color 0.2s ease;
 	}
 
 	#sidebar #sidebarToggle svg,
@@ -164,6 +257,56 @@
 
 	i.fi {
 		@apply flex items-center justify-center;
+	}
+
+	/* Material Symbols Outlined base setup */
+	.material-symbols-outlined {
+		font-family: "Material Symbols Outlined";
+		font-weight: normal;
+		font-style: normal;
+		font-size: 24px;
+		line-height: 1;
+		letter-spacing: normal;
+		text-transform: none;
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		overflow: hidden;
+		white-space: nowrap;
+		word-wrap: normal;
+		direction: ltr;
+		vertical-align: middle;
+		flex-shrink: 0;
+		user-select: none;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		text-rendering: optimizeLegibility;
+		font-feature-settings: "liga";
+	}
+}
+
+/* ==========================================================================
+   Utilities
+   ========================================================================== */
+@layer utilities {
+	/* Global Link Hover State (Red Hover standard) */
+	a:where(
+			:not(
+				.btn,
+				.btn-primary-me,
+				.btn-secondary-me,
+				.btn-danger-me,
+				.gotop-me
+			)
+		):hover {
+		color: var(--color-accent-red);
+	}
+
+	/* Global Input Focus State (Corporate Red Focus) */
+	:is(.input, .textarea, .select):focus,
+	:is(.input, .textarea, .select):focus-within {
+		--input-color: var(--color-accent-red);
+		border-color: var(--color-accent-red);
 	}
 }
 
