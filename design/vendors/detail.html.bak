@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><title>Mitsubishi Elevator Asia Co., Ltd. - AMEC Supplier Portal</title><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@100..900&display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "text-muted": "#666666", "on-primary": "#ffffff", "surface-container-high": "#e9e8e7", "on-secondary-fixed-variant": "#00458e", "secondary-fixed": "#d7e3ff", "surface-tint": "#5f5e5e", "status-pending-text": "#8a5800", "on-tertiary-container": "#ff2925", "status-reject-text": "#c80010", "surface": "#ffffff", "on-tertiary-fixed-variant": "#930007", "error": "#ba1a1a", "secondary-container": "#5095fe", "tertiary-fixed": "#ffdad5", "background": "#fbf9f9", "secondary-fixed-dim": "#aac7ff", "surface-dim": "#dbdad9", "border-light": "#e5e5e5", "status-success-border": "#a3d9a5", "primary": "#000000", "tertiary": "#000000", "error-container": "#ffdad6", "tertiary-container": "#410001", "on-secondary-container": "#002d61", "on-error": "#ffffff", "primary-fixed": "#e5e2e1", "surface-container-lowest": "#ffffff", "accent-blue-hover": "#004d99", "surface-bright": "#fbf9f9", "status-success-bg": "#edf7ee", "inverse-on-surface": "#f2f0f0", "surface-container-highest": "#e3e2e2", "outline-variant": "#c4c7c7", "surface-variant": "#e3e2e2", "status-pending-border": "#f5c26b", "on-surface": "#1b1c1c", "on-secondary": "#ffffff", "outline": "#747878", "border-medium": "#cccccc", "secondary": "#005cba", "on-tertiary": "#ffffff", "on-primary-fixed": "#1c1b1b", "on-error-container": "#93000a", "text-body": "#333333", "on-primary-fixed-variant": "#474646", "on-secondary-fixed": "#001b3e", "status-pending-bg": "#fff8e6", "status-reject-bg": "#fdecee", "tertiary-fixed-dim": "#ffb4aa", "inverse-primary": "#c8c6c5", "primary-fixed-dim": "#c8c6c5", "on-background": "#1b1c1c", "surface-container-low": "#f5f3f3", "on-primary-container": "#858383", "surface-subtle": "#fafafa", "status-reject-border": "#f5a3ab", "surface-footer": "#dbdbdb", "primary-container": "#1c1b1b", "status-success-text": "#1b5e20", "surface-container": "#efeded", "accent-red-hover": "#c80010", "inverse-surface": "#303031", "border-dark": "#111111", "on-surface-variant": "#444748", "on-tertiary-fixed": "#410001" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "gutter-sm": "1rem", "space-sm": "0.5rem", "gutter": "1.5rem", "space-2xl": "3rem", "space-md": "1rem", "margin": "2rem", "space-3xl": "4rem", "space-xl": "2rem", "margin-mobile": "1rem", "space-lg": "1.5rem", "space-xs": "0.25rem" }, "fontFamily": { "hero-title-mobile": ["Segoe UI"], "data-mono": ["Segoe UI"], "body-sm": ["Segoe UI"], "body-lg": ["Segoe UI"], "hero-title": ["Segoe UI"], "h3": ["Segoe UI"], "meta-tag": ["Segoe UI"], "body-md": ["Segoe UI"], "caption": ["Segoe UI"], "h1": ["Segoe UI"], "h2-mobile": ["Segoe UI"], "h2": ["Segoe UI"], "h1-mobile": ["Segoe UI"], "editorial-statement": ["Segoe UI"] }, "fontSize": { "hero-title-mobile": ["2.25rem", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "500" }], "data-mono": ["0.875rem", { "lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "600" }], "body-sm": ["0.875rem", { "lineHeight": "1.5", "fontWeight": "400" }], "body-lg": ["1.125rem", { "lineHeight": "1.6", "fontWeight": "400" }], "hero-title": ["3.5rem", { "lineHeight": "1.15", "letterSpacing": "-0.015em", "fontWeight": "500" }], "h3": ["1.5rem", { "lineHeight": "1.3", "fontWeight": "600" }], "meta-tag": ["0.8125rem", { "lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700" }], "body-md": ["1rem", { "lineHeight": "1.6", "fontWeight": "400" }], "caption": ["0.75rem", { "lineHeight": "1.4", "fontWeight": "400" }], "h1": ["2.75rem", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700" }], "h2-mobile": ["1.5rem", { "lineHeight": "1.3", "fontWeight": "600" }], "h2": ["2rem", { "lineHeight": "1.25", "fontWeight": "600" }], "h1-mobile": ["2rem", { "lineHeight": "1.25", "fontWeight": "700" }], "editorial-statement": ["2.25rem", { "lineHeight": "1.35", "fontWeight": "400" }] } } } }</script></head><body class="bg-surface font-body-md text-on-surface antialiased"><header class="fixed top-0 left-0 w-full z-50 bg-surface shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-[72px] max-w-[1380px] mx-auto px-gutter flex items-center justify-between"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-sm"><svg class="flex-shrink-0" fill="none" height="32" viewbox="0 0 120 105" width="36" xmlns="http://www.w3.org/2000/svg"><polygon fill="#FF0000" points="60,0 80,35 40,35"></polygon><polygon fill="#FF0000" points="80,35 120,35 100,70"></polygon><polygon fill="#FF0000" points="40,35 0,35 20,70"></polygon><polygon fill="#FF0000" points="60,70 100,70 80,105"></polygon><polygon fill="#FF0000" points="60,70 20,70 40,105"></polygon></svg><div class="flex flex-col justify-center leading-none pl-1"><span class="font-h3 text-[15px] font-bold tracking-tight text-primary uppercase leading-tight">MITSUBISHI ELECTRIC</span><span class="font-caption text-[10px] tracking-normal text-text-muted mt-0.5">Changes for the Better</span></div></div><div class="h-8 w-px bg-border-light mx-space-xs"></div><div class="font-body-sm text-[13px] font-semibold text-text-body tracking-tight leading-tight">Mitsubishi Elevator Asia Co., Ltd.</div></div><div class="flex items-center gap-space-xl"><nav class="hidden xl:flex items-center gap-space-lg h-[72px]" data-active-classes="text-secondary border-b-2 border-secondary font-bold"><a class="h-full inline-flex items-center font-body-sm text-[14px] font-semibold text-on-surface-variant hover:text-on-surface transition-colors" data-path="about" href="#">About</a><a class="h-full inline-flex items-center font-body-sm text-[14px] font-semibold text-on-surface-variant hover:text-on-surface transition-colors" data-path="sustainability" href="#">Sustainability</a><a class="h-full inline-flex items-center font-body-sm text-[14px] font-semibold text-on-surface-variant hover:text-on-surface transition-colors" data-path="investors" href="#">Investors</a><a class="h-full inline-flex items-center font-body-sm text-[14px] font-semibold text-on-surface-variant hover:text-on-surface transition-colors" data-path="careers" href="#">Careers</a><a class="h-full inline-flex items-center font-body-sm text-[14px] font-semibold text-on-surface-variant hover:text-on-surface transition-colors" data-path="news" href="#">News</a><a class="h-full inline-flex items-center font-body-sm text-[14px] font-semibold text-on-surface-variant hover:text-on-surface transition-colors" data-path="products-and-solutions" href="#">Products & Solutions</a><a class="h-full inline-flex items-center font-body-sm text-[14px] font-semibold text-on-surface-variant hover:text-on-surface transition-colors" data-path="contact" href="#">Contact</a></nav><div class="flex items-center text-text-body font-meta-tag text-[12px] tracking-wider pl-space-md"><span class="font-bold text-primary cursor-pointer">EN</span><span class="mx-space-xs text-outline-variant">|</span><span class="text-text-muted hover:text-primary cursor-pointer transition-colors">TH</span></div></div></div></header><main class="w-full pt-[72px] bg-surface min-h-[calc(100vh-72px)]"><div class="flex flex-col w-full">
+<!-- Top Breadcrumb & Quick Identification Banner -->
+<div class="w-full bg-surface-subtle">
+<div class="max-w-[1380px] mx-auto px-gutter py-space-sm flex flex-wrap items-center justify-between gap-space-sm">
+<nav class="flex items-center gap-space-xs font-meta-tag text-[12px] text-text-muted">
+<a class="hover:text-secondary transition-colors" href="#">Home</a>
+<span class="text-outline-variant">/</span>
+<a class="hover:text-secondary transition-colors" href="#">Supplier Portal</a>
+<span class="text-outline-variant">/</span>
+<a class="hover:text-secondary transition-colors" href="#">Vendor Directory</a>
+<span class="text-outline-variant">/</span>
+<span class="text-primary font-bold">Siam Precision Engineering Co., Ltd. (V-884029-TH)</span>
+</nav>
+<div class="flex items-center gap-space-md">
+<span class="inline-flex items-center gap-space-xs font-meta-tag text-[11px] text-text-muted uppercase">
+<span class="w-2 h-2 rounded-full bg-status-success-text"></span>
+          Data Stream: Synced with AMEC Chonburi ERP (Live)
+        </span>
+<span class="text-outline-variant text-[11px]">|</span>
+<span class="font-data-mono text-[11px] text-text-muted">Rev: 2026.03-REL</span>
+</div>
+</div>
+</div>
+<!-- Hero Profile Header -->
+<div class="w-full bg-surface shadow-sm">
+<div class="max-w-[1380px] mx-auto px-gutter py-space-xl">
+<div class="flex flex-col xl:flex-row xl:items-start justify-between gap-space-xl">
+<!-- Identity Block -->
+<div class="flex items-start gap-space-md max-w-4xl">
+<div class="w-16 h-16 bg-primary text-on-primary flex items-center justify-center font-h2 text-h2 font-bold tracking-tight flex-shrink-0 shadow-sm">
+            SP
+          </div>
+<div class="flex flex-col gap-space-xs">
+<div class="flex flex-wrap items-center gap-space-xs">
+<span class="bg-primary text-on-primary font-meta-tag text-[11px] px-2 py-0.5 uppercase tracking-wider">
+                VENDOR CODE: V-884029-TH
+              </span>
+<span class="bg-surface-container-high text-on-surface font-meta-tag text-[11px] px-2 py-0.5 uppercase">
+                TIER-1 DIRECT SUPPLIER
+              </span>
+<span class="bg-status-success-bg text-status-success-text font-meta-tag text-[11px] px-2 py-0.5 uppercase flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+                AMEC GRADE A CERTIFIED (EXCELLENCE)
+              </span>
+<span class="bg-surface-container text-text-muted font-data-mono text-[11px] px-2 py-0.5">
+                TAX ID: 0105550000000
+              </span>
+</div>
+<h1 class="font-h2 text-h2 text-primary font-bold tracking-tight">
+              Siam Precision Engineering Co., Ltd.
+            </h1>
+<div class="font-body-md text-text-muted font-normal flex flex-wrap items-center gap-space-md">
+<span class="text-text-body font-medium">บริษัท สยาม พรีซิชั่น เอ็นจิเนียริ่ง จำกัด</span>
+<span class="text-outline-variant">•</span>
+<span class="inline-flex items-center gap-1 font-body-sm text-[13px]">
+<span class="material-symbols-outlined text-[16px] text-secondary">location_on</span>
+                Amata City Chonburi Industrial Estate, Chonburi 20000, Thailand (Plant 1 & 2)
+              </span>
+</div>
+</div>
+</div>
+<!-- Corporate Action Matrix -->
+<div class="flex flex-col sm:flex-row xl:flex-col items-end gap-space-sm flex-shrink-0">
+<div class="flex flex-wrap items-center justify-end gap-space-sm w-full">
+<button class="bg-surface hover:bg-surface-container-low text-text-body font-meta-tag text-[12px] uppercase px-4 py-2 shadow-sm flex items-center gap-space-xs transition-colors" title="Generate full vendor dossier">
+<span class="material-symbols-outlined text-[16px] text-secondary">picture_as_pdf</span>
+              Download Dossier (.PDF)
+            </button>
+<button class="bg-surface hover:bg-surface-container-low text-text-body font-meta-tag text-[12px] uppercase px-4 py-2 shadow-sm flex items-center gap-space-xs transition-colors" title="Download all certified compliance documents">
+<span class="material-symbols-outlined text-[16px] text-status-success-text">folder_zip</span>
+              All Compliance (.ZIP 8.4 MB)
+            </button>
+</div>
+<div class="flex flex-wrap items-center justify-end gap-space-sm w-full">
+<button class="bg-surface-container-highest hover:bg-surface-dim text-primary font-meta-tag text-[12px] uppercase px-4 py-2 flex items-center gap-space-xs transition-colors">
+<span class="material-symbols-outlined text-[16px]">edit_note</span>
+              Issue Changing Notice (CN)
+            </button>
+<button class="bg-secondary hover:bg-accent-blue-hover text-on-secondary font-meta-tag text-[12px] uppercase px-5 py-2 flex items-center gap-space-xs transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+              Create Purchase Order
+            </button>
+</div>
+</div>
+</div>
+<!-- Quick Status Ticker -->
+<div class="mt-space-lg pt-space-md bg-surface-container-low px-space-md py-space-sm flex flex-wrap items-center justify-between gap-space-md text-[13px]">
+<div class="flex items-center gap-space-md">
+<span class="inline-flex items-center gap-1 font-meta-tag text-[11px] uppercase tracking-wider text-text-muted">
+<span class="material-symbols-outlined text-[16px] text-status-success-text">shield_with_heart</span>
+            Supplier Status:
+          </span>
+<span class="font-body-sm font-semibold text-status-success-text bg-status-success-bg px-2 py-0.5">ACTIVE / STRATEGIC PARTNER</span>
+<span class="text-outline-variant">|</span>
+<span class="text-text-muted font-body-sm">ERP Vendor ID: <strong class="text-primary font-data-mono">TH-V884029</strong></span>
+<span class="text-outline-variant">|</span>
+<span class="text-text-muted font-body-sm">Primary Currency: <strong class="text-primary font-data-mono">THB (฿)</strong></span>
+</div>
+<div class="flex items-center gap-space-sm font-data-mono text-[12px] text-text-muted">
+<span class="material-symbols-outlined text-[16px] text-text-muted">security_update_good</span>
+          Last Verified by AMEC Vendor Governance: <strong class="text-primary font-semibold">2026-03-15</strong>
+</div>
+</div>
+</div>
+</div>
+<!-- Operational Core Content -->
+<div class="w-full max-w-[1380px] mx-auto px-gutter py-space-xl">
+<!-- Row 1: KPI & Performance Evaluation Scorecard -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md mb-space-2xl">
+<!-- KPI 1 -->
+<div class="bg-surface p-space-md shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between mb-space-sm">
+<span class="font-meta-tag text-[11px] uppercase tracking-wider text-text-muted">Quality Performance (PPM)</span>
+<span class="material-symbols-outlined text-[18px] text-secondary">fact_check</span>
+</div>
+<div>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-h1 text-h1 font-bold text-primary tracking-tight">12</span>
+<span class="font-meta-tag text-[13px] text-text-muted uppercase">PPM</span>
+</div>
+<p class="font-body-sm text-[12px] text-status-success-text mt-1 font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_down</span>
+            Target < 50 PPM | Defect Rate: 0.012%
+          </p>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 mt-space-md">
+<div class="bg-secondary h-1.5" style="width: 24%;"></div>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface p-space-md shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between mb-space-sm">
+<span class="font-meta-tag text-[11px] uppercase tracking-wider text-text-muted">On-Time Delivery (OTD)</span>
+<span class="material-symbols-outlined text-[18px] text-status-success-text">local_shipping</span>
+</div>
+<div>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-h1 text-h1 font-bold text-primary tracking-tight">99.4</span>
+<span class="font-meta-tag text-[13px] text-text-muted">%</span>
+</div>
+<p class="font-body-sm text-[12px] text-status-success-text mt-1 font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span>
+            Baseline 98.0% | 42/42 Batches on schedule
+          </p>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 mt-space-md">
+<div class="bg-status-success-text h-1.5" style="width: 99.4%;"></div>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface p-space-md shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between mb-space-sm">
+<span class="font-meta-tag text-[11px] uppercase tracking-wider text-text-muted">Active PO Commitment</span>
+<span class="material-symbols-outlined text-[18px] text-primary">receipt_long</span>
+</div>
+<div>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-h1 text-h1 font-bold text-primary tracking-tight">12</span>
+<span class="font-meta-tag text-[13px] text-text-muted uppercase">Orders</span>
+</div>
+<p class="font-data-mono text-[12px] text-text-body mt-1 font-semibold">
+            Total Value: ฿24,850,000 THB
+          </p>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 mt-space-md">
+<div class="bg-primary h-1.5" style="width: 78%;"></div>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface p-space-md shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between mb-space-sm">
+<span class="font-meta-tag text-[11px] uppercase tracking-wider text-text-muted">NCR & Claim Resolution</span>
+<span class="material-symbols-outlined text-[18px] text-status-success-text">task_alt</span>
+</div>
+<div>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-h1 text-h1 font-bold text-primary tracking-tight">0</span>
+<span class="font-meta-tag text-[13px] text-text-muted uppercase">Open Claims</span>
+</div>
+<p class="font-body-sm text-[12px] text-status-success-text mt-1 font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+            100% 8D Resolution within 4.2 days
+          </p>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 mt-space-md">
+<div class="bg-status-success-text h-1.5" style="width: 100%;"></div>
+</div>
+</div>
+</div>
+<!-- Navigation Sub-Tabs -->
+<div class="w-full bg-surface shadow-sm mb-space-xl">
+<div class="flex items-center overflow-x-auto gap-space-md px-space-md h-12">
+<button class="h-full inline-flex items-center font-meta-tag text-[13px] uppercase tracking-wider text-secondary font-bold shadow-[inset_0_-3px_0_#005cba]">
+          01. Enterprise Profile & Legal
+        </button>
+<button class="h-full inline-flex items-center font-meta-tag text-[13px] uppercase tracking-wider text-text-muted hover:text-primary transition-colors">
+          02. Production & Commodities
+        </button>
+<button class="h-full inline-flex items-center font-meta-tag text-[13px] uppercase tracking-wider text-text-muted hover:text-primary transition-colors">
+          03. Quality & Compliance Standards
+        </button>
+<button class="h-full inline-flex items-center font-meta-tag text-[13px] uppercase tracking-wider text-text-muted hover:text-primary transition-colors">
+          04. Active POs & Deliveries (4)
+        </button>
+<button class="h-full inline-flex items-center font-meta-tag text-[13px] uppercase tracking-wider text-text-muted hover:text-primary transition-colors">
+          05. Document Repository (.ZIP)
+        </button>
+</div>
+</div>
+<!-- Dual Column Main Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl">
+<!-- Left Column (8 cols) -->
+<div class="lg:col-span-8 flex flex-col gap-space-xl">
+<!-- SECTION A: Legal Entity & Corporate Profile -->
+<section class="bg-surface p-space-xl shadow-sm">
+<div class="flex items-center justify-between pb-space-sm mb-space-lg bg-surface-subtle p-3">
+<div class="flex items-center gap-space-sm">
+<span class="w-2.5 h-2.5 bg-primary"></span>
+<h2 class="font-h3 text-h3 text-primary font-bold">Section A: Legal Entity & Corporate Structure</h2>
+</div>
+<span class="font-data-mono text-[11px] text-text-muted uppercase">AMEC Verified ID: REG-TH-884029</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+<div class="space-y-space-md">
+<div>
+<div class="font-meta-tag text-[11px] uppercase text-text-muted tracking-wider">Registered Corporate Title (EN)</div>
+<div class="font-body-md text-primary font-semibold mt-0.5">Siam Precision Engineering Co., Ltd.</div>
+</div>
+<div>
+<div class="font-meta-tag text-[11px] uppercase text-text-muted tracking-wider">Registered Corporate Title (TH)</div>
+<div class="font-body-md text-text-body font-medium mt-0.5">บริษัท สยาม พรีซิชั่น เอ็นจิเนียริ่ง จำกัด</div>
+</div>
+<div>
+<div class="font-meta-tag text-[11px] uppercase text-text-muted tracking-wider">Managing Director & Representative</div>
+<div class="font-body-md text-primary font-semibold mt-0.5">Mr. Kittipong Prasert (นายกิตติพงษ์ ประเสริฐ)</div>
+</div>
+<div>
+<div class="font-meta-tag text-[11px] uppercase text-text-muted tracking-wider">Commercial Registration & Tax ID</div>
+<div class="font-data-mono text-primary font-semibold mt-0.5">0105550000000 (Department of Business Dev.)</div>
+</div>
+</div>
+<div class="space-y-space-md">
+<div>
+<div class="font-meta-tag text-[11px] uppercase text-text-muted tracking-wider">Registered Capital & Financial Solvency</div>
+<div class="font-data-mono text-primary font-semibold mt-0.5">฿180,000,000 THB (Fully Paid Up)</div>
+</div>
+<div>
+<div class="font-meta-tag text-[11px] uppercase text-text-muted tracking-wider">Year Established & Experience</div>
+<div class="font-body-md text-primary font-semibold mt-0.5">1998 (28 Years AMEC Supply Partner)</div>
+</div>
+<div>
+<div class="font-meta-tag text-[11px] uppercase text-text-muted tracking-wider">Workforce Headcount</div>
+<div class="font-body-md text-primary font-semibold mt-0.5">450 Full-Time Technicians & Engineers</div>
+</div>
+<div>
+<div class="font-meta-tag text-[11px] uppercase text-text-muted tracking-wider">Primary Manufacturing Plant</div>
+<div class="font-body-sm text-text-body mt-0.5">
+                  700/412 Moo 7, Phase 4, Amata City Chonburi Industrial Estate, Don Hua Lo, Mueang Chonburi, Chonburi 20000
+                </div>
+</div>
+</div>
+</div>
+<!-- Secondary Manufacturing Facility Detail -->
+<div class="mt-space-lg p-space-md bg-surface-subtle">
+<div class="flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-[20px] text-secondary mt-0.5">factory</span>
+<div class="flex-1">
+<div class="font-meta-tag text-[12px] uppercase text-primary font-bold">Auxiliary Facility: Heavy Stamping & Surface Treatment Plant 2</div>
+<p class="font-body-sm text-[13px] text-text-muted mt-1 leading-relaxed">
+                  Located at Amata City Chonburi Phase 9 (Lot 902/11). Dedicated strictly to cold-rolled elevator guide rail bracket tooling, high-capacity stamping presses, and automated powder coating line dedicated to AMEC contract lines.
+                </p>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION B: Approved Commodities & Production Capabilities -->
+<section class="bg-surface p-space-xl shadow-sm">
+<div class="flex items-center justify-between pb-space-sm mb-space-lg bg-surface-subtle p-3">
+<div class="flex items-center gap-space-sm">
+<span class="w-2.5 h-2.5 bg-primary"></span>
+<h2 class="font-h3 text-h3 text-primary font-bold">Section B: Approved Commodities & Manufacturing Capabilities</h2>
+</div>
+<span class="bg-status-success-bg text-status-success-text font-meta-tag text-[11px] px-2 py-0.5">4 ACTIVE COMMODITY CODES</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Capability 1 -->
+<div class="p-space-md bg-surface-subtle hover:bg-surface-container-low transition-colors">
+<div class="flex items-start justify-between mb-space-xs">
+<span class="font-data-mono text-[11px] text-secondary font-bold">CMD-EL-014 / STRUCTURAL</span>
+<span class="bg-surface-container text-primary font-meta-tag text-[10px] px-1.5 py-0.5">TOLERANCE ±0.05MM</span>
+</div>
+<h3 class="font-body-md text-primary font-bold">High-Precision Elevator Hoistway Structural Beams</h3>
+<p class="font-body-sm text-[12px] text-text-muted mt-1 leading-relaxed">
+                Automated multi-axis plasma cutting, laser profiling, and certified robotic MIG/TIG welding for AMEC Nexiez-S and high-speed passenger hoistways.
+              </p>
+<div class="mt-space-sm flex flex-wrap gap-1">
+<span class="bg-surface text-text-body font-caption text-[11px] px-1.5 py-0.5 shadow-sm">SS400 / SPHC Steel</span>
+<span class="bg-surface text-text-body font-caption text-[11px] px-1.5 py-0.5 shadow-sm">Ultrasonic Weld Inspected</span>
+</div>
+</div>
+<!-- Capability 2 -->
+<div class="p-space-md bg-surface-subtle hover:bg-surface-container-low transition-colors">
+<div class="flex items-start justify-between mb-space-xs">
+<span class="font-data-mono text-[11px] text-secondary font-bold">CMD-EL-028 / STAMPING</span>
+<span class="bg-surface-container text-primary font-meta-tag text-[10px] px-1.5 py-0.5">800 TON CAPACITY</span>
+</div>
+<h3 class="font-body-md text-primary font-bold">Car Frame Sheet Metal Pressing & Bracket Punching</h3>
+<p class="font-body-sm text-[12px] text-text-muted mt-1 leading-relaxed">
+                Continuous progressive stamping line with 800-ton hydraulic presses, precision shearing, and digital sensor-controlled stroke verification.
+              </p>
+<div class="mt-space-sm flex flex-wrap gap-1">
+<span class="bg-surface text-text-body font-caption text-[11px] px-1.5 py-0.5 shadow-sm">High Tensile Plate</span>
+<span class="bg-surface text-text-body font-caption text-[11px] px-1.5 py-0.5 shadow-sm">Automated Feed line</span>
+</div>
+</div>
+<!-- Capability 3 -->
+<div class="p-space-md bg-surface-subtle hover:bg-surface-container-low transition-colors">
+<div class="flex items-start justify-between mb-space-xs">
+<span class="font-data-mono text-[11px] text-secondary font-bold">CMD-EL-039 / CNC MACHINING</span>
+<span class="bg-surface-container text-primary font-meta-tag text-[10px] px-1.5 py-0.5">5-AXIS OKUMA</span>
+</div>
+<h3 class="font-body-md text-primary font-bold">Guide Rail Bracket CNC Milling & Drilling Assemblies</h3>
+<p class="font-body-sm text-[12px] text-text-muted mt-1 leading-relaxed">
+                Precision CNC vertical machining centers linked directly to AMEC 3D CAD drawing vault with automated CMM coordinate inspection.
+              </p>
+<div class="mt-space-sm flex flex-wrap gap-1">
+<span class="bg-surface text-text-body font-caption text-[11px] px-1.5 py-0.5 shadow-sm">CMM 100% Verified</span>
+<span class="bg-surface text-text-body font-caption text-[11px] px-1.5 py-0.5 shadow-sm">Custom Jigs Ready</span>
+</div>
+</div>
+<!-- Capability 4 -->
+<div class="p-space-md bg-surface-subtle hover:bg-surface-container-low transition-colors">
+<div class="flex items-start justify-between mb-space-xs">
+<span class="font-data-mono text-[11px] text-secondary font-bold">CMD-EL-081 / FINISHING</span>
+<span class="bg-surface-container text-primary font-meta-tag text-[10px] px-1.5 py-0.5">ROHS & REACH PASS</span>
+</div>
+<h3 class="font-body-md text-primary font-bold">Powder Coating & Surface Phosphating</h3>
+<p class="font-body-sm text-[12px] text-text-muted mt-1 leading-relaxed">
+                Automated continuous overhead monorail conveyor with 7-stage pre-treatment, zinc phosphate dipping, and 1,000-hour salt spray endurance rating.
+              </p>
+<div class="mt-space-sm flex flex-wrap gap-1">
+<span class="bg-surface text-text-body font-caption text-[11px] px-1.5 py-0.5 shadow-sm">1000h Salt Spray</span>
+<span class="bg-surface text-text-body font-caption text-[11px] px-1.5 py-0.5 shadow-sm">Munsell Color Match</span>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION E: Active POs & Delivery Schedule Matrix -->
+<section class="bg-surface p-space-xl shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between pb-space-sm mb-space-lg bg-surface-subtle p-3 gap-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="w-2.5 h-2.5 bg-primary"></span>
+<h2 class="font-h3 text-h3 text-primary font-bold">Section E: Active Purchase Orders & Delivery Matrix</h2>
+</div>
+<div class="flex items-center gap-space-xs">
+<a class="font-meta-tag text-[12px] text-secondary hover:text-accent-blue-hover uppercase font-bold flex items-center gap-1" href="#">
+                Open PO Console
+                <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</a>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container text-primary font-meta-tag text-[11px] uppercase tracking-wider">
+<th class="p-space-sm">PO Number</th>
+<th class="p-space-sm">Component Description</th>
+<th class="p-space-sm text-right">Order Qty</th>
+<th class="p-space-sm text-right">Amount (THB)</th>
+<th class="p-space-sm">Delivery Target</th>
+<th class="p-space-sm">Status</th>
+<th class="p-space-sm text-center">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-light font-body-sm text-[13px]">
+<!-- PO Row 1 -->
+<tr class="hover:bg-secondary-fixed/20 transition-colors">
+<td class="p-space-sm font-data-mono font-bold text-secondary">
+                    PO-2025-0892
+                  </td>
+<td class="p-space-sm">
+<div class="font-medium text-primary">Hoistway Guide Rail Joint Bracket Set A</div>
+<div class="font-caption text-[11px] text-text-muted">AMEC Drawing Rev 4.1 | DWG-HW-8821</div>
+</td>
+<td class="p-space-sm text-right font-data-mono">1,200 Sets</td>
+<td class="p-space-sm text-right font-data-mono font-semibold text-primary">฿4,260,000</td>
+<td class="p-space-sm font-data-mono">2026-04-12</td>
+<td class="p-space-sm">
+<span class="bg-status-pending-bg text-status-pending-text font-meta-tag text-[10px] px-2 py-0.5">
+                      IN PRODUCTION
+                    </span>
+</td>
+<td class="p-space-sm text-center">
+<button class="bg-surface hover:bg-surface-container-low text-secondary font-meta-tag text-[11px] px-2 py-1 shadow-sm uppercase">
+                      Inspect
+                    </button>
+</td>
+</tr>
+<!-- PO Row 2 -->
+<tr class="hover:bg-secondary-fixed/20 transition-colors">
+<td class="p-space-sm font-data-mono font-bold text-secondary">
+                    PO-2025-0871
+                  </td>
+<td class="p-space-sm">
+<div class="font-medium text-primary">Car Frame Bottom Safety Plank Structural Member</div>
+<div class="font-caption text-[11px] text-text-muted">AMEC Drawing Rev 3.0 | DWG-CF-3309</div>
+</td>
+<td class="p-space-sm text-right font-data-mono">450 Units</td>
+<td class="p-space-sm text-right font-data-mono font-semibold text-primary">฿7,875,000</td>
+<td class="p-space-sm font-data-mono">2026-04-18</td>
+<td class="p-space-sm">
+<span class="bg-status-success-bg text-status-success-text font-meta-tag text-[10px] px-2 py-0.5">
+                      QA PASSED
+                    </span>
+</td>
+<td class="p-space-sm text-center">
+<button class="bg-surface hover:bg-surface-container-low text-secondary font-meta-tag text-[11px] px-2 py-1 shadow-sm uppercase">
+                      Inspect
+                    </button>
+</td>
+</tr>
+<!-- PO Row 3 -->
+<tr class="hover:bg-secondary-fixed/20 transition-colors">
+<td class="p-space-sm font-data-mono font-bold text-secondary">
+                    PO-2025-0865
+                  </td>
+<td class="p-space-sm">
+<div class="font-medium text-primary">Counterweight Guiderail Upper Anchor Brackets</div>
+<div class="font-caption text-[11px] text-text-muted">AMEC Drawing Rev 2.4 | DWG-CW-1102</div>
+</td>
+<td class="p-space-sm text-right font-data-mono">800 Sets</td>
+<td class="p-space-sm text-right font-data-mono font-semibold text-primary">฿3,120,000</td>
+<td class="p-space-sm font-data-mono">2026-04-25</td>
+<td class="p-space-sm">
+<span class="bg-surface-container-high text-primary font-meta-tag text-[10px] px-2 py-0.5">
+                      ASN DISPATCHED
+                    </span>
+</td>
+<td class="p-space-sm text-center">
+<button class="bg-surface hover:bg-surface-container-low text-secondary font-meta-tag text-[11px] px-2 py-1 shadow-sm uppercase">
+                      Inspect
+                    </button>
+</td>
+</tr>
+<!-- PO Row 4 -->
+<tr class="hover:bg-secondary-fixed/20 transition-colors">
+<td class="p-space-sm font-data-mono font-bold text-secondary">
+                    PO-2025-0849
+                  </td>
+<td class="p-space-sm">
+<div class="font-medium text-primary">Stamping Channel Stiffeners 800T (Batch 04)</div>
+<div class="font-caption text-[11px] text-text-muted">AMEC Drawing Rev 5.0 | DWG-ST-9941</div>
+</td>
+<td class="p-space-sm text-right font-data-mono">2,400 Pcs</td>
+<td class="p-space-sm text-right font-data-mono font-semibold text-primary">฿9,595,000</td>
+<td class="p-space-sm font-data-mono">2026-05-02</td>
+<td class="p-space-sm">
+<span class="bg-status-pending-bg text-status-pending-text font-meta-tag text-[10px] px-2 py-0.5">
+                      TOOLING SETUP
+                    </span>
+</td>
+<td class="p-space-sm text-center">
+<button class="bg-surface hover:bg-surface-container-low text-secondary font-meta-tag text-[11px] px-2 py-1 shadow-sm uppercase">
+                      Inspect
+                    </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mt-space-md pt-space-sm flex items-center justify-between font-caption text-[12px] text-text-muted">
+<span>Showing latest 4 active releases of 12 contracted purchase orders</span>
+<span class="font-data-mono font-semibold text-primary">Committed Production Total: ฿24,850,000 THB</span>
+</div>
+</section>
+</div>
+<!-- Right Column: Sidebar & Governance (4 cols) -->
+<div class="lg:col-span-4 flex flex-col gap-space-xl">
+<!-- SECTION C: Quality Certifications & Digital Signatures -->
+<section class="bg-surface p-space-lg shadow-sm">
+<div class="flex items-center justify-between pb-space-xs mb-space-md bg-surface-subtle p-2.5">
+<h3 class="font-meta-tag text-[12px] uppercase text-primary font-bold">Section C: Quality & Compliance</h3>
+<span class="material-symbols-outlined text-[16px] text-status-success-text">verified_user</span>
+</div>
+<div class="space-y-space-md">
+<!-- Cert 1 -->
+<div class="p-space-sm bg-surface-subtle">
+<div class="flex items-center justify-between">
+<span class="font-body-sm font-bold text-primary">ISO 9001:2015</span>
+<span class="bg-status-success-bg text-status-success-text font-meta-tag text-[10px] px-1.5 py-0.5">VALID</span>
+</div>
+<div class="font-caption text-text-muted mt-1">Quality Management System</div>
+<div class="mt-2 font-data-mono text-[11px] text-text-body flex justify-between">
+<span>Cert: TH-QA-9021</span>
+<span>Exp: 2027.10.31</span>
+</div>
+</div>
+<!-- Cert 2 -->
+<div class="p-space-sm bg-surface-subtle">
+<div class="flex items-center justify-between">
+<span class="font-body-sm font-bold text-primary">ISO 14001:2015</span>
+<span class="bg-status-success-bg text-status-success-text font-meta-tag text-[10px] px-1.5 py-0.5">VALID</span>
+</div>
+<div class="font-caption text-text-muted mt-1">Environmental Management System</div>
+<div class="mt-2 font-data-mono text-[11px] text-text-body flex justify-between">
+<span>Cert: TH-ENV-4491</span>
+<span>Exp: 2027.06.30</span>
+</div>
+</div>
+<!-- Cert 3 -->
+<div class="p-space-sm bg-surface-subtle">
+<div class="flex items-center justify-between">
+<span class="font-body-sm font-bold text-primary">AMEC Green Procurement</span>
+<span class="bg-status-success-bg text-status-success-text font-meta-tag text-[10px] px-1.5 py-0.5">TIER 1 RATED</span>
+</div>
+<div class="font-caption text-text-muted mt-1">RoHS / REACH Compliant Surface Lab</div>
+<div class="mt-2 font-data-mono text-[11px] text-text-body flex justify-between">
+<span>Audit: Grade A (98/100)</span>
+<span>Exp: 2026.12.31</span>
+</div>
+</div>
+</div>
+<!-- Digital Cryptographic ID -->
+<div class="mt-space-md p-space-sm bg-surface-container-low font-data-mono text-[11px] text-text-body">
+<div class="text-text-muted font-meta-tag uppercase text-[10px]">AMEC Cryptographic Seal</div>
+<div class="font-semibold text-primary truncate mt-1">#88219-AMEC-LOG-SHA256</div>
+<div class="text-text-muted text-[10px] mt-0.5">Validated with AMEC Public Key Infrastructure</div>
+</div>
+</section>
+<!-- SECTION D: Key Personnel & AMEC Assigned Team -->
+<section class="bg-surface p-space-lg shadow-sm">
+<div class="flex items-center justify-between pb-space-xs mb-space-md bg-surface-subtle p-2.5">
+<h3 class="font-meta-tag text-[12px] uppercase text-primary font-bold">Section D: Key Personnel & Contacts</h3>
+<span class="material-symbols-outlined text-[16px] text-primary">badge</span>
+</div>
+<div class="space-y-space-md">
+<!-- Contact 1 -->
+<div class="p-space-sm bg-surface-subtle">
+<div class="font-meta-tag text-[10px] uppercase text-secondary font-bold">Senior Supply Chain & QA Manager</div>
+<div class="font-body-sm font-bold text-primary mt-0.5">Mr. Somchai Prasert</div>
+<div class="font-caption text-text-muted">Primary Quality Escalation (24h)</div>
+<div class="mt-space-xs space-y-1 font-data-mono text-[11px]">
+<div class="flex items-center gap-1 text-text-body">
+<span class="material-symbols-outlined text-[14px] text-text-muted">mail</span>
+<a class="hover:underline" href="mailto:somchai.p@siamprecision.co.th">somchai.p@siamprecision.co.th</a>
+</div>
+<div class="flex items-center gap-1 text-text-body">
+<span class="material-symbols-outlined text-[14px] text-text-muted">call</span>
+<span>+66 (0) 81 845 9201</span>
+</div>
+</div>
+</div>
+<!-- Contact 2 -->
+<div class="p-space-sm bg-surface-subtle">
+<div class="font-meta-tag text-[10px] uppercase text-text-muted font-bold">Logistics & Delivery Coordinator</div>
+<div class="font-body-sm font-bold text-primary mt-0.5">Ms. Waraporn S.</div>
+<div class="font-caption text-text-muted">ASN & Warehouse Dispatch</div>
+<div class="mt-space-xs space-y-1 font-data-mono text-[11px]">
+<div class="flex items-center gap-1 text-text-body">
+<span class="material-symbols-outlined text-[14px] text-text-muted">call</span>
+<span>+66 38 456 789 Ext. 210</span>
+</div>
+</div>
+</div>
+<!-- AMEC Purchaser in Charge -->
+<div class="p-space-sm bg-secondary-fixed/30">
+<div class="font-meta-tag text-[10px] uppercase text-secondary font-bold">AMEC Assigned Procurement Officer</div>
+<div class="font-body-sm font-bold text-primary mt-0.5">Mr. S. Narongrit</div>
+<div class="font-caption text-text-muted">AMEC Chonburi Plant - Hoistway Division 4</div>
+<div class="mt-space-xs font-data-mono text-[11px] text-text-body">
+<span>Internal Ext: 3893-6944 | AMEC Dept. 4</span>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION F: Compliance Documents & Download Center -->
+<section class="bg-surface p-space-lg shadow-sm">
+<div class="flex items-center justify-between pb-space-xs mb-space-md bg-surface-subtle p-2.5">
+<h3 class="font-meta-tag text-[12px] uppercase text-primary font-bold">Section F: Compliance Documents</h3>
+<span class="material-symbols-outlined text-[16px] text-primary">download_for_offline</span>
+</div>
+<div class="mb-space-md">
+<button class="w-full bg-primary hover:bg-neutral-800 text-on-primary font-meta-tag text-[12px] uppercase py-2.5 px-4 flex items-center justify-center gap-space-xs transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[18px]">archive</span>
+              Download Full Compliance Bundle (.ZIP 8.4 MB)
+            </button>
+</div>
+<div class="space-y-space-xs">
+<!-- Doc 1 -->
+<div class="flex items-center justify-between p-2 hover:bg-surface-subtle transition-colors">
+<div class="flex items-center gap-2 overflow-hidden">
+<span class="material-symbols-outlined text-[18px] text-status-reject-text flex-shrink-0">description</span>
+<div class="truncate">
+<div class="font-body-sm text-[12px] font-semibold text-primary truncate">Supplier Master Agreement (AMEC-SMA-2024).pdf</div>
+<div class="font-caption text-[10px] text-text-muted">Signed: 2024-01-10 • 2.4 MB</div>
+</div>
+</div>
+<button class="text-secondary hover:text-accent-blue-hover p-1 flex-shrink-0" title="Download Document">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+</div>
+<!-- Doc 2 -->
+<div class="flex items-center justify-between p-2 hover:bg-surface-subtle transition-colors">
+<div class="flex items-center gap-2 overflow-hidden">
+<span class="material-symbols-outlined text-[18px] text-status-reject-text flex-shrink-0">description</span>
+<div class="truncate">
+<div class="font-body-sm text-[12px] font-semibold text-primary truncate">ISO 9001 & ISO 14001 Combined Certs.pdf</div>
+<div class="font-caption text-[10px] text-text-muted">Certified Body: TUV Rheinland • 1.8 MB</div>
+</div>
+</div>
+<button class="text-secondary hover:text-accent-blue-hover p-1 flex-shrink-0" title="Download Document">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+</div>
+<!-- Doc 3 -->
+<div class="flex items-center justify-between p-2 hover:bg-surface-subtle transition-colors">
+<div class="flex items-center gap-2 overflow-hidden">
+<span class="material-symbols-outlined text-[18px] text-status-reject-text flex-shrink-0">description</span>
+<div class="truncate">
+<div class="font-body-sm text-[12px] font-semibold text-primary truncate">Factory Floor Map & Machine List Plant 1-2.pdf</div>
+<div class="font-caption text-[10px] text-text-muted">Updated: 2026-02-15 • 3.1 MB</div>
+</div>
+</div>
+<button class="text-secondary hover:text-accent-blue-hover p-1 flex-shrink-0" title="Download Document">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+</div>
+<!-- Doc 4 -->
+<div class="flex items-center justify-between p-2 hover:bg-surface-subtle transition-colors">
+<div class="flex items-center gap-2 overflow-hidden">
+<span class="material-symbols-outlined text-[18px] text-status-reject-text flex-shrink-0">description</span>
+<div class="truncate">
+<div class="font-body-sm text-[12px] font-semibold text-primary truncate">Bangkok Bank Performance Guarantee (BG).pdf</div>
+<div class="font-caption text-[10px] text-text-muted">Value ฿10.0M THB • 1.1 MB</div>
+</div>
+</div>
+<button class="text-secondary hover:text-accent-blue-hover p-1 flex-shrink-0" title="Download Document">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- Audit & Legal Governance Bottom Bar -->
+<div class="mt-space-2xl bg-surface p-space-md shadow-sm flex flex-col md:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm text-text-body font-body-sm text-[13px]">
+<span class="material-symbols-outlined text-[20px] text-status-success-text">verified</span>
+<span>
+          Last Comprehensive Audit Completed by <strong>AMEC Vendor Governance Committee</strong> on <strong>2026-03-15</strong>.
+        </span>
+</div>
+<div class="flex items-center gap-space-md font-meta-tag text-[12px]">
+<span class="text-text-muted uppercase">Next Scheduled Re-Audit:</span>
+<span class="bg-surface-container px-2.5 py-1 text-primary font-bold">2026-09-15</span>
+<button class="bg-secondary hover:bg-accent-blue-hover text-on-secondary px-3 py-1 uppercase text-[11px] font-semibold transition-colors">
+          Request Early Audit
+        </button>
+</div>
+</div>
+</div>
+</div></main><footer class="w-full bg-[#dbdbdb] text-text-body"><div class="max-w-[1440px] mx-auto px-gutter py-space-2xl"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-xl pb-space-xl border-b border-border-medium"><div class="flex flex-col gap-space-sm"><h3 class="font-meta-tag text-[12px] uppercase tracking-wider text-primary font-bold mb-space-xs">Global Procurement</h3><a class="font-body-sm text-[13px] text-text-body hover:text-secondary transition-colors" data-path="po-management" href="#">Purchase Orders & Delivery</a><a class="font-body-sm text-[13px] text-text-body hover:text-secondary transition-colors" data-path="thai-claim-slips" href="#">Thai Claim Slips (ใบรับเคลม)</a><a class="font-body-sm text-[13px] text-text-body hover:text-secondary transition-colors" data-path="rfq-quotations" href="#">e-RFQ & Commercial Bids</a><a class="font-body-sm text-[13px] text-text-body hover:text-secondary transition-colors" data-path="parts-catalog" href="#">AMEC Elevator Components</a></div><div class="flex flex-col gap-space-sm"><h3 class="font-meta-tag text-[12px] uppercase tracking-wider text-primary font-bold mb-space-xs">Operational Channels</h3><a class="font-body-sm text-[13px] text-text-body hover:text-secondary transition-colors" data-path="cad-drawing-vault" href="#">CAD Repository & Revisions</a><a class="font-body-sm text-[13px] text-text-body hover:text-secondary transition-colors" data-path="asn-shipping-notice" href="#">Advance Shipping Notice (ASN)</a><a class="font-body-sm text-[13px] text-text-body hover:text-secondary transition-colors" data-path="quality-assurance" href="#">QA Inspection Records</a><a class="font-body-sm text-[13px] text-text-body hover:text-secondary transition-colors" data-path="invoicing-settlement" href="#">Billing & Tax Invoices</a></div><div class="flex flex-col gap-space-sm"><h3 class="font-meta-tag text-[12px] uppercase tracking-wider text-primary font-bold mb-space-xs">Procurement Standards</h3><a class="font-body-sm text-[13px] text-text-body hover:text-secondary transition-colors" data-path="supplier-code-of-conduct" href="#">Supplier Code of Conduct</a><a class="font-body-sm text-[13px] text-text-body hover:text-secondary transition-colors" data-path="green-procurement" href="#">Green Procurement Standard</a><a class="font-body-sm text-[13px] text-text-body hover:text-secondary transition-colors" data-path="iso-compliance" href="#">ISO 9001 / ISO 14001 AMEC</a><a class="font-body-sm text-[13px] text-text-body hover:text-secondary transition-colors" data-path="safety-security" href="#">Supply Chain Risk Policy</a></div><div class="flex flex-col gap-space-sm"><h3 class="font-meta-tag text-[12px] uppercase tracking-wider text-primary font-bold mb-space-xs">Helpdesk & Support</h3><p class="font-body-sm text-[13px] text-text-muted leading-relaxed mb-space-xs">AMEC Procurement Division, Chonburi Plant, Amata City Chonburi Industrial Estate.</p><div class="font-data-mono text-[12px] text-text-body font-semibold">TEL: +66 (0) 3893-6900</div><div class="font-data-mono text-[12px] text-text-body">support-amec@meap.com</div><div class="mt-space-xs"><a class="inline-block bg-primary text-on-primary font-meta-tag text-[11px] px-space-md py-space-xs hover:bg-neutral-800 transition-colors uppercase" data-path="contact" href="#">Submit Ticket</a></div></div></div><div class="pt-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md"><div class="font-caption text-[12px] text-text-muted">© Mitsubishi Electric Corporation. All Rights Reserved.</div><div class="flex flex-wrap items-center gap-space-lg"><a class="font-caption text-[12px] text-text-body hover:text-secondary transition-colors" data-path="privacy-policy" href="#">Privacy Policy</a><span class="text-outline-variant text-[11px]">|</span><a class="font-caption text-[12px] text-text-body hover:text-secondary transition-colors" data-path="terms-of-use" href="#">Terms of Use</a><span class="text-outline-variant text-[11px]">|</span><a class="font-caption text-[12px] text-text-body hover:text-secondary transition-colors" data-path="sitemap" href="#">Sitemap</a><span class="text-outline-variant text-[11px]">|</span><a class="font-caption text-[12px] text-text-body hover:text-secondary transition-colors" data-path="procurement-guidelines" href="#">Procurement Guidelines</a></div></div></div></footer><a class="fixed bottom-space-lg right-space-lg w-10 h-10 bg-border-dark flex items-center justify-center text-on-primary hover:bg-neutral-800 transition-colors z-[900]" href="#" title="Back to top"><span class="material-symbols-outlined text-[20px]">keyboard_arrow_up</span></a></body></html>
