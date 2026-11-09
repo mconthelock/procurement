@@ -1,11 +1,17 @@
 import { initAuthen } from "@amec/webasset/authen";
 export const initApp = async () => {
 	try {
+		const pgmName = `<div class="space-y-space-xs max-w-3xl">
+        <div class="flex items-center gap-1">
+            <span class="px-1.5 py-0.5 bg-black text-[11px] uppercase font-bold">PUR-008P</span>
+        </div>
+        <h1 class="text-black font-head uppercase text-xl">Procurement</h1>
+    </div>`;
 		await initAuthen({
 			icon: `${process.env.APP_ENV}/assets/images/preloader.gif`,
 			iconLogo: `${process.env.APP_ENV}/assets/images/preloader.gif`,
-			programName: "Procurement",
-			sidebarClass: `size-xl text-gray-50 bg-primary md:h-[calc(100vh-2.5rem)]! md:rounded-3xl! md:py-5 md:shadow-lg`,
+			programName: pgmName,
+			sidebarClass: `bg-gray-300! text-black! border border-gray-400/60! size-xl text-gray-50 bg-primary md:h-[calc(100vh-2.5rem)]! md:py-5 md:shadow-lg`,
 		});
 	} catch (error) {
 		console.error(error);
