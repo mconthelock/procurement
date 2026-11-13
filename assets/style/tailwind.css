@@ -7,7 +7,6 @@
 }
 
 @plugin "daisyui/theme" {
-<<<<<<< HEAD
 	name: "mitsubishi";
 	default: true;
 	prefersdark: false;
@@ -34,70 +33,25 @@
 	--color-info-content: #ffffff;
 	--color-success: #00c25d;
 	--color-success-content: #ffffff;
-=======
-	name: "light";
-	default: true;
-	prefersdark: false;
-	color-scheme: light;
-
-	/* Surfaces & Base Content */
-	--color-base-100: #ffffff;
-	--color-base-200: #f2f2f2;
-	--color-base-300: #e6e6e6;
-	--color-base-content: #1e293b;
-	--color-primary: #5865f2;
-	--color-primary-content: #ffffff;
-	--color-secondary: #3730a3;
-	--color-secondary-content: #ffffff;
-	--color-accent: #f43f5e;
-	--color-accent-content: #ffffff;
-	--color-neutral: #0f172a;
-	--color-neutral-content: #ffffff;
-
-	/* Semantic Feedback */
-	--color-info: #0038ff;
-	--color-info-content: #ffffff;
-	--color-success: #00c25d;
-	--color-success-content: #000000;
->>>>>>> 4ef8720 (feat: update MY_Controller to use BladeInstance and enhance view rendering; add new header and filters components)
 	--color-warning: #f3ba00;
 	--color-warning-content: #000000;
 	--color-error: #cc0000;
 	--color-error-content: #ffffff;
-<<<<<<< HEAD
 
 	/* Strict Zero Border Radius Policy */
 	--radius-selector: 0px;
 	--radius-field: 0px;
 	--radius-box: 0px;
-=======
-	--radius-selector: 0px;
-	--radius-field: 0px;
-	--radius-box: 0px;
-	--size-selector: 0.25rem;
-	--size-field: 0.25rem;
->>>>>>> 4ef8720 (feat: update MY_Controller to use BladeInstance and enhance view rendering; add new header and filters components)
 	--border: 1px;
 	--depth: 0;
 	--noise: 0;
 }
 
-<<<<<<< HEAD
 /* Scan project templates and scripts for Tailwind classes */
 @source "../../application/views/**/*.php";
 @source "../../application/controllers/**/*.php";
 @source "../script/**/*.js";
 @source "../../index.php";
-=======
-/* ==========================================================================
-   Scan project templates, views, scripts for Tailwind classes
-   ========================================================================== */
-@source "../../application/views/**/*.php";
-@source "../../application/controllers/**/*.php";
-@source "../script/**/*.js";
-@source "../../index.php";
-@source "../../.env";
->>>>>>> 4ef8720 (feat: update MY_Controller to use BladeInstance and enhance view rendering; add new header and filters components)
 @source "../../node_modules/@amec/webasset/src/**/*.js";
 
 /* Webasset Fonts & Tooltips */
@@ -111,7 +65,6 @@
 		"Noto Sans", "Noto Sans Thai", "Helvetica Neue", Arial, sans-serif;
 	--font-head: Roboto, "Helvetica Neue", Arial, sans-serif;
 
-<<<<<<< HEAD
 	/* Overwrite Default Radiuses to 0px (Strict Sharp Edge Standard) */
 	--radius-none: 0px;
 	--radius-xs: 0px;
@@ -178,8 +131,6 @@
 	--font-headline-lg: var(--font-head);
 	--font-headline-md: var(--font-head);
 	--font-headline-sm: var(--font-head);
-=======
->>>>>>> 4ef8720 (feat: update MY_Controller to use BladeInstance and enhance view rendering; add new header and filters components)
 	--font-h1: var(--font-head);
 	--font-h2: var(--font-head);
 	--font-h3: var(--font-head);
@@ -189,7 +140,6 @@
 	--font-caption: var(--font-sans);
 	--font-label-md: var(--font-sans);
 	--font-label-sm: var(--font-sans);
-<<<<<<< HEAD
 	--font-ui: var(--font-sans);
 	--font-meta-tag: var(--font-sans);
 	--font-data-mono: var(--font-mono);
@@ -261,78 +211,6 @@
 	body {
 		font-family: var(--font-sans);
 		color: var(--color-base-content);
-=======
-
-	--color-surface-subtle: #f2f2f2;
-	--color-surface-card: #ffffff;
-	--color-surface-footer: #dbdbdb;
-	--color-border-light: #e6e6e6;
-	--color-border-medium: #cccccc;
-	--color-border-dark: #000000;
-
-	--text-h1: 2.75rem;
-	--text-h1--line-height: 1.2;
-	--text-h1--font-weight: 500;
-	--text-h2: 2rem;
-	--text-h2--line-height: 1.25;
-	--text-h2--font-weight: 500;
-	--text-h3: 1.5rem;
-	--text-h3--line-height: 1.3;
-	--text-h3--font-weight: 500;
-	--text-body-lg: 1.125rem;
-	--text-body-lg--line-height: 1.6;
-	--text-body-md: 1rem;
-	--text-body-md--line-height: 1.6;
-	--text-body-sm: 0.875rem;
-	--text-body-sm--line-height: 1.5;
-	--text-caption: 0.75rem;
-	--text-caption--line-height: 1.4;
-	--text-meta-tag: 0.8125rem;
-	--text-meta-tag--line-height: 1.2;
-	--text-meta-tag--font-weight: 700;
-	--text-data-mono: 0.875rem;
-	--text-data-mono--line-height: 1.4;
-	--text-data-mono--font-weight: 600;
-
-	/* Overwrite Spacing & Layout Constraints */
-	--spacing-space-xs: 0.25rem;
-	--spacing-space-sm: 0.5rem;
-	--spacing-space-md: 1rem;
-	--spacing-space-lg: 1.5rem;
-	--spacing-space-xl: 2.5rem;
-	--spacing-space-2xl: 3rem;
-	--spacing-space-3xl: 4rem;
-
-	--spacing-gutter: 1.5rem;
-	--spacing-gutter-sm: 1rem;
-	--spacing-container-header: 1380px;
-	--spacing-container-footer: 1440px;
-	--spacing-container-content: 1280px;
-
-	/* Breakpoints */
-	--breakpoint-mobile: 980px;
-	--breakpoint-desktop: 981px;
-
-	/* Elevation Shadows */
-	--shadow-none: none;
-	--shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.08);
-	--shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
-	--shadow-modal: 0 10px 30px rgba(0, 0, 0, 0.25);
-
-	/* Z-Index */
-	--z-header: 1000;
-	--z-dropdown: 1010;
-	--z-gotop: 900;
-	--z-modal: 2000;
-}
-
-/* ==========================================================================
-   Base Layer & Element Level Styling
-   ========================================================================== */
-@layer base {
-	body {
-		@apply font-sans text-base-content;
->>>>>>> 4ef8720 (feat: update MY_Controller to use BladeInstance and enhance view rendering; add new header and filters components)
 		background-color: #f4f5f7;
 		margin: 0;
 		padding: 0;
@@ -340,7 +218,6 @@
 		-moz-osx-font-smoothing: grayscale;
 	}
 
-<<<<<<< HEAD
 	h1 {
 		font-size: var(--text-h1);
 		line-height: 1.2;
@@ -405,21 +282,6 @@
 		-moz-osx-font-smoothing: grayscale;
 		text-rendering: optimizeLegibility;
 		font-feature-settings: "liga";
-=======
-	#sidebar #sidebarToggle svg,
-	#sidebar #profile svg {
-		fill: #000000 !important;
-	}
-
-	.input:focus,
-	.input:focus-within {
-		outline: none !important;
-		border-color: var(--color-base-300);
-	}
-
-	i.fi {
-		@apply flex items-center justify-center;
->>>>>>> 4ef8720 (feat: update MY_Controller to use BladeInstance and enhance view rendering; add new header and filters components)
 	}
 }
 
@@ -446,8 +308,4 @@
 		--input-color: var(--color-accent-red);
 		border-color: var(--color-accent-red);
 	}
-}
-
-i.fi {
-	@apply flex items-center justify-center;
 }
