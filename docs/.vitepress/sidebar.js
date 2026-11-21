@@ -1,80 +1,175 @@
-const quickStartItem = { text: "Back to Home", link: "/quick-start" };
+const quickStartItem = {
+	text: "Back to Home",
+	link: "/quick-start",
+	roles: ["*"],
+};
+
 const pr = [
 	{
 		text: "P/R Management",
-		collapsed: true,
+		collapsed: false,
+		roles: ["ADMIN", "REQUESTER", "APPROVER", "BUYER"],
 		items: [
-			{ text: "Create P/R", link: "/pr/create" },
+			{
+				text: "Create P/R",
+				link: "/pr/create",
+				roles: ["ADMIN", "REQUESTER", "APPROVER", "BUYER"],
+			},
 			{
 				text: "Wait for Approval",
 				link: "/pr/approval",
+				roles: ["ADMIN", "APPROVER", "BUYER"],
 			},
 			{
-				text: "Conning soon",
+				text: "Coming soon",
 				link: "/pr/comming",
+				roles: ["ADMIN", "REQUESTER", "APPROVER", "BUYER"],
 			},
 			{
 				text: "Mine",
 				link: "/pr/mine",
+				roles: ["ADMIN", "REQUESTER", "APPROVER", "BUYER"],
 			},
 		],
 	},
 ];
+
 const po = [
 	{
 		text: "P/O Management",
-		collapsed: true,
+		collapsed: false,
+		roles: ["ADMIN", "BUYER", "APPROVER"],
 		items: [
-			{ text: "Issue P/O", link: "/po/issue" },
-			{ text: "Wait for Approval", link: "/po/approve" },
-			{ text: "Mine", link: "/po/mine" },
-			{ text: "Awaiting Delivery", link: "/po/wait" },
-			{ text: "Canceled P/O", link: "/po/canceled" },
+			{
+				text: "Issue P/O",
+				link: "/po/issue",
+				roles: ["ADMIN", "BUYER"],
+			},
+			{
+				text: "Wait for Approval",
+				link: "/po/approve",
+				roles: ["ADMIN", "APPROVER", "BUYER"],
+			},
+			{
+				text: "Mine",
+				link: "/po/mine",
+				roles: ["ADMIN", "BUYER", "APPROVER"],
+			},
+			{
+				text: "Awaiting Delivery",
+				link: "/po/wait",
+				roles: ["ADMIN", "BUYER", "APPROVER"],
+			},
+			{
+				text: "Canceled P/O",
+				link: "/po/canceled",
+				roles: ["ADMIN", "BUYER", "APPROVER"],
+			},
 		],
 	},
 ];
+
 const product = [
 	{
-		text: "P/O Management",
-		collapsed: true,
+		text: "Products and Inventory",
+		collapsed: false,
+		roles: ["ADMIN", "BUYER", "WAREHOUSE"],
 		items: [
-			{ text: "Product List", link: "/product/product" },
-			{ text: "Category", link: "/product/category" },
+			{
+				text: "Product List",
+				link: "/product/product",
+				roles: ["ADMIN", "BUYER", "WAREHOUSE"],
+			},
+			{
+				text: "Category",
+				link: "/product/category",
+				roles: ["ADMIN", "BUYER"],
+			},
 		],
 	},
 ];
+
 const receive = [
 	{
 		text: "Receiving",
-		collapsed: true,
+		collapsed: false,
+		roles: ["ADMIN", "WAREHOUSE", "BUYER", "ACCOUNTING"],
 		items: [
-			{ text: "WH Receive", link: "/receive/receive" },
-			{ text: "Receiving Plan", link: "/receive/plan" },
-			{ text: "Invoice/Tax", link: "/receive/invoice" },
+			{
+				text: "WH Receive",
+				link: "/receive/receive",
+				roles: ["ADMIN", "WAREHOUSE", "BUYER"],
+			},
+			{
+				text: "Receiving Plan",
+				link: "/receive/plan",
+				roles: ["ADMIN", "WAREHOUSE", "BUYER"],
+			},
+			{
+				text: "Invoice/Tax",
+				link: "/receive/invoice",
+				roles: ["ADMIN", "ACCOUNTING", "BUYER"],
+			},
 		],
 	},
 ];
+
 const report = [
 	{
 		text: "Report",
-		collapsed: true,
+		collapsed: false,
+		roles: ["ADMIN", "BUYER", "APPROVER", "ACCOUNTING", "WAREHOUSE"],
 		items: [
-			{ text: "Orders Report", link: "/report/order" },
-			{ text: "Receiving Report", link: "/report/receive" },
-			{ text: "Matching Report", link: "/report/matching" },
-			{ text: "Inventory Report", link: "/report/inventory" },
-			{ text: "Running Orders", link: "/report/running" },
+			{
+				text: "Orders Report",
+				link: "/report/order",
+				roles: ["ADMIN", "BUYER", "APPROVER"],
+			},
+			{
+				text: "Receiving Report",
+				link: "/report/receive",
+				roles: ["ADMIN", "WAREHOUSE", "BUYER", "ACCOUNTING"],
+			},
+			{
+				text: "Matching Report",
+				link: "/report/matching",
+				roles: ["ADMIN", "ACCOUNTING", "BUYER"],
+			},
+			{
+				text: "Inventory Report",
+				link: "/report/inventory",
+				roles: ["ADMIN", "WAREHOUSE", "BUYER"],
+			},
+			{
+				text: "Running Orders",
+				link: "/report/running",
+				roles: ["ADMIN", "BUYER", "APPROVER"],
+			},
 		],
 	},
 ];
+
 const vendor = [
 	{
 		text: "Vendor Management",
-		collapsed: true,
+		collapsed: false,
+		roles: ["ADMIN", "BUYER", "APPROVER"],
 		items: [
-			{ text: "Vendor List", link: "/vendor/vendor" },
-			{ text: "Approving Vendor", link: "/vendor/approve" },
-			{ text: "SCM users", link: "/vendor/users" },
+			{
+				text: "Vendor List",
+				link: "/vendor/vendor",
+				roles: ["ADMIN", "BUYER"],
+			},
+			{
+				text: "Approving Vendor",
+				link: "/vendor/approve",
+				roles: ["ADMIN", "APPROVER", "BUYER"],
+			},
+			{
+				text: "SCM users",
+				link: "/vendor/users",
+				roles: ["ADMIN", "BUYER"],
+			},
 		],
 	},
 ];

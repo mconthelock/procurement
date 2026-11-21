@@ -1,10 +1,26 @@
 import { defineConfig } from "vitepress";
+import { fileURLToPath, URL } from "node:url";
 import dotenv from "dotenv";
 import * as sidebar from "./sidebar.js";
 dotenv.config();
 
 export default defineConfig({
-	vite: { clearScreen: false },
+	vite: {
+		clearScreen: false,
+		resolve: {
+			alias: [
+				{
+					find: /^.*\/VPSidebarGroup\.vue$/,
+					replacement: fileURLToPath(
+						new URL(
+							"./theme/components/VPSidebarGroup.vue",
+							import.meta.url,
+						),
+					),
+				},
+			],
+		},
+	},
 	title: "AMEC Procurement System",
 	head: [
 		[
@@ -19,6 +35,10 @@ export default defineConfig({
 	base: "/procurement/docs/",
 	markdown: { image: { lazyLoading: true } },
 	themeConfig: {
+		auth: {
+			appName: process.env.APP_NAME || "procurement",
+			appHost: process.env.APP_ENV || process.env.VITE_APP_HOST || "/procurement",
+		},
 		logo: `${process.env.VITE_APP_HOST || ""}/assets/images/icon_512.png`,
 		search: {
 			provider: "local",
@@ -29,30 +49,36 @@ export default defineConfig({
 		],
 		sidebar: {
 			"/": [
-				{ text: "Quick Start", link: "/quick-start" },
+				{ text: "Quick Start", link: "/quick-start", roles: ["*"] },
 				{
 					text: "P/R Management",
 					link: "/pr/create",
+					roles: ["ADMIN", "REQUESTER", "APPROVER", "BUYER"],
 				},
 				{
 					text: "P/O Management",
 					link: "/po/issue",
+					roles: ["ADMIN", "BUYER", "APPROVER"],
 				},
 				{
 					text: "Receiving",
 					link: "/receive/receive",
+					roles: ["ADMIN", "WAREHOUSE", "BUYER", "ACCOUNTING"],
 				},
 				{
 					text: "Products and Inventory",
 					link: "/product/product",
+					roles: ["ADMIN", "BUYER", "WAREHOUSE"],
 				},
 				{
 					text: "Vendor Management",
 					link: "/vendor/vendor",
+					roles: ["ADMIN", "BUYER", "APPROVER"],
 				},
 				{
 					text: "Report",
 					link: "/report/order",
+					roles: ["ADMIN", "BUYER", "APPROVER", "ACCOUNTING", "WAREHOUSE"],
 				},
 			],
 			"/pr/": sidebar.prItem,

@@ -66,6 +66,25 @@
         </div>
     </div>
 
+    <!-- Sibling Vendor Code Switcher Bar (PURSYS.VENDORS_CODE Grouping) -->
+    <div id="vendor-group-switcher"
+        class="px-space-lg py-2.5 bg-base-200/70 border-b border-base-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div class="flex flex-wrap items-center gap-2 min-w-0">
+            <span class="inline-flex items-center gap-1 text-[11px] font-mono font-bold uppercase text-secondary">
+                <span class="material-symbols-outlined text-[16px] text-primary">hub</span>
+                <span id="switcher-group-label">Vendor Group: Standalone</span>
+            </span>
+            <div id="switcher-code-pills" class="flex flex-wrap items-center gap-1.5">
+                <span class="text-xs font-mono text-mute">Single Vendor Code</span>
+            </div>
+        </div>
+        <button type="button" id="btn-open-group-manager"
+            class="btn btn-xs btn-outline border-primary bg-white text-primary shrink-0 gap-1">
+            <span class="material-symbols-outlined text-[14px]">link</span>
+            <span>Manage Group / Link Codes</span>
+        </button>
+    </div>
+
     <!-- Conditional Pending Cover Sheet Request Alert Banner -->
     <div id="pending-cover-banner"
         class="hidden px-space-lg py-3 bg-warning/10 border-l-4 border-warning flex-col sm:flex-row sm:items-center justify-between gap-space-sm">

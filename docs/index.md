@@ -16,5 +16,5 @@ hero:
 </style>
 
 <client-only>
-  <WaterBackground/>
+  <ProcurementScene/>
 </client-only>

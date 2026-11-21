@@ -2,6 +2,25 @@
 <div id="tab-scm" role="tabpanel"
     class="vendor-detail-panel tab-content hidden! p-space-lg space-y-space-md bg-base-100">
 
+    <!-- Shared E-SCM Scope Banner -->
+    <div id="scm-shared-scope-banner"
+        class="bg-info/10 border-l-4 border-info p-space-md flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm text-xs">
+        <div class="flex items-start gap-space-sm">
+            <span class="material-symbols-outlined text-info text-[20px] shrink-0">hub</span>
+            <div>
+                <span class="font-bold uppercase tracking-wider text-primary">Shared E-SCM Account Scope</span>
+                <p id="scm-shared-scope-text" class="text-secondary mt-0.5 leading-relaxed">
+                    E-SCM portal accounts are shared across all Vendor Codes grouped under the same corporate entity in
+                    <span class="font-mono font-semibold text-primary">PURSYS.VENDORS_CODE</span>.
+                </p>
+            </div>
+        </div>
+        <button type="button" class="btn-open-group-from-scm btn btn-xs btn-outline border-primary bg-white text-primary shrink-0 gap-1">
+            <span class="material-symbols-outlined text-[13px]">link</span>
+            <span>Manage Group</span>
+        </button>
+    </div>
+
     <div class="border border-base-300">
         <div
             class="px-space-md py-3 bg-base-200 border-b border-base-300 flex flex-col sm:flex-row sm:items-center justify-between gap-2">

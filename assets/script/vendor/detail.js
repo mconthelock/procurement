@@ -5,6 +5,10 @@ import {
 	getVendorDetail,
 	getVendorHistory,
 	getVendorEvaluation,
+	getVendorGroupByCode,
+	linkVendorCodes,
+	setPrimaryVendorCode,
+	unlinkVendorCode,
 } from "../service/index.js";
 import { escapeHtml, escapeAttribute } from "../utils.js";
 
@@ -76,6 +80,7 @@ const DIFF_FIELD_LABELS = [
 ];
 
 let currentVendor = null;
+let currentGroupData = null;
 let allRevisions = [];
 let activeDiffRev = null;
 
@@ -869,6 +874,159 @@ function renderVendorDetail(vendorData) {
 	renderVendorCodes(vendorData.VENDOR_CODES || [], vendorData);
 	renderScmUsers(vendorData.PURVMM_SCMUSR || vendorData.VENDOR_SCMUSR || []);
 	renderDocuments(vendorData.VENDOR_ATTFILE || vendorData.PUR_FILE || []);
+	renderGroupSwitcher(vendorData.VENDOR_GROUP || null, vndCode);
+}
+
+function renderGroupSwitcher(groupInfo, currentCode) {
+	const appEnv = $("#app-env").val() || "";
+	const $label = $("#switcher-group-label");
+	const $pills = $("#switcher-code-pills").empty();
+	const $scmText = $("#scm-shared-scope-text");
+
+	if (!groupInfo || !groupInfo.MEMBERS?.length) {
+		$label.text("Vendor Group: Standalone");
+		$pills.append(
+			`<span class="badge badge-xs badge-primary font-mono font-bold">${escapeHtml(currentCode)} (Current)</span>`,
+		);
+		$scmText.html(
+			`Currently standalone (<strong class="font-mono text-primary">${escapeHtml(currentCode)}</strong>). Link sibling Vendor Codes in <span class="font-mono font-semibold text-primary">PURSYS.VENDORS_CODE</span> to share E-SCM accounts across codes.`,
+		);
+		return;
+	}
+
+	$label.text(`${groupInfo.GROUP_ID} • ${groupInfo.GROUP_NAME || ""}`);
+	groupInfo.MEMBERS.forEach((m) => {
+		const isCurrent = String(m.VND_CODE) === String(currentCode);
+		const isPrimary = m.IS_PRIMARY === "Y";
+		const cls = isCurrent
+			? "badge badge-xs badge-primary font-mono font-bold gap-1"
+			: "badge badge-xs badge-outline border-primary bg-white text-primary font-mono hover:bg-primary hover:text-white transition-colors gap-1";
+		const star = isPrimary ? "★ " : "";
+		$pills.append(`
+			<a href="${appEnv}/vendors/detail/${encodeURIComponent(m.VND_CODE)}" class="${cls}">
+				<span>${star}${escapeHtml(m.VND_CODE)} • ${escapeHtml(m.VND_CURRENCY || "-")}</span>
+			</a>
+		`);
+	});
+
+	const codeList = groupInfo.MEMBERS.map((m) => m.VND_CODE).join(", ");
+	$scmText.html(
+		`E-SCM portal accounts below are <strong>shared across all ${groupInfo.MEMBERS.length} Vendor Codes</strong> in group <strong class="font-mono text-primary">${escapeHtml(groupInfo.GROUP_ID)}</strong> (<span class="font-mono text-primary">${escapeHtml(codeList)}</span>).`,
+	);
+}
+
+function renderGroupDrawer(payload) {
+	currentGroupData = payload;
+	const group = payload?.GROUP || null;
+	const suggestions = payload?.SUGGESTIONS || [];
+	const currentCode = payload?.VND_CODE || currentVendor?.VND_CODE || "";
+
+	$("#group-drawer-id").text(group ? group.GROUP_ID : "NEW GROUP");
+	$("#input-group-name").val(group?.GROUP_NAME || payload?.VND_NAME || currentVendor?.VND_NAME || "");
+	$("#input-group-remark").val(group?.REMARK || "");
+
+	const members = group?.MEMBERS || [];
+	$("#group-member-count").text(members.length);
+	const $tbody = $("#group-members-body").empty();
+
+	if (!members.length) {
+		$tbody.append(`
+			<tr>
+				<td colspan="5" class="py-5 text-center text-mute italic">
+					<strong>${escapeHtml(currentCode)}</strong> is currently standalone. Add a suggestion or enter a Vendor Code below to create a group.
+				</td>
+			</tr>
+		`);
+	} else {
+		members.forEach((m) => {
+			const isPrimary = m.IS_PRIMARY === "Y";
+			const roleHtml = isPrimary
+				? '<span class="badge badge-xs badge-primary font-mono font-bold">★ PRIMARY</span>'
+				: '<span class="badge badge-xs badge-ghost font-mono">SIBLING</span>';
+			$tbody.append(`
+				<tr class="hover:bg-base-200/60">
+					<td class="font-mono font-bold text-primary py-2.5">${escapeHtml(m.VND_CODE)}</td>
+					<td class="text-primary py-2.5">${escapeHtml(m.VND_NAME || "-")}</td>
+					<td class="font-mono text-secondary py-2.5">${escapeHtml(m.VND_CURRENCY || "-")} / ${escapeHtml(m.VND_TERM || "-")}</td>
+					<td class="text-center py-2.5">${roleHtml}</td>
+					<td class="text-center py-2.5">
+						<div class="flex items-center justify-center gap-1">
+							${
+								!isPrimary
+									? `<button type="button" data-code="${escapeAttribute(m.VND_CODE)}"
+										class="btn-set-primary btn btn-xs btn-outline border-primary text-primary">Set Primary</button>`
+									: ""
+							}
+							<button type="button" data-code="${escapeAttribute(m.VND_CODE)}"
+								class="btn-unlink-code btn btn-xs btn-outline border-error text-error">Unlink</button>
+						</div>
+					</td>
+				</tr>
+			`);
+		});
+	}
+
+	const $sugg = $("#group-suggestions-list").empty();
+	if (!suggestions.length) {
+		$sugg.append('<span class="text-mute italic">No ungrouped matching vendor codes detected.</span>');
+	} else {
+		suggestions.forEach((s) => {
+			$sugg.append(`
+				<div class="flex items-center justify-between gap-2 px-3 py-2 bg-base-200 border border-base-300">
+					<div class="min-w-0">
+						<div class="flex items-center gap-2">
+							<span class="font-mono font-bold text-primary">${escapeHtml(s.VND_CODE)}</span>
+							<span class="badge badge-xs badge-info font-mono">${escapeHtml(s.MATCH_REASON)}</span>
+							<span class="badge badge-xs badge-outline font-mono">${escapeHtml(s.VND_CURRENCY || "-")}</span>
+						</div>
+						<div class="text-secondary truncate mt-0.5">${escapeHtml(s.VND_NAME || "-")}</div>
+					</div>
+					<button type="button" data-code="${escapeAttribute(s.VND_CODE)}"
+						class="btn-quick-link-code btn btn-xs btn-primary shrink-0 gap-1">
+						<span class="material-symbols-outlined text-[13px]">add_link</span>
+						<span>Add</span>
+					</button>
+				</div>
+			`);
+		});
+	}
+}
+
+async function openGroupDrawer() {
+	const vndCode = currentVendor?.VND_CODE || $("#vnd-id").val();
+	if (!vndCode) return;
+	try {
+		await showLoader();
+		const res = await getVendorGroupByCode(vndCode);
+		renderGroupDrawer(res?.data || res);
+		$("#vendorGroupDrawer").removeClass("hidden");
+	} catch (error) {
+		console.error(error);
+		await showMessage(error.message || "Unable to load vendor group data");
+	} finally {
+		await showLoader({ show: false });
+	}
+}
+
+function closeGroupDrawer() {
+	$("#vendorGroupDrawer").addClass("hidden");
+}
+
+async function refreshGroupAndDetail() {
+	const vndCode = currentVendor?.VND_CODE || $("#vnd-id").val();
+	const [groupRes, detailRes] = await Promise.allSettled([
+		getVendorGroupByCode(vndCode),
+		getVendorDetail(vndCode),
+	]);
+	if (groupRes.status === "fulfilled") {
+		const gp = groupRes.value?.data || groupRes.value;
+		renderGroupDrawer(gp);
+		renderGroupSwitcher(gp?.GROUP || null, vndCode);
+	}
+	if (detailRes.status === "fulfilled" && detailRes.value) {
+		const vd = detailRes.value?.data || detailRes.value;
+		renderVendorDetail(vd);
+	}
 }
 
 function hydrateRevisions(revisions = [], vendorData = {}) {
@@ -955,7 +1113,113 @@ $(document).on("click", "#closeDiffDrawerBtn, #closeDiffDrawerFooterBtn, #diffDr
 });
 
 $(document).on("keydown", (e) => {
-	if (e.key === "Escape" && activeDiffRev) closeDiffDrawer();
+	if (e.key === "Escape") {
+		if (activeDiffRev) closeDiffDrawer();
+		if (!$("#vendorGroupDrawer").hasClass("hidden")) closeGroupDrawer();
+	}
+});
+
+// Event Delegation: Vendor Group Manager Drawer
+$(document).on("click", "#btn-open-group-manager, .btn-open-group-from-scm", () => {
+	openGroupDrawer();
+});
+
+$(document).on("click", "#closeGroupDrawerBtn, #closeGroupDrawerFooterBtn, #groupDrawerBackdrop", () => {
+	closeGroupDrawer();
+});
+
+$(document).on("click", "#btn-save-group-meta", async () => {
+	const currentCode = currentVendor?.VND_CODE || $("#vnd-id").val();
+	const group = currentGroupData?.GROUP;
+	const groupName = ($("#input-group-name").val() || "").toString().trim();
+	const remark = ($("#input-group-remark").val() || "").toString().trim();
+	const memberCodes = group?.MEMBERS?.length
+		? group.MEMBERS.map((m) => m.VND_CODE)
+		: [currentCode];
+
+	try {
+		await showLoader();
+		await linkVendorCodes({
+			GROUP_ID: group?.GROUP_ID,
+			GROUP_NAME: groupName || currentVendor?.VND_NAME || currentCode,
+			VND_CODES: memberCodes,
+			REMARK: remark,
+		});
+		await refreshGroupAndDetail();
+	} catch (error) {
+		console.error(error);
+		await showMessage(error.message || "Failed to save vendor group");
+	} finally {
+		await showLoader({ show: false });
+	}
+});
+
+$(document).on("click", ".btn-quick-link-code, #btn-link-manual-code", async function () {
+	const isManual = $(this).is("#btn-link-manual-code");
+	const targetCode = isManual
+		? ($("#input-manual-vnd-code").val() || "").toString().trim()
+		: String($(this).data("code") || "").trim();
+
+	if (!targetCode) {
+		await showMessage("Please enter a Vendor Code to link.");
+		return;
+	}
+
+	const currentCode = currentVendor?.VND_CODE || $("#vnd-id").val();
+	const group = currentGroupData?.GROUP;
+	const groupName = ($("#input-group-name").val() || "").toString().trim();
+	const remark = ($("#input-group-remark").val() || "").toString().trim();
+	const codesToLink = group?.GROUP_ID ? [targetCode] : [currentCode, targetCode];
+
+	try {
+		await showLoader();
+		await linkVendorCodes({
+			GROUP_ID: group?.GROUP_ID,
+			GROUP_NAME: groupName || currentVendor?.VND_NAME || currentCode,
+			VND_CODES: codesToLink,
+			PRIMARY_CODE: group?.GROUP_ID ? undefined : currentCode,
+			REMARK: remark,
+		});
+		if (isManual) $("#input-manual-vnd-code").val("");
+		await refreshGroupAndDetail();
+	} catch (error) {
+		console.error(error);
+		await showMessage(error.message || "Failed to link vendor code");
+	} finally {
+		await showLoader({ show: false });
+	}
+});
+
+$(document).on("click", ".btn-set-primary", async function () {
+	const groupId = currentGroupData?.GROUP?.GROUP_ID;
+	const code = String($(this).data("code") || "");
+	if (!groupId || !code) return;
+	try {
+		await showLoader();
+		await setPrimaryVendorCode({ GROUP_ID: groupId, VND_CODE: code });
+		await refreshGroupAndDetail();
+	} catch (error) {
+		console.error(error);
+		await showMessage(error.message || "Failed to set primary code");
+	} finally {
+		await showLoader({ show: false });
+	}
+});
+
+$(document).on("click", ".btn-unlink-code", async function () {
+	const groupId = currentGroupData?.GROUP?.GROUP_ID;
+	const code = String($(this).data("code") || "");
+	if (!groupId || !code) return;
+	try {
+		await showLoader();
+		await unlinkVendorCode({ GROUP_ID: groupId, VND_CODE: code });
+		await refreshGroupAndDetail();
+	} catch (error) {
+		console.error(error);
+		await showMessage(error.message || "Failed to unlink vendor code");
+	} finally {
+		await showLoader({ show: false });
+	}
 });
 
 // Event Delegation: Export Approved List Profile & Audit Log

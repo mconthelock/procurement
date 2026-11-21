@@ -83,8 +83,9 @@
         @include('vendors/detail/directives')
     </main>
 
-    {{-- Overlay: Slide-Over Revision Diff Drawer --}}
+    {{-- Overlays: Slide-Over Revision Diff Drawer & Vendor Group Manager Drawer --}}
     @include('vendors/detail/drawer-diff')
+    @include('vendors/detail/drawer-group')
 @endsection
 
 @section('scripts')
