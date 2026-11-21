@@ -48,6 +48,24 @@
                 </div>
             </div>
 
+            <!-- Vendor Class (Manufacturing / Trader / Other) -->
+            <div class="space-y-1">
+                <span class="block text-xs uppercase font-bold text-mute">Vendor Class (ประเภทธุรกิจ)</span>
+                <div class="min-h-9.5 px-3 py-2 bg-base-200 border border-base-300 flex items-center justify-between">
+                    <p id="view-VND_CLASS" class="text-sm font-mono font-bold text-primary">-</p>
+                    <span class="text-[10px] font-mono text-mute uppercase">Mfg / Trader / Other</span>
+                </div>
+            </div>
+
+            <!-- Vendor Origin (Supply Origin Country) -->
+            <div class="space-y-1">
+                <span class="block text-xs uppercase font-bold text-mute">Vendor Origin (ประเทศต้นทางสินค้า)</span>
+                <div class="min-h-9.5 px-3 py-2 bg-base-200 border border-base-300 flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px] text-secondary">local_shipping</span>
+                    <p id="view-VND_ORIGIN" class="text-sm font-mono font-bold text-primary">-</p>
+                </div>
+            </div>
+
             <!-- TAX ID / Swift Code -->
             <div class="space-y-1">
                 <span class="block text-xs uppercase font-bold text-mute">TAX. ID / Swift Code</span>

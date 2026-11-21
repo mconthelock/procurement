@@ -417,19 +417,45 @@ div.dt-container table.dataTable tbody > tr {
 	transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-div.dt-container table.dataTable tbody > tr:hover {
+div.dt-container table.dataTable tbody > tr:hover,
+div.dt-container table.dataTable tbody > tr:hover > td {
 	background-color: color-mix(
 		in oklab,
 		var(--color-base-200) 60%,
-		transparent
+		var(--color-base-100)
 	) !important;
 }
 
 div.dt-container table.dataTable tbody > tr > td {
+	background-color: var(--color-base-100) !important;
 	vertical-align: top !important;
 	padding-top: 0.75rem !important;
 	padding-bottom: 0.75rem !important;
 	border-bottom: 1px solid var(--color-base-200) !important;
+}
+
+div.dt-container table.dataTable thead > tr > th.sticky-column,
+div.dt-container table.dataTable thead > tr > th.dtfc-fixed-left,
+div.dt-container table.dataTable thead > tr > th.dtfc-fixed-right {
+	background-color: var(--color-primary) !important;
+	z-index: 20 !important;
+}
+
+div.dt-container table.dataTable tbody > tr > td.sticky-column,
+div.dt-container table.dataTable tbody > tr > td.dtfc-fixed-left,
+div.dt-container table.dataTable tbody > tr > td.dtfc-fixed-right {
+	background-color: var(--color-base-100) !important;
+	z-index: 10 !important;
+}
+
+div.dt-container table.dataTable tbody > tr:hover > td.sticky-column,
+div.dt-container table.dataTable tbody > tr:hover > td.dtfc-fixed-left,
+div.dt-container table.dataTable tbody > tr:hover > td.dtfc-fixed-right {
+	background-color: color-mix(
+		in oklab,
+		var(--color-base-200) 60%,
+		var(--color-base-100)
+	) !important;
 }
 
 div.dt-container table.dataTable tbody > tr:last-child > td {

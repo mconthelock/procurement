@@ -57,6 +57,14 @@
                         <span class="block text-[11px] uppercase font-bold text-mute">Vendor Category</span>
                         <div class="min-h-9 px-3 py-2 bg-base-200 border border-base-300 text-primary" id="drawer-gen-category">-</div>
                     </div>
+                    <div class="space-y-1">
+                        <span class="block text-[11px] uppercase font-bold text-mute">Vendor Class</span>
+                        <div class="min-h-9 px-3 py-2 bg-base-200 border border-base-300 font-mono font-bold text-primary" id="drawer-gen-class">-</div>
+                    </div>
+                    <div class="space-y-1">
+                        <span class="block text-[11px] uppercase font-bold text-mute">Supply Origin Country</span>
+                        <div class="min-h-9 px-3 py-2 bg-base-200 border border-base-300 font-mono font-bold text-primary" id="drawer-gen-origin">-</div>
+                    </div>
                 </div>
             </div>
 

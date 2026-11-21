@@ -52,6 +52,8 @@ const DIFF_FIELD_LABELS = [
 	["VENDNAME", "Vendor Name (EN)"],
 	["VENDGROUPTYPE", "Vendor Group Type"],
 	["VENDCAT", "Vendor Category"],
+	["VND_CLASS", "Vendor Class"],
+	["VND_ORIGIN", "Vendor Origin"],
 	["TAXID", "TAX. ID / Swift Code"],
 	["CANO", "CA No."],
 	["BANO", "BA No."],
@@ -794,6 +796,13 @@ function renderVendorDetail(vendorData) {
 	const groupType = vendorData.VENDGROUPTYPE || vendorData.VND_TYPE1 || "-";
 	setText("view-VENDGROUPTYPE_BADGE", groupType);
 	setText("view-VENDGROUPTYPE", groupType);
+
+	const vndClass = vendorData.VND_CLASS || "-";
+	const vndOrigin = vendorData.VND_ORIGIN || "-";
+	$("#view-VND_CLASS_BADGE").text(`CLASS: ${vndClass}`);
+	$("#view-VND_ORIGIN_BADGE").text(`ORIGIN: ${vndOrigin}`);
+	setText("view-VND_CLASS", vndClass);
+	setText("view-VND_ORIGIN", vndOrigin);
 
 	const v1099 = vendorData.V1099 || (String(vndCode).startsWith("1") || String(vndCode).startsWith("2") ? "Y (Oversea)" : "N (Domestic)");
 	$("#view-V1099_BADGE").text(`1099: ${v1099}`);

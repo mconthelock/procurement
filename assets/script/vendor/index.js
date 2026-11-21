@@ -5,11 +5,7 @@ import { showMessage } from "@amec/webasset/utils";
 import { activatedBtnRow } from "@amec/webasset/components/buttons";
 import { createTable } from "@amec/webasset/dataTable";
 import { tableOpt, escapeHtml } from "../utils.js";
-import {
-	getVendors,
-	getTemplate,
-	exportExcel,
-} from "../service/index.js";
+import { getVendors, getTemplate, exportExcel } from "../service/index.js";
 import { extractDataForExport } from "./excel-data.js";
 
 let table = null;
@@ -233,6 +229,8 @@ function applyAllFilters() {
 				row.VND_CODE,
 				row.VND_NAME,
 				row.VND_CATEGORY,
+				row.VND_CLASS,
+				row.VND_ORIGIN,
 				row.VND_TAXNO,
 				row.VND_CANO,
 				row.VND_BANO,
@@ -272,27 +270,12 @@ function applyAllFilters() {
 	$("#activeViewSummary").text(
 		`Showing ${filtered.length.toLocaleString()} of ${allVendorsData.length.toLocaleString()} Vendor records`,
 	);
-	updateSelectedCount();
-}
-
-function updateSelectedCount() {
-	const $boxes = $("#table tbody .row-select");
-	const $checked = $("#table tbody .row-select:checked");
-	$("#selectedCounter").text(`${$checked.length} items`);
-
-	const headerCb = document.getElementById("headerCheckbox");
-	if (headerCb) {
-		headerCb.checked =
-			$boxes.length > 0 && $checked.length === $boxes.length;
-		headerCb.indeterminate =
-			$checked.length > 0 && $checked.length < $boxes.length;
-	}
 }
 
 async function createVendorsTable(data) {
 	const opt = { ...tableOpt };
 	opt.data = data;
-	opt.order = [[1, "asc"]];
+	opt.order = [[0, "asc"]];
 	opt.dom = `<"overflow-x-auto"t><"dt-footer-bar px-space-md py-3 bg-base-100 border-t border-base-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-mute"<"table-info"i><"table-page"p>>`;
 	opt.language = {
 		...tableOpt.language,
@@ -303,20 +286,9 @@ async function createVendorsTable(data) {
 
 	opt.columns = [
 		{
-			data: null,
-			orderable: false,
-			searchable: false,
-			className: "w-10 text-center align-top py-3",
-			title: `<input id="headerCheckbox" type="checkbox" class="checkbox checkbox-xs checkbox-accent border-white" aria-label="Select all on page" />`,
-			render: (data, type, row) =>
-				type === "display"
-					? `<input type="checkbox" class="row-select checkbox checkbox-xs checkbox-primary" value="${escapeHtml(row.VND_CODE || "")}" />`
-					: "",
-		},
-		{
 			data: "VND_CODE",
 			title: "Vendor Code &amp; Class",
-			className: "align-top py-3 text-nowrap",
+			className: "align-top py-3 text-nowrap sticky-column",
 			render: (data, type, row) => {
 				if (type !== "display") return data || "";
 				const code = escapeHtml(data || "-");
@@ -339,16 +311,19 @@ async function createVendorsTable(data) {
 		},
 		{
 			data: "VND_NAME",
-			title: "Corporate Entity, Category &amp; Tax/Agreement",
+			title: "Corporate Entity, Class &amp; Category",
 			className: "align-top py-3 min-w-[260px]",
 			render: (data, type, row) => {
 				if (type !== "display")
-					return `${data || ""} ${row.VND_CATEGORY || ""} ${row.VND_TAXNO || ""}`;
+					return `${data || ""} ${row.VND_CLASS || ""} ${row.VND_CATEGORY || ""} ${row.VND_TAXNO || ""}`;
+				const classBadge = row.VND_CLASS
+					? `<span class="badge badge-xs badge-secondary font-mono font-bold uppercase">${escapeHtml(row.VND_CLASS)}</span>`
+					: "";
 				const categoryHtml = row.VND_CATEGORY
-					? `<div class="inline-flex items-center gap-1 mt-1 text-[11px] font-medium text-secondary">
+					? `<span class="inline-flex items-center gap-1 text-[11px] font-medium text-secondary">
 							<span class="material-symbols-outlined text-[14px] text-mute">category</span>
 							<span>${escapeHtml(row.VND_CATEGORY)}</span>
-						</div>`
+						</span>`
 					: "";
 				const metaParts = [];
 				if (row.VND_TAXNO)
@@ -368,7 +343,7 @@ async function createVendorsTable(data) {
 					: "";
 				return `
 					<div class="font-bold text-primary leading-snug">${escapeHtml(data || "-")}</div>
-					${categoryHtml}
+					${classBadge || categoryHtml ? `<div class="mt-1 flex flex-wrap items-center gap-1.5">${classBadge}${categoryHtml}</div>` : ""}
 					${metaHtml}
 				`;
 			},
@@ -398,17 +373,23 @@ async function createVendorsTable(data) {
 		},
 		{
 			data: "VND_COUNTRY",
-			title: "Location &amp; Address",
-			className: "align-top py-3 min-w-[200px]",
+			title: "Location &amp; Supply Origin",
+			className: "align-top py-3 min-w-[210px]",
 			render: (data, type, row) => {
 				if (type !== "display")
-					return `${data || ""} ${row.VND_CITY || ""} ${row.VND_STATE || ""}`;
+					return `${data || ""} ${row.VND_ORIGIN || ""} ${row.VND_CITY || ""} ${row.VND_STATE || ""}`;
 				const cityState = [row.VND_CITY, row.VND_STATE]
 					.filter(Boolean)
 					.join(", ");
 				const addr = [row.VND_ADDRESS1, row.VND_ADDRESS2]
 					.filter(Boolean)
 					.join(" ");
+				const originHtml = row.VND_ORIGIN
+					? `<div class="inline-flex items-center gap-1 mt-1 text-[11px] font-mono text-info font-semibold">
+							<span class="material-symbols-outlined text-[13px]">local_shipping</span>
+							<span>Origin: ${escapeHtml(row.VND_ORIGIN)}</span>
+						</div>`
+					: "";
 				return `
 					<div class="flex items-center gap-1 font-bold text-primary">
 						<span class="material-symbols-outlined text-[14px] text-secondary shrink-0">location_on</span>
@@ -416,6 +397,7 @@ async function createVendorsTable(data) {
 					</div>
 					${cityState ? `<div class="text-[11px] text-secondary font-medium">${escapeHtml(cityState)}</div>` : ""}
 					${addr ? `<div class="text-[11px] text-mute truncate max-w-60" title="${escapeHtml(addr)}">${escapeHtml(addr)}</div>` : ""}
+					${originHtml}
 				`;
 			},
 		},
@@ -478,12 +460,12 @@ async function createVendorsTable(data) {
 				return `
 					<div class="flex flex-col gap-1 items-stretch">
 						<a href="${process.env.APP_ENV}/vendors/detail/${code}"
-							class="btn btn-xs btn-primary font-bold flex items-center justify-center gap-1">
+							class="btn btn-xs btn-primary font-bold flex items-center justify-center gap-1 text-nowrap">
 							<span class="material-symbols-outlined text-[14px]">visibility</span>
 							<span>View Profile</span>
 						</a>
 						<a href="${process.env.APP_ENV}/vendors/create?mode=U&code=${code}"
-							class="btn btn-xs btn-outline border-base-300 font-semibold flex items-center justify-center gap-1">
+							class="btn btn-xs btn-outline border-base-300 font-semibold flex items-center justify-center gap-1 text-nowrap">
 							<span class="material-symbols-outlined text-[13px]">edit_document</span>
 							<span>Cover Update</span>
 						</a>
@@ -501,7 +483,6 @@ async function createVendorsTable(data) {
 
 	opt.drawCallback = function (settings) {
 		tableOpt.drawCallback.call(this, settings);
-		updateSelectedCount();
 	};
 
 	table = await createTable(opt);
@@ -553,24 +534,6 @@ $(document).on("click", "#vendorFilterReset", () => {
 	$("#vendorCurrencyFilter").val("");
 	activeTab = "ALL";
 	$('.vendor-status-tab[data-filter-tab="ALL"]').trigger("click");
-});
-
-// Event Delegation: Row Checkboxes & Select All
-$(document).on("change", "#headerCheckbox", function () {
-	const checked = $(this).is(":checked");
-	$("#table tbody .row-select").prop("checked", checked);
-	updateSelectedCount();
-});
-
-$(document).on("change", "#table tbody .row-select", () => {
-	updateSelectedCount();
-});
-
-$(document).on("click", "#selectAllPageBtn", () => {
-	const $master = $("#headerCheckbox");
-	if ($master.length) {
-		$master.prop("checked", !$master.is(":checked")).trigger("change");
-	}
 });
 
 // Export Approved List CSV

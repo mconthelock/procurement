@@ -14,6 +14,6 @@
 
     <!-- Responsive DataTable Container -->
     <div class="overflow-x-auto">
-        <table id="vendorListTable" class="table table-xs w-full border-collapse text-left"></table>
+        <table id="table" class="table table-xs w-full border-collapse text-left"></table>
     </div>
 </div>

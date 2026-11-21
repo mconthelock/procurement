@@ -6,11 +6,9 @@
         <div class="flex items-center gap-space-md text-mute">
             <span>Active View: <strong class="text-primary font-mono" id="activeViewSummary">Loading Vendor records...</strong></span>
         </div>
-        <div class="flex items-center gap-space-sm">
-            <span class="text-mute">Selected: <strong class="text-primary font-mono" id="selectedCounter">0 items</strong></span>
-            <button class="link link-hover text-info font-semibold cursor-pointer" id="selectAllPageBtn" type="button">
-                Select All On Page
-            </button>
+        <div class="flex items-center gap-2 text-mute font-mono text-[11px]">
+            <span class="material-symbols-outlined text-[15px] text-secondary">verified_user</span>
+            <span>AMEC Vendor Master Registry • PRO-QP-A-020</span>
         </div>
     </div>
 

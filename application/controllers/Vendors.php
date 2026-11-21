@@ -25,11 +25,6 @@ class Vendors extends MY_Controller {
         ]);
     }
 
-    public function list(){
-        $this->breadcrumb->add('Vendor Directory');
-        $this->views('vendors/list', ['title' => 'nav-vendors']);
-    }
-
     //Vendors Users
     public function users(){
         $this->breadcrumb->add('Vendor Directory', base_url('vendors/users'));

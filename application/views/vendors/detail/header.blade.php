@@ -14,6 +14,14 @@
                     class="badge badge-xs badge-outline border-primary text-primary font-mono font-bold uppercase">
                     -
                 </span>
+                <span id="view-VND_CLASS_BADGE"
+                    class="badge badge-xs badge-secondary font-mono font-bold uppercase">
+                    CLASS: -
+                </span>
+                <span id="view-VND_ORIGIN_BADGE"
+                    class="badge badge-xs badge-outline border-info text-info font-mono font-bold uppercase">
+                    ORIGIN: -
+                </span>
                 <span id="view-V1099_BADGE"
                     class="badge badge-xs badge-ghost font-mono uppercase text-secondary">
                     1099: -
