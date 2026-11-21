@@ -1,10 +1,8 @@
+import { fetchUtils } from "@amec/webasset/api/fetch-utils";
+
 export async function getAddressMST(id = "") {
-	const response = await fetch(`${process.env.MOCK_API}/addressmst/${id}`);
-
-	if (!response.ok) {
-		throw new Error("Failed to fetch address data");
-	}
-
-	const data = await response.json();
-	return data;
+	return fetchUtils({
+		url: `${process.env.APP_API}/addressmst/${id}`,
+		method: "GET",
+	});
 }

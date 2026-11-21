@@ -1,10 +1,8 @@
+import { fetchUtils } from "@amec/webasset/api/fetch-utils";
+
 export async function getPayments(id = "") {
-	const response = await fetch(`${process.env.MOCK_API}/payments/${id}`);
-
-	if (!response.ok) {
-		throw new Error("Failed to fetch payments");
-	}
-
-	const data = await response.json();
-	return data;
+	return fetchUtils({
+		url: `${process.env.APP_API}/payments/${id}`,
+		method: "GET",
+	});
 }

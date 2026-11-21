@@ -136,18 +136,20 @@ export const initApp = async () => {
 };
 
 export const tableOpt = {
-	dom: `<"flex items-center mb-3"<"table-search flex flex-1 gap-5"f><"flex items-center table-option"l>><"bg-white border border-slate-300 rounded-2xl overflow-hidden"t><"flex mt-5 mb-3"<"table-info flex flex-col flex-1 gap-5"i><"table-page flex-none"p>>`,
+	dom: `<"flex items-center mb-3"<"table-search flex flex-1 gap-5"f><"flex items-center table-option"l>><"bg-white border border-slate-300 rounded-2xl overflow-hidden"t><"dt-footer-bar px-space-md py-3 bg-base-100 border-t border-base-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-mute"<"table-info"i><"table-page"p>>`,
 	order: [[0, "asc"]],
 	pageLength: 25,
 	responsive: false,
+	pagingType: "simple_numbers",
 	language: {
-		info: "Showing _START_ to _END_ from _TOTAL_ records",
-		infoEmpty: "",
+		info: 'Showing <strong class="text-primary">_START_ - _END_</strong> of <strong class="text-primary">_TOTAL_</strong> records',
+		infoEmpty:
+			'Showing <strong class="text-primary">0 - 0</strong> of <strong class="text-primary">0</strong> records',
 		paginate: {
-			previous: '<i class="fi fi-br-arrow-alt-circle-left"></i>',
-			next: '<i class="fi fi-br-arrow-alt-circle-right"></i>',
-			first: '<i class="fi fi-rs-angle-double-small-left"></i>',
-			last: '<i class="fi fi-rs-angle-double-small-right"></i>',
+			previous: "«",
+			next: "»",
+			first: "«",
+			last: "»",
 		},
 		search: "",
 		searchPlaceholder: "Filter records...",
@@ -155,7 +157,7 @@ export const tableOpt = {
 		emptyTable: `<span class="text-[14px] text-gray-600 font-medium">Have no record found</span>`,
 		zeroRecords: "ไม่พบข้อมูลที่ต้องการ",
 		lengthMenu: "_MENU_",
-		infoFiltered: "(กรองข้อมูลจากทั้งหมด _MAX_ รายการ)",
+		infoFiltered: "(filtered from _MAX_ total)",
 	},
 	drawCallback: function (settings) {
 		const api = this.api();
@@ -165,6 +167,32 @@ export const tableOpt = {
 		} else {
 			pagination.removeClass("hidden");
 		}
+
+		const nav = pagination.find("nav");
+		nav.addClass("join");
+		nav.find(".dt-paging-button").each(function () {
+			const btn = $(this);
+			const isCurrent = btn.hasClass("current");
+			const isDisabled = btn.hasClass("disabled");
+
+			btn.removeClass(
+				"btn-primary btn-outline border-base-300 btn-disabled",
+			).addClass("join-item btn btn-xs");
+
+			if (isCurrent) {
+				btn.addClass("btn-primary");
+			} else {
+				btn.addClass("btn-outline border-base-300");
+			}
+
+			if (isDisabled && !isCurrent) {
+				btn.addClass("btn-disabled");
+			}
+		});
+
+		nav.find(".ellipsis").addClass(
+			"join-item btn btn-xs btn-outline border-base-300 btn-disabled",
+		);
 	},
 	initComplete: function (settings, json) {
 		$(this).closest(".tableArea").find(".table-loader").addClass("hidden");

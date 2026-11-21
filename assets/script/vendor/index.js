@@ -105,6 +105,13 @@ async function reloadTable() {
 async function createVendorsTable(data) {
 	const opt = { ...tableOpt };
 	opt.data = data;
+	opt.dom = `<"overflow-x-auto"t><"dt-footer-bar px-space-md py-3 bg-base-100 border-t border-base-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-mute"<"table-info"i><"table-page"p>>`;
+	opt.language = {
+		...tableOpt.language,
+		info: 'Showing <strong class="text-primary">_START_ - _END_</strong> of <strong class="text-primary">_TOTAL_</strong> Registered Vendors',
+		infoEmpty:
+			'Showing <strong class="text-primary">0 - 0</strong> of <strong class="text-primary">0</strong> Registered Vendors',
+	};
 	// opt.columns = [
 	// 	{ data: "VND_CODE", title: "Code" },
 	// 	{ data: "VND_NAME", title: "Name" },
@@ -157,7 +164,53 @@ async function createVendorsTable(data) {
 	// 		},
 	// 	},
 	// ];
-	opt.columns = [{ data: "VND_CODE", title: "Code" }];
+	opt.columns = [
+		{ data: "VND_CODE", title: "Code" },
+		{
+			data: null,
+			title: "Corporate Entity Name &amp; Commodity",
+			render: (data, type, row) => {
+				if (type == "display") {
+					return `<div class="font-bold text-primary">Siam Precision Engineering Co., Ltd.</div>
+                        <div class="text-mute">บริษัท สยาม พรีซิชั่น เอ็นจิเนียริ่ง จำกัด</div>
+                        `;
+				}
+				return data;
+			},
+		},
+		{
+			data: null,
+			title: "Location / Plant",
+			render: (data, type, row) => {
+				if (type == "display") {
+					return `<div class="font-bold text-primary">Bangkok Plant</div>
+                        <div class="text-mute">กรุงเทพมหานคร</div>
+                        `;
+				}
+				return data;
+			},
+		},
+		{
+			data: null,
+			title: "Status",
+			render: (data, type, row) => {
+				if (type == "display") {
+					return `<div class="badge badge-success">Active</div>`;
+				}
+				return data;
+			},
+		},
+		{
+			data: "VND_CODE",
+			title: "Actions",
+			render: (data, type, row) => {
+				if (type == "display") {
+					return `<a href="${process.env.APP_ENV}/vendors/detail/${data}" class="btn btn-sm btn-ghost btn-circle text-lg text-primary hover:text-xl"><i class="fi fi-rr-settings-sliders"></i></a>`;
+				}
+				return data;
+			},
+		},
+	];
 	opt.initComplete = async function (settings, json) {
 		const { container } = tableOpt.initComplete.call(this, settings, json);
 		$(".dt-search").addClass("hidden");

@@ -8,16 +8,26 @@ class Vendors extends MY_Controller {
 
     public function index(){
         $this->breadcrumb->add('Vendor Directory');
-        $this->views('vendors/index');
+        $this->views('vendors/index', ['title' => 'nav-vendors']);
     }
 
     public function detail($id = ''){
         $this->breadcrumb->add('Vendor Directory', '/vendors');
         $this->breadcrumb->add('Vendor Detail');
-        $this->views('Vendors/detail', [
-            'id' => $id
+        $this->views('vendors/detail', [
+            'id' => $id,
+            'title' => 'nav-vendors'
         ]);
     }
+
+    //Vendors Users
+    public function users(){
+        $this->views('vendors/users', [
+            'title' => 'nav-vendors-users'
+        ]);
+    }
+
+
     public function create()
     {
      $this->views('Vendors/create', [

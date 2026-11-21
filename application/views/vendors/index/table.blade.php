@@ -18,7 +18,7 @@
 
     <!-- Responsive Table -->
     <div class="overflow-x-auto">
-        <table id="table" class="table table-sm w-full border-collapse text-left">
+        <table id="table" class="table table-xs w-full border-collapse text-left">
             {{-- <thead>
                 <tr class="bg-primary text-white text-xs uppercase tracking-wider">
                     <th class="w-10 text-center">
