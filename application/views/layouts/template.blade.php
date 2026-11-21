@@ -14,13 +14,15 @@
     <link rel="shortcut icon" href="{{ $_ENV['APP_IMG'] }}/favicon.ico">
     <link rel="apple-touch-icon" href="{{ $_ENV['APP_IMG'] }}/favicon.ico">
     <link rel="apple-touch-startup-image" href="{{ $_ENV['APP_IMG'] }}/cube.png">
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+        href="{{ $_ENV['APP_ENV'] }}/assets/fonts/material-symbols/material-symbols-outlined.woff2">
     <link rel="stylesheet" href="{{ $_ENV['APP_CSS'] }}/tailwind.css?ver={{ $GLOBALS['version'] }}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     @yield('styles')
     <script src="{{ $_ENV['APP_ENV'] }}/script.js"></script>
 </head>
 
 <body menuTitle="{{ $title ?? '' }}" class="flex flex-col min-h-screen">
+    <div id="nav-progress-bar" aria-hidden="true"></div>
     <input type="hidden" id="appid" value="{{ $_ENV['APP_ID'] }}">
     <!-- Navbar -->
     <div id="navbar" class="max-w-full!"></div>

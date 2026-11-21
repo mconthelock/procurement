@@ -8,6 +8,14 @@ export async function getPurchaseOrders(data = {}) {
 	});
 }
 
+export async function searchPurchaseOrderReport(data = {}) {
+	return fetchUtils({
+		url: `${process.env.APP_API}/pursys/orders/report/`,
+		method: "POST",
+		data,
+	});
+}
+
 export async function getPurchaseOrderDetail(poNo) {
 	return fetchUtils({
 		url: `${process.env.APP_API}/pursys/orders/${encodeURIComponent(poNo)}`,

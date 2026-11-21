@@ -2,6 +2,7 @@ import { showLoader } from "@amec/webasset/preloader";
 import { showMessage } from "@amec/webasset/utils";
 import {
 	getVendors,
+	getVendorDetail,
 	getVendorHistory,
 	getVendorEvaluation,
 } from "../service/index.js";
@@ -1033,14 +1034,20 @@ $(document).ready(async () => {
 
 		const vendorId =
 			$("#vnd-id").val() || window.location.pathname.split("/").pop();
-		const response = await getVendors();
-		const allVendors = Array.isArray(response)
-			? response
-			: response?.data || [];
 
-		const vendorData = allVendors.find(
-			(vendor) => vendor.VND_ID == vendorId || vendor.VND_CODE == vendorId,
-		);
+		let vendorData = null;
+		try {
+			const detailRes = await getVendorDetail(vendorId);
+			vendorData = detailRes?.data || detailRes || null;
+		} catch {
+			const response = await getVendors();
+			const allVendors = Array.isArray(response)
+				? response
+				: response?.data || [];
+			vendorData = allVendors.find(
+				(vendor) => vendor.VND_ID == vendorId || vendor.VND_CODE == vendorId,
+			);
+		}
 
 		if (!vendorData) {
 			await showMessage(`Vendor record (${vendorId}) not found.`);

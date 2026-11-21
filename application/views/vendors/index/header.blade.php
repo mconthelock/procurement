@@ -2,21 +2,21 @@
 @include('components.page-header', [
     'systemTag' => 'AMEC-PRO-SYS-TH',
     'title' => 'Vendor Directory',
-    'description' => 'ทะเบียนรายชื่อคู่ค้าทั้งหมด • Official registry of approved suppliers',
+    'description' => 'ทะเบียนรายชื่อคู่ค้าทั้งหมด • Official registry of approved suppliers &amp; sub-contractors',
     'actionsList' => [
         [
-            'label' => 'Download Approved List (.PDF)',
+            'label' => 'Export Approved List (.CSV)',
             'icon' => 'download',
             'variant' => 'default',
             'type' => 'button',
-            'onclick' => "alert('Downloading Official Approved Vendor List (.PDF)...')",
+            'id' => 'btn-export-csv',
         ],
         [
-            'label' => 'Export Ledger (.CSV)',
+            'label' => 'Export Excel (.XLSX)',
             'icon' => 'table_view',
             'variant' => 'default',
             'type' => 'button',
-            'onclick' => "alert('Exporting Vendor Ledger (.CSV)...')",
+            'id' => 'export-vendor',
         ],
         [
             'label' => '+ Register New Vendor',

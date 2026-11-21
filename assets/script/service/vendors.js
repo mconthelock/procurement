@@ -8,6 +8,14 @@ export async function getVendors(q = {}) {
 	});
 }
 
+export async function getVendorDetail(vndCode) {
+	return fetchUtils({
+		url: `${process.env.APP_API}/pursys/vendors/detail/`,
+		method: "POST",
+		data: { VENDCODE: vndCode },
+	});
+}
+
 export async function getVendorHistory(vndCode) {
 	return fetchUtils({
 		url: `${process.env.APP_API}/pursys/vendors/history/`,

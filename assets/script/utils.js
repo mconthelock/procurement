@@ -27,15 +27,15 @@ import { root } from "@amec/webasset/utils";
 const getAppOptions = () => {
 	const pgmName = `<div class="space-y-space-xs max-w-3xl">
         <div class="flex items-center gap-1">
-            <span class="px-1.5 py-0.5 bg-black text-[8px] uppercase font-bold">PUR-008P</span>
+            <span class="px-1.5 py-0.5 bg-accent text-white font-mono text-[9px] uppercase tracking-wider font-bold">PUR-008P</span>
         </div>
-        <h1 class="text-black font-head uppercase text-lg">Procurement</h1>
+        <h1 class="text-neutral font-head font-bold uppercase text-lg leading-tight tracking-tight">Procurement</h1>
     </div>`;
 	return {
 		icon: `${process.env.APP_ENV}/assets/images/logo.svg`,
 		iconLogo: `${process.env.APP_ENV}/assets/images/logo.svg`,
 		programName: pgmName,
-		sidebarClass: `bg-white! text-black! border border-base-300! size-xl text-gray-50 md:shadow-lg`,
+		sidebarClass: `bg-white! text-base-content! border-r border-base-300! size-xl md:shadow-sm`,
 	};
 };
 

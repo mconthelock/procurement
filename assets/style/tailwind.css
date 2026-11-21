@@ -61,8 +61,6 @@
 
 /* Webasset Fonts & Tooltips */
 @import "@amec/webasset/css/font.css";
-/* Webasset Fonts & Tooltips */
-@import "@amec/webasset/css/font.css";
 @import "@amec/webasset/css/tooltip.min.css";
 
 @theme {
@@ -144,6 +142,10 @@
 		border-color: var(--color-base-300, currentColor);
 	}
 
+	html {
+		scrollbar-gutter: stable;
+	}
+
 	body {
 		@apply font-sans text-base-content;
 		background-color: #f4f5f7;
@@ -151,6 +153,192 @@
 		padding: 0;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
+	}
+
+	/* Pre-reserve sidebar dimensions before JS hydration to eliminate CLS jump */
+	#sidebar {
+		background-color: var(--color-base-100);
+		border-top: 3px solid var(--color-accent);
+		border-right: 1px solid var(--color-base-300);
+		min-height: 100vh;
+		padding-top: 0 !important;
+		color: #374151;
+	}
+
+	@media (width >= 48rem) {
+		#sidebar {
+			width: 16rem;
+		}
+	}
+
+	@media (width >= 64rem) {
+		#sidebar {
+			width: 20rem;
+		}
+	}
+
+	html.sidebar-collapsed #sidebar {
+		width: 75px;
+	}
+
+	/* Branded Sidebar Header (#c40001 Mitsubishi Red Accent) */
+	#sidebar .sidebar-head {
+		background: linear-gradient(
+			180deg,
+			rgba(196, 0, 1, 0.06) 0%,
+			rgba(196, 0, 1, 0.015) 65%,
+			#ffffff 100%
+		);
+		border-bottom: 1px solid var(--color-base-300);
+		padding: 0.75rem 1rem !important;
+	}
+
+	#sidebar #sidebarToggle svg,
+	#sidebar #profile svg {
+		fill: #4b5563 !important;
+		transition: fill 150ms ease;
+	}
+
+	#sidebar #sidebarToggle:hover svg,
+	#sidebar #profile a:hover svg {
+		fill: var(--color-accent) !important;
+	}
+
+	/* Sidebar Navigation Items */
+	#sidebar #sidebar-menu {
+		gap: 0.25rem !important;
+	}
+
+	#sidebar #sidebar-menu > li {
+		padding-inline: 0.75rem !important;
+	}
+
+	#sidebar #sidebar-menu a,
+	#sidebar #sidebar-menu summary {
+		color: #374151;
+		border-left: 3px solid transparent;
+		padding: 0.55rem 0.75rem;
+		transition:
+			background-color 150ms ease,
+			color 150ms ease,
+			border-color 150ms ease;
+	}
+
+	#sidebar #sidebar-menu .sidebar-menu-icon,
+	#sidebar #sidebar-menu .sidebar-sub-menu-icon {
+		color: #6b7280;
+		transition: color 150ms ease;
+	}
+
+	#sidebar #sidebar-menu a:hover,
+	#sidebar #sidebar-menu summary:hover {
+		background-color: rgba(196, 0, 1, 0.06) !important;
+		color: var(--color-accent) !important;
+		border-left-color: rgba(196, 0, 1, 0.45);
+	}
+
+	#sidebar #sidebar-menu a:hover .sidebar-menu-icon,
+	#sidebar #sidebar-menu a:hover .sidebar-sub-menu-icon,
+	#sidebar #sidebar-menu summary:hover .sidebar-menu-icon {
+		color: var(--color-accent) !important;
+	}
+
+	#sidebar #sidebar-menu details[open] > summary {
+		background-color: rgba(196, 0, 1, 0.04);
+		color: #1a1a1a;
+		border-left-color: rgba(196, 0, 1, 0.35);
+	}
+
+	#sidebar #sidebar-menu details[open] > summary .sidebar-menu-icon {
+		color: var(--color-accent);
+	}
+
+	/* Active / Focused Route */
+	#sidebar #sidebar-menu a.menu-focus {
+		background-color: rgba(196, 0, 1, 0.1) !important;
+		color: var(--color-accent) !important;
+		border-left: 3px solid var(--color-accent) !important;
+		font-weight: 700 !important;
+	}
+
+	#sidebar #sidebar-menu a.menu-focus .sidebar-menu-icon,
+	#sidebar #sidebar-menu a.menu-focus .sidebar-sub-menu-icon {
+		color: var(--color-accent) !important;
+	}
+
+	/* Submenu Tree Styling */
+	#sidebar #sidebar-menu details > ul {
+		margin-top: 0.25rem;
+		margin-inline-start: 1.15rem;
+		padding-inline-start: 0.65rem;
+		border-left: 1px solid rgba(196, 0, 1, 0.2);
+		list-style: none !important;
+	}
+
+	#sidebar #sidebar-menu details > ul::before {
+		display: none !important;
+	}
+
+	#sidebar #sidebar-menu details > ul > li > a {
+		font-size: 0.8125rem;
+		padding: 0.45rem 0.65rem;
+		color: #4b5563;
+	}
+
+	/* Branded Profile Footer */
+	#sidebar #profile {
+		background-color: #f8f8f9;
+		border-top: 1px solid var(--color-base-300);
+		padding: 0.5rem 0.75rem 0.75rem;
+	}
+
+	#sidebar #profile .divider {
+		display: none !important;
+	}
+
+	#sidebar #profile .sidebar-profile {
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.25rem;
+	}
+
+	#sidebar #profile .avatar > div {
+		outline: 2px solid rgba(196, 0, 1, 0.28);
+		outline-offset: 1px;
+	}
+
+	#sidebar #profile .sidebar-text > div:first-child {
+		color: #1a1a1a;
+	}
+
+	#sidebar #profile .sidebar-text > div:last-child {
+		color: var(--color-mute);
+	}
+
+	/* Top navigation progress bar (instant feedback on link click) */
+	#nav-progress-bar {
+		position: fixed;
+		top: 0;
+		left: 0;
+		height: 2px;
+		width: 0;
+		background-color: var(--color-accent);
+		z-index: 9999;
+		opacity: 0;
+		pointer-events: none;
+		transition:
+			width 260ms cubic-bezier(0.22, 1, 0.36, 1),
+			opacity 180ms ease;
+	}
+
+	#nav-progress-bar.is-loading {
+		width: 78%;
+		opacity: 1;
+	}
+
+	#nav-progress-bar.is-done {
+		width: 100%;
+		opacity: 0;
 	}
 
 	/* Material Symbols Outlined base setup */
@@ -173,11 +361,6 @@
 		text-rendering: optimizeLegibility;
 		font-feature-settings: "liga";
 		font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
-	}
-
-	#sidebar #sidebarToggle svg,
-	#sidebar #profile svg {
-		fill: #000000 !important;
 	}
 
 	.input:focus,
@@ -333,4 +516,54 @@ div.dt-container
 	border: 1px solid var(--color-base-300) !important;
 	opacity: 0.4 !important;
 	cursor: not-allowed !important;
+}
+
+/* ==========================================================================
+   Cross-Document View Transitions (Smooth MPA Navigation)
+   ========================================================================== */
+@media (prefers-reduced-motion: no-preference) {
+	@view-transition {
+		navigation: auto;
+	}
+
+	.drawer-side {
+		view-transition-name: app-sidebar;
+	}
+
+	#main-contents {
+		view-transition-name: app-main;
+	}
+
+	::view-transition-old(app-sidebar),
+	::view-transition-new(app-sidebar) {
+		animation: none;
+	}
+
+	::view-transition-old(app-main) {
+		animation: 140ms ease-out both amec-page-out;
+	}
+
+	::view-transition-new(app-main) {
+		animation: 200ms cubic-bezier(0.22, 1, 0.36, 1) both amec-page-in;
+	}
+}
+
+@keyframes amec-page-out {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+@keyframes amec-page-in {
+	from {
+		opacity: 0;
+		transform: translateY(4px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
