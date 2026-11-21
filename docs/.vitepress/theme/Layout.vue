@@ -15,8 +15,7 @@ const {
 	isAuthenticated,
 	primaryRole,
 	primaryRoleMeta,
-	isPreviewing,
-	clearPreviewRole,
+	loginUrl,
 	canAccess,
 } = useUserRole();
 
@@ -52,7 +51,6 @@ const requiredRoleLabels = computed(() => {
 	return requiredRoles.value.map((key) => ROLES[key]?.label || key);
 });
 
-const appHostUrl = computed(() => theme.value?.auth?.appHost || "/procurement");
 const quickStartUrl = computed(() => withBase("/quick-start"));
 </script>
 
@@ -114,19 +112,11 @@ const quickStartUrl = computed(() => withBase("/quick-start"));
 						</a>
 						<a
 							v-if="!isAuthenticated"
-							:href="appHostUrl"
+							:href="loginUrl"
 							class="vp-btn-secondary"
 						>
 							เข้าสู่ระบบ Procurement
 						</a>
-						<button
-							v-if="isPreviewing"
-							type="button"
-							class="vp-btn-secondary"
-							@click="clearPreviewRole"
-						>
-							ออกจากโหมด Preview
-						</button>
 					</div>
 				</div>
 

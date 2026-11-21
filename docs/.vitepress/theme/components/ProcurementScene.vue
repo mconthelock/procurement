@@ -327,6 +327,37 @@ onMounted(() => {
 		metalness: 0.35,
 		flatShading: true,
 	});
+	const matGrass = new THREE.MeshStandardMaterial({
+		color: 0x4ade80,
+		roughness: 0.92,
+		metalness: 0.02,
+	});
+	const matTrunk = new THREE.MeshStandardMaterial({
+		color: 0x785032,
+		roughness: 0.9,
+	});
+	const matLeafBright = new THREE.MeshStandardMaterial({
+		color: 0x22c55e,
+		roughness: 0.78,
+		flatShading: true,
+	});
+	const matLeafDeep = new THREE.MeshStandardMaterial({
+		color: 0x15803d,
+		roughness: 0.82,
+		flatShading: true,
+	});
+	const matLeafSage = new THREE.MeshStandardMaterial({
+		color: 0x34d399,
+		roughness: 0.8,
+		flatShading: true,
+	});
+	const matSolar = new THREE.MeshStandardMaterial({
+		color: 0x1e3a8a,
+		emissive: 0x0f172a,
+		emissiveIntensity: 0.2,
+		roughness: 0.25,
+		metalness: 0.65,
+	});
 
 	// --- Root World Group ---
 	const world = new THREE.Group();
@@ -1131,6 +1162,207 @@ onMounted(() => {
 		}
 	});
 
+	// 11. Eco-Factory Green Zones, Trees, Solar Canopy & Wind Turbines
+	const ecoTrees = [];
+	const leafMats = [matLeafBright, matLeafDeep, matLeafSage];
+
+	function createBroadleafTree(scale = 1, matIdx = 0) {
+		const tree = new THREE.Group();
+		const trunk = new THREE.Mesh(
+			new THREE.CylinderGeometry(0.1 * scale, 0.16 * scale, 1.05 * scale, 7),
+			matTrunk,
+		);
+		trunk.position.y = 0.52 * scale;
+		trunk.castShadow = true;
+		tree.add(trunk);
+
+		const crownMain = new THREE.Mesh(
+			new THREE.DodecahedronGeometry(0.75 * scale, 0),
+			leafMats[matIdx % leafMats.length],
+		);
+		crownMain.position.set(0, 1.45 * scale, 0);
+		crownMain.castShadow = true;
+		crownMain.receiveShadow = true;
+		tree.add(crownMain);
+
+		const crownSub = new THREE.Mesh(
+			new THREE.DodecahedronGeometry(0.5 * scale, 0),
+			leafMats[(matIdx + 1) % leafMats.length],
+		);
+		crownSub.position.set(0.32 * scale, 1.2 * scale, 0.24 * scale);
+		crownSub.castShadow = true;
+		tree.add(crownSub);
+
+		return tree;
+	}
+
+	function createPineTree(scale = 1, matIdx = 1) {
+		const tree = new THREE.Group();
+		const trunk = new THREE.Mesh(
+			new THREE.CylinderGeometry(0.08 * scale, 0.14 * scale, 0.7 * scale, 7),
+			matTrunk,
+		);
+		trunk.position.y = 0.35 * scale;
+		trunk.castShadow = true;
+		tree.add(trunk);
+
+		const mat = leafMats[matIdx % leafMats.length];
+		[
+			[0.72, 1.15, 1.05],
+			[0.56, 0.95, 1.65],
+			[0.38, 0.8, 2.15],
+		].forEach(([r, h, y]) => {
+			const cone = new THREE.Mesh(new THREE.ConeGeometry(r * scale, h * scale, 7), mat);
+			cone.position.y = y * scale;
+			cone.castShadow = true;
+			tree.add(cone);
+		});
+
+		return tree;
+	}
+
+	// Landscaped green grass beds around factory & outer perimeter
+	const grassBeds = [
+		[-2.4, 0.32, 4.9, 7.6, 0.12, 3.2], // Front eco garden beside factory
+		[-6.8, 0.32, -1.8, 1.5, 0.12, 12.2], // West green belt inside pad
+		[-12.5, 0.06, 2.5, 5.2, 0.12, 17.5], // Outer west eco park
+		[1.0, 0.06, 12.8, 20.5, 0.12, 3.4], // South roadside green strip
+		[1.0, 0.06, -13.4, 19.5, 0.12, 3.4], // North green buffer
+	];
+	grassBeds.forEach(([gx, gy, gz, gw, gh, gd]) => {
+		const bed = new THREE.Mesh(new THREE.BoxGeometry(gw, gh, gd), matGrass);
+		bed.position.set(gx, gy, gz);
+		bed.receiveShadow = true;
+		world.add(bed);
+	});
+
+	// Place trees along green belts, factory garden, and perimeter parks
+	const treePlacements = [
+		// Front factory eco garden (y = 0.38)
+		[-5.5, 0.38, 5.2, "broad", 0.95, 0],
+		[-3.6, 0.38, 5.6, "pine", 0.9, 1],
+		[-1.6, 0.38, 5.3, "broad", 1.05, 2],
+		[0.5, 0.38, 5.4, "broad", 0.88, 0],
+		// West green belt inside pad
+		[-6.9, 0.38, -6.4, "pine", 1.1, 1],
+		[-6.8, 0.38, -3.5, "broad", 1.0, 0],
+		[-6.9, 0.38, 0.2, "pine", 1.05, 2],
+		[-6.8, 0.38, 3.2, "broad", 0.92, 1],
+		// Outer west eco park (y = 0.12)
+		[-11.8, 0.12, -4.5, "broad", 1.25, 0],
+		[-13.4, 0.12, -2.0, "pine", 1.35, 1],
+		[-11.5, 0.12, 1.5, "broad", 1.15, 2],
+		[-13.8, 0.12, 4.2, "pine", 1.25, 0],
+		[-11.9, 0.12, 7.6, "broad", 1.1, 1],
+		[-13.6, 0.12, 9.6, "broad", 1.2, 2],
+		// South roadside green strip
+		[-6.5, 0.12, 12.6, "broad", 1.15, 0],
+		[-3.2, 0.12, 13.0, "pine", 1.2, 1],
+		[0.2, 0.12, 12.5, "broad", 1.05, 2],
+		[3.8, 0.12, 12.9, "broad", 1.15, 0],
+		[7.4, 0.12, 12.6, "pine", 1.1, 1],
+		[10.2, 0.12, 12.8, "broad", 1.0, 2],
+		// North green buffer
+		[-6.2, 0.12, -13.2, "pine", 1.3, 1],
+		[-2.8, 0.12, -13.5, "broad", 1.2, 0],
+		[0.8, 0.12, -13.1, "pine", 1.15, 2],
+		[4.5, 0.12, -13.4, "broad", 1.25, 1],
+		[8.2, 0.12, -13.0, "pine", 1.1, 0],
+	];
+
+	treePlacements.forEach(([tx, ty, tz, type, scale, matIdx], idx) => {
+		const tree =
+			type === "pine"
+				? createPineTree(scale, matIdx)
+				: createBroadleafTree(scale, matIdx);
+		tree.position.set(tx, ty, tz);
+		tree.rotation.y = idx * 1.1;
+		world.add(tree);
+		ecoTrees.push({ mesh: tree, phase: idx * 0.7 });
+	});
+
+	// Solar Panel Carport / Green Energy Array in the front eco zone
+	const solarGroup = new THREE.Group();
+	solarGroup.position.set(-2.4, 0.38, 3.85);
+	world.add(solarGroup);
+	for (let i = 0; i < 3; i++) {
+		const sx = -1.7 + i * 1.7;
+		const post = new THREE.Mesh(
+			new THREE.CylinderGeometry(0.06, 0.06, 1.05, 8),
+			matSteelMid,
+		);
+		post.position.set(sx, 0.52, 0);
+		solarGroup.add(post);
+
+		const panel = new THREE.Mesh(
+			new THREE.BoxGeometry(1.45, 0.06, 0.95),
+			matSolar,
+		);
+		panel.position.set(sx, 1.08, 0);
+		panel.rotation.x = 0.28;
+		panel.castShadow = true;
+		solarGroup.add(panel);
+
+		const frame = new THREE.LineSegments(
+			new THREE.EdgesGeometry(new THREE.BoxGeometry(1.46, 0.07, 0.96)),
+			new THREE.LineBasicMaterial({ color: 0xe2e8f0 }),
+		);
+		frame.position.copy(panel.position);
+		frame.rotation.copy(panel.rotation);
+		solarGroup.add(frame);
+	}
+
+	// Eco Wind Turbines in the north-west green buffer
+	const turbineRotors = [];
+	function createWindTurbine(x, z, height = 7.8, scale = 1) {
+		const group = new THREE.Group();
+		group.position.set(x, 0.12, z);
+
+		const tower = new THREE.Mesh(
+			new THREE.CylinderGeometry(0.11 * scale, 0.24 * scale, height, 12),
+			matWall,
+		);
+		tower.position.y = height / 2;
+		tower.castShadow = true;
+		group.add(tower);
+
+		const nacelle = new THREE.Mesh(
+			new THREE.BoxGeometry(0.38 * scale, 0.38 * scale, 0.78 * scale),
+			matWall,
+		);
+		nacelle.position.set(0, height + 0.1, 0);
+		group.add(nacelle);
+
+		const rotor = new THREE.Group();
+		rotor.position.set(0, height + 0.1, 0.42 * scale);
+		group.add(rotor);
+
+		const hub = new THREE.Mesh(
+			new THREE.SphereGeometry(0.18 * scale, 10, 10),
+			matAmecRed,
+		);
+		rotor.add(hub);
+
+		for (let b = 0; b < 3; b++) {
+			const bladePivot = new THREE.Group();
+			bladePivot.rotation.z = (b * Math.PI * 2) / 3;
+			const blade = new THREE.Mesh(
+				new THREE.BoxGeometry(0.16 * scale, 2.15 * scale, 0.05 * scale),
+				matWall,
+			);
+			blade.position.y = 1.12 * scale;
+			blade.castShadow = true;
+			bladePivot.add(blade);
+			rotor.add(bladePivot);
+		}
+
+		world.add(group);
+		turbineRotors.push(rotor);
+	}
+
+	createWindTurbine(-12.8, -8.5, 8.2, 1.05);
+	createWindTurbine(-9.6, -13.2, 7.2, 0.92);
+
 	// --- Apply Lighting & Theme Environment ---
 	applyEnvironment = () => {
 		if (!scene || !renderer) return;
@@ -1156,6 +1388,7 @@ onMounted(() => {
 		matGround.color.setHex(cfg.groundColor);
 		matPad.color.setHex(cfg.padColor);
 		matRoad.color.setHex(cfg.roadColor);
+		matGrass.color.setHex(isDark.value ? 0x166534 : 0x4ade80);
 
 		// Toggle / scale industrial & port lights based on nightFactor
 		nightPointLights.forEach(({ light, maxIntensity }) => {
@@ -1305,6 +1538,15 @@ onMounted(() => {
 			const s = 0.55 + p * 1.8;
 			sp.mesh.scale.set(s, s, s);
 			sp.mat.opacity = Math.sin(p * Math.PI) * 0.25;
+		});
+
+		// 9. Gentle breeze sway on eco trees & spinning wind turbines
+		ecoTrees.forEach((tr) => {
+			tr.mesh.rotation.z =
+				Math.sin(elapsed * 1.15 * motionScale + tr.phase) * 0.025;
+		});
+		turbineRotors.forEach((rotor, idx) => {
+			rotor.rotation.z -= delta * (1.35 + idx * 0.25) * motionScale;
 		});
 
 		renderer.render(scene, camera);

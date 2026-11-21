@@ -37,7 +37,10 @@ export default defineConfig({
 	themeConfig: {
 		auth: {
 			appName: process.env.APP_NAME || "procurement",
-			appHost: process.env.APP_ENV || process.env.VITE_APP_HOST || "/procurement",
+			appId: process.env.APP_ID || "",
+			appHost: process.env.APP_HOST || "",
+			appEnv: process.env.APP_ENV || process.env.VITE_APP_HOST || "/procurement",
+			appApi: process.env.APP_API || "",
 		},
 		logo: `${process.env.VITE_APP_HOST || ""}/assets/images/icon_512.png`,
 		search: {

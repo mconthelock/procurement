@@ -16,6 +16,7 @@ const PREVIEW_STORAGE_KEY = "amec_docs_preview_role";
 const isInitialized = ref(false);
 const isLoading = ref(true);
 const empNo = ref("");
+const empName = ref("");
 const groupCode = ref("");
 const actualRoles = ref(["GUEST"]);
 const previewRole = ref("");
@@ -36,8 +37,6 @@ function readGroupFromIndexedDB(indexedDBID) {
 			const request = indexedDB.open("userAuth");
 
 			request.onupgradeneeded = (event) => {
-				// DB does not exist yet — abort so we don't create an empty DB
-				// that might conflict with @amec/webasset's schema hash.
 				if (event.oldVersion === 0) {
 					event.target.transaction?.abort();
 				}
@@ -76,40 +75,99 @@ function readGroupFromIndexedDB(indexedDBID) {
 	});
 }
 
-async function detectUserRole(appName = "procurement") {
+/**
+ * Fallback to `@amec/webasset`'s directlogin API when the login cookie exists
+ * but IndexedDB hasn't been cached yet on this browser.
+ */
+async function fetchGroupFromDirectLogin(empno, appid, appApi) {
+	if (!appApi || !empno || !appid) return null;
+	try {
+		const md5Hash = CryptoJS.MD5(empno).toString().toUpperCase();
+		const body = new URLSearchParams({
+			username: md5Hash,
+			appid: String(appid),
+		});
+		const res = await fetch(`${appApi}/auth/directlogin/`, {
+			method: "POST",
+			credentials: "include",
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+			},
+			body,
+		});
+		if (!res.ok) return null;
+		return await res.json();
+	} catch {
+		return null;
+	}
+}
+
+function resetToGuest() {
+	empNo.value = "";
+	empName.value = "";
+	groupCode.value = "";
+	actualRoles.value = ["GUEST"];
+	isAuthenticated.value = false;
+	previewRole.value = "";
+	if (inBrowser) {
+		sessionStorage.removeItem(PREVIEW_STORAGE_KEY);
+	}
+}
+
+async function detectUserRole(authConfig = {}) {
 	if (!inBrowser) return;
+
+	const appName = authConfig.appName || "procurement";
+	const appApi = authConfig.appApi || "";
 
 	isLoading.value = true;
 	try {
 		const cookie = Cookies.get(appName);
-		if (cookie) {
-			const decrypted = CryptoJS.AES.decrypt(cookie, appName).toString(
-				CryptoJS.enc.Utf8,
-			);
-			if (decrypted && decrypted.includes("-")) {
-				const [, emp] = decrypted.split("-");
-				empNo.value = emp || "";
+		if (!cookie) {
+			resetToGuest();
+			return;
+		}
 
-				const cachedGroup = await readGroupFromIndexedDB(decrypted);
-				const code = cachedGroup?.data?.GROUP_CODE || "";
-				if (code) {
-					groupCode.value = code;
-					actualRoles.value = resolveRolesFromGroupCode(code);
-					isAuthenticated.value = true;
-				}
+		const decrypted = CryptoJS.AES.decrypt(cookie, appName).toString(
+			CryptoJS.enc.Utf8,
+		);
+		if (!decrypted || !decrypted.includes("-")) {
+			resetToGuest();
+			return;
+		}
+
+		const [appid, emp] = decrypted.split("-");
+		empNo.value = emp || "";
+
+		// 1. Try IndexedDB cache written by @amec/webasset
+		let code = "";
+		const cachedGroup = await readGroupFromIndexedDB(decrypted);
+		if (cachedGroup?.data?.GROUP_CODE) {
+			code = cachedGroup.data.GROUP_CODE;
+		}
+
+		// 2. Fallback to AMEC directlogin API if cookie is present but IndexedDB is empty
+		if (!code && appApi && emp && appid) {
+			const apiRes = await fetchGroupFromDirectLogin(emp, appid, appApi);
+			if (apiRes?.appgroup?.GROUP_CODE) {
+				code = apiRes.appgroup.GROUP_CODE;
+			}
+			if (apiRes?.appuser?.SNAME) {
+				empName.value = apiRes.appuser.SNAME;
 			}
 		}
 
-		// In local dev without an active AMEC login session, default to ADMIN
-		// so authors can browse and test with the Role Switcher.
-		if (!isAuthenticated.value && import.meta.env.DEV) {
-			actualRoles.value = ["ADMIN"];
-			groupCode.value = "DEV_ADMIN";
+		if (!code) {
+			resetToGuest();
+			return;
 		}
 
-		// Restore preview role (only allowed for Admin or DEV)
-		const canPreview = isAdminRole(actualRoles.value) || import.meta.env.DEV;
-		if (canPreview) {
+		groupCode.value = code;
+		actualRoles.value = resolveRolesFromGroupCode(code);
+		isAuthenticated.value = true;
+
+		// Restore preview role ONLY for authenticated Admin users
+		if (isAdminRole(actualRoles.value)) {
 			const urlParams = new URLSearchParams(window.location.search);
 			const queryRole = normalizeRole(urlParams.get("role"));
 			const storedRole = normalizeRole(
@@ -122,9 +180,13 @@ async function detectUserRole(appName = "procurement") {
 			} else if (storedRole && ROLES[storedRole]) {
 				previewRole.value = storedRole;
 			}
+		} else {
+			previewRole.value = "";
+			sessionStorage.removeItem(PREVIEW_STORAGE_KEY);
 		}
 	} catch (err) {
 		console.warn("[docs:role] Failed to resolve user role:", err);
+		resetToGuest();
 	} finally {
 		isLoading.value = false;
 	}
@@ -135,12 +197,17 @@ export function useUserRole() {
 
 	if (inBrowser && !isInitialized.value) {
 		isInitialized.value = true;
-		const appName = theme.value?.auth?.appName || "procurement";
-		detectUserRole(appName);
+		const authConfig = theme.value?.auth || {};
+		detectUserRole(authConfig);
+
+		// Re-check login cookie when returning to this tab
+		window.addEventListener("focus", () => {
+			detectUserRole(theme.value?.auth || {});
+		});
 	}
 
 	const canSwitchRole = computed(
-		() => isAdminRole(actualRoles.value) || import.meta.env.DEV,
+		() => isAuthenticated.value && isAdminRole(actualRoles.value),
 	);
 
 	const isPreviewing = computed(
@@ -162,8 +229,15 @@ export function useUserRole() {
 			},
 	);
 
+	const loginUrl = computed(() => {
+		const auth = theme.value?.auth || {};
+		if (auth.appHost && auth.appId) {
+			return `${auth.appHost}/form/authen/index/${auth.appId}/`;
+		}
+		return auth.appEnv || "/procurement";
+	});
+
 	function canAccess(allowedRoles) {
-		// When previewing a non-admin role, disable admin bypass so the preview is accurate
 		const bypassAdmin = !isPreviewing.value;
 		return hasRoleAccess(allowedRoles, activeRoles.value, { bypassAdmin });
 	}
@@ -187,14 +261,14 @@ export function useUserRole() {
 	}
 
 	async function refreshRole() {
-		const appName = theme.value?.auth?.appName || "procurement";
-		await detectUserRole(appName);
+		await detectUserRole(theme.value?.auth || {});
 	}
 
 	return {
 		isLoading,
 		isAuthenticated,
 		empNo,
+		empName,
 		groupCode,
 		actualRoles,
 		activeRoles,
@@ -203,6 +277,7 @@ export function useUserRole() {
 		canSwitchRole,
 		isPreviewing,
 		previewRole,
+		loginUrl,
 		canAccess,
 		setPreviewRole,
 		clearPreviewRole,

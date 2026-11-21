@@ -971,20 +971,25 @@ function renderGroupDrawer(payload) {
 		$sugg.append('<span class="text-mute italic">No ungrouped matching vendor codes detected.</span>');
 	} else {
 		suggestions.forEach((s) => {
+			const groupBadge = s.EXISTING_GROUP_ID
+				? `<span class="badge badge-xs badge-warning font-mono font-bold">${escapeHtml(s.EXISTING_GROUP_ID)}</span>`
+				: "";
+			const btnLabel = s.EXISTING_GROUP_ID ? "Join / Merge" : "Add";
 			$sugg.append(`
 				<div class="flex items-center justify-between gap-2 px-3 py-2 bg-base-200 border border-base-300">
 					<div class="min-w-0">
-						<div class="flex items-center gap-2">
+						<div class="flex flex-wrap items-center gap-1.5">
 							<span class="font-mono font-bold text-primary">${escapeHtml(s.VND_CODE)}</span>
 							<span class="badge badge-xs badge-info font-mono">${escapeHtml(s.MATCH_REASON)}</span>
 							<span class="badge badge-xs badge-outline font-mono">${escapeHtml(s.VND_CURRENCY || "-")}</span>
+							${groupBadge}
 						</div>
 						<div class="text-secondary truncate mt-0.5">${escapeHtml(s.VND_NAME || "-")}</div>
 					</div>
 					<button type="button" data-code="${escapeAttribute(s.VND_CODE)}"
 						class="btn-quick-link-code btn btn-xs btn-primary shrink-0 gap-1">
 						<span class="material-symbols-outlined text-[13px]">add_link</span>
-						<span>Add</span>
+						<span>${btnLabel}</span>
 					</button>
 				</div>
 			`);

@@ -1,11 +1,11 @@
 import "@amec/webasset/css/dataTable.min.css";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import { showLoader } from "@amec/webasset/preloader";
 import { showMessage } from "@amec/webasset/utils";
 import { activatedBtnRow } from "@amec/webasset/components/buttons";
 import { createTable } from "@amec/webasset/dataTable";
 import { tableOpt, escapeHtml } from "../utils.js";
-import { getVendors, getTemplate, exportExcel } from "../service/index.js";
+import { getVendors, getTemplate, exportExcel, linkVendorCodes } from "../service/index.js";
 import { extractDataForExport } from "./excel-data.js";
 
 let table = null;
@@ -29,15 +29,26 @@ function isActiveStatus(status) {
 	return s === "ACTIVE" || s === "A" || s === "";
 }
 
+function isDomesticVendor(row) {
+	const code = String(row.VND_CODE || "").trim();
+	return ["3", "4", "5", "7"].includes(code.charAt(0));
+}
+
 function isOverseaVendor(row) {
 	const code = String(row.VND_CODE || "").trim();
-	const country = String(row.VND_COUNTRY || "").toUpperCase().trim();
-	return (
-		code.startsWith("1") ||
-		code.startsWith("2") ||
-		code.startsWith("69") ||
-		(country && country !== "THAILAND" && country !== "TH")
-	);
+	return code.startsWith("1") || code.startsWith("2") || code.startsWith("69");
+}
+
+function isIndirectVendor(row) {
+	const code = String(row.VND_CODE || "").trim();
+	const type1 = String(row.VND_TYPE1 || "").toUpperCase().trim();
+	return code.startsWith("6") || type1 === "INDIRECT";
+}
+
+function isSubconVendor(row) {
+	const code = String(row.VND_CODE || "").trim();
+	const type1 = String(row.VND_TYPE1 || "").toUpperCase().trim();
+	return code.startsWith("8") || type1 === "SUBCON";
 }
 
 function getStatusBadge(status) {
@@ -65,14 +76,32 @@ function getDigitBadge(code) {
 	return `<span class="badge badge-xs ${meta.badge} font-mono font-bold">${escapeHtml(label)}</span>`;
 }
 
+function updateTabCounts(data) {
+	const total = data.length;
+	const active = data.filter((r) => isActiveStatus(r.VND_STATUS)).length;
+	const inactive = total - active;
+	const domestic = data.filter((r) => isDomesticVendor(r)).length;
+	const oversea = data.filter((r) => isOverseaVendor(r)).length;
+	const indirect = data.filter((r) => isIndirectVendor(r)).length;
+	const subcon = data.filter((r) => isSubconVendor(r)).length;
+
+	$('#vendorStatusTabs [data-count="ALL"]').text(total.toLocaleString());
+	$('#vendorStatusTabs [data-count="ACTIVE"]').text(active.toLocaleString());
+	$('#vendorStatusTabs [data-count="INACTIVE"]').text(inactive.toLocaleString());
+	$('#vendorStatusTabs [data-count="DOMESTIC"]').text(domestic.toLocaleString());
+	$('#vendorStatusTabs [data-count="OVERSEA"]').text(oversea.toLocaleString());
+	$('#vendorStatusTabs [data-count="INDIRECT"]').text(indirect.toLocaleString());
+	$('#vendorStatusTabs [data-count="SUBCON"]').text(subcon.toLocaleString());
+}
+
 function updateKpiAndTabs(data) {
 	const total = data.length;
 	const active = data.filter((r) => isActiveStatus(r.VND_STATUS)).length;
 	const inactive = total - active;
 	const oversea = data.filter((r) => isOverseaVendor(r)).length;
-	const domestic = total - oversea;
-	const subcon = data.filter((r) => String(r.VND_CODE || "").startsWith("8")).length;
-	const nonProd = data.filter((r) => String(r.VND_CODE || "").startsWith("6")).length;
+	const domestic = data.filter((r) => isDomesticVendor(r)).length;
+	const subcon = data.filter((r) => isSubconVendor(r)).length;
+	const nonProd = data.filter((r) => isIndirectVendor(r)).length;
 	const countries = new Set(data.map((r) => (r.VND_COUNTRY || "").trim().toUpperCase()).filter(Boolean)).size;
 	const currencies = new Set(data.map((r) => (r.VND_CURRENCY || "").trim().toUpperCase()).filter(Boolean)).size;
 	const withTax = data.filter((r) => String(r.VND_TAXNO || "").trim() !== "").length;
@@ -91,17 +120,12 @@ function updateKpiAndTabs(data) {
 	$("#kpi-oversea-count").text(oversea.toLocaleString());
 	$("#kpi-country-count").text(countries.toLocaleString());
 	$("#kpi-subcon-count").text(subcon.toLocaleString());
-	$("#kpi-nonprod-count").text(`${nonProd.toLocaleString()} Non-Prod`);
+	$("#kpi-nonprod-count").text(`${nonProd.toLocaleString()} Indirect`);
 	$("#kpi-currency-count").text(currencies.toLocaleString());
 	$("#kpi-tax-pct").text(`${taxPct}%`);
 	$("#kpi-agreement-count").text(withAgreement.toLocaleString());
 
-	$('[data-count="ALL"]').text(total.toLocaleString());
-	$('[data-count="ACTIVE"]').text(active.toLocaleString());
-	$('[data-count="INACTIVE"]').text(inactive.toLocaleString());
-	$('[data-count="DOMESTIC"]').text(domestic.toLocaleString());
-	$('[data-count="OVERSEA"]').text(oversea.toLocaleString());
-	$('[data-count="SUBCON"]').text(subcon.toLocaleString());
+	updateTabCounts(data);
 }
 
 function populateFilterDropdowns(data) {
@@ -129,16 +153,8 @@ function applyAllFilters() {
 	const country = ($("#vendorCountryFilter").val() || "").toString().trim().toUpperCase();
 	const currency = ($("#vendorCurrencyFilter").val() || "").toString().trim().toUpperCase();
 
-	const filtered = allVendorsData.filter((row) => {
+	const baseFiltered = allVendorsData.filter((row) => {
 		const code = String(row.VND_CODE || "").trim();
-		const active = isActiveStatus(row.VND_STATUS);
-		const oversea = isOverseaVendor(row);
-
-		if (activeTab === "ACTIVE" && !active) return false;
-		if (activeTab === "INACTIVE" && active) return false;
-		if (activeTab === "DOMESTIC" && oversea) return false;
-		if (activeTab === "OVERSEA" && !oversea) return false;
-		if (activeTab === "SUBCON" && !code.startsWith("8")) return false;
 
 		if (groupDigit && !code.startsWith(groupDigit)) return false;
 		if (country && String(row.VND_COUNTRY || "").trim().toUpperCase() !== country) return false;
@@ -168,6 +184,19 @@ function applyAllFilters() {
 		return true;
 	});
 
+	updateTabCounts(baseFiltered);
+
+	const filtered = baseFiltered.filter((row) => {
+		const active = isActiveStatus(row.VND_STATUS);
+		if (activeTab === "ACTIVE") return active;
+		if (activeTab === "INACTIVE") return !active;
+		if (activeTab === "DOMESTIC") return isDomesticVendor(row);
+		if (activeTab === "OVERSEA") return isOverseaVendor(row);
+		if (activeTab === "INDIRECT") return isIndirectVendor(row);
+		if (activeTab === "SUBCON") return isSubconVendor(row);
+		return true;
+	});
+
 	table.clear();
 	table.rows.add(filtered);
 	table.draw();
@@ -182,6 +211,9 @@ function updateSelectedCount() {
 	const $boxes = $("#table tbody .row-select");
 	const $checked = $("#table tbody .row-select:checked");
 	$("#selectedCounter").text(`${$checked.length} items`);
+	$("#btn-merge-selected")
+		.toggleClass("hidden", $checked.length < 2)
+		.toggleClass("inline-flex", $checked.length >= 2);
 
 	const headerCb = document.getElementById("headerCheckbox");
 	if (headerCb) {
@@ -379,7 +411,8 @@ async function createVendorsTable(data) {
 		$(".dt-length").addClass("hidden");
 	};
 
-	opt.drawCallback = function () {
+	opt.drawCallback = function (settings) {
+		tableOpt.drawCallback.call(this, settings);
 		updateSelectedCount();
 	};
 
@@ -449,6 +482,33 @@ $(document).on("click", "#selectAllPageBtn", () => {
 	const $master = $("#headerCheckbox");
 	if ($master.length) {
 		$master.prop("checked", !$master.is(":checked")).trigger("change");
+	}
+});
+
+// Merge Selected Vendors into 1 Group (any direction / multi-group merge)
+$(document).on("click", "#btn-merge-selected", async () => {
+	const selectedCodes = $("#table tbody .row-select:checked")
+		.map((_, el) => $(el).val())
+		.get()
+		.filter(Boolean);
+
+	if (selectedCodes.length < 2) return;
+
+	try {
+		await showLoader();
+		const merged = await linkVendorCodes({ VND_CODES: selectedCodes });
+		const groupId = merged?.GROUP_ID || merged?.data?.GROUP_ID || "";
+		await showMessage(
+			`Merged ${selectedCodes.length} Vendor Codes (${selectedCodes.join(", ")}) into group ${groupId}.`,
+			"success",
+		);
+		$("#headerCheckbox").prop("checked", false).trigger("change");
+		await reloadTable();
+	} catch (error) {
+		console.error(error);
+		await showMessage(error.message || "Failed to merge selected vendor codes");
+	} finally {
+		await showLoader({ show: false });
 	}
 });
 

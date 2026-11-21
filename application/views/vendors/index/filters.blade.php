@@ -26,19 +26,25 @@
         <button
             class="vendor-status-tab flex items-center gap-2 px-space-md py-space-sm text-sm font-semibold text-mute border-b-2 border-transparent text-nowrap cursor-pointer hover:text-primary transition-colors"
             data-filter-tab="DOMESTIC" type="button">
-            <span>Domestic (3,4,5,7)</span>
+            <span>Domestic</span>
             <span class="badge badge-xs badge-ghost font-mono" data-count="DOMESTIC">0</span>
         </button>
         <button
             class="vendor-status-tab flex items-center gap-2 px-space-md py-space-sm text-sm font-semibold text-mute border-b-2 border-transparent text-nowrap cursor-pointer hover:text-primary transition-colors"
             data-filter-tab="OVERSEA" type="button">
-            <span>Overseas (1,2,69)</span>
+            <span>Overseas</span>
             <span class="badge badge-xs badge-info font-mono" data-count="OVERSEA">0</span>
         </button>
         <button
             class="vendor-status-tab flex items-center gap-2 px-space-md py-space-sm text-sm font-semibold text-mute border-b-2 border-transparent text-nowrap cursor-pointer hover:text-primary transition-colors"
+            data-filter-tab="INDIRECT" type="button">
+            <span>Indirect</span>
+            <span class="badge badge-xs badge-secondary font-mono" data-count="INDIRECT">0</span>
+        </button>
+        <button
+            class="vendor-status-tab flex items-center gap-2 px-space-md py-space-sm text-sm font-semibold text-mute border-b-2 border-transparent text-nowrap cursor-pointer hover:text-primary transition-colors"
             data-filter-tab="SUBCON" type="button">
-            <span>Subcontractor (8)</span>
+            <span>Subcontractor</span>
             <span class="badge badge-xs badge-warning font-mono" data-count="SUBCON">0</span>
         </button>
     </div>

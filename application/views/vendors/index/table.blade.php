@@ -8,6 +8,10 @@
         </div>
         <div class="flex items-center gap-space-sm">
             <span class="text-mute">Selected: <strong class="text-primary font-mono" id="selectedCounter">0 items</strong></span>
+            <button class="hidden btn btn-xs btn-primary gap-1" id="btn-merge-selected" type="button">
+                <span class="material-symbols-outlined text-[14px]">hub</span>
+                <span>Merge Selected into Group</span>
+            </button>
             <button class="link link-hover text-info font-semibold cursor-pointer" id="selectAllPageBtn" type="button">
                 Select All On Page
             </button>

@@ -6,6 +6,7 @@ import WaterBackground from "./components/WaterBackground.vue";
 import ProcurementScene from "./components/ProcurementScene.vue";
 import RoleOnly from "./components/RoleOnly.vue";
 import RoleBadge from "./components/RoleBadge.vue";
+import AnnotatedImage from "./components/AnnotatedImage.vue";
 import "./custom.css";
 
 export default {
@@ -18,5 +19,6 @@ export default {
 		app.component("ProcurementScene", ProcurementScene);
 		app.component("RoleOnly", RoleOnly);
 		app.component("RoleBadge", RoleBadge);
+		app.component("AnnotatedImage", AnnotatedImage);
 	},
 };

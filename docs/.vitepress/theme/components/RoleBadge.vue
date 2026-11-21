@@ -1,61 +1,34 @@
 <script setup>
-import { computed, onMounted, ref } from "vue";
-import { ROLES } from "../../roles.js";
+import { onMounted, ref } from "vue";
 import { useUserRole } from "../composables/useUserRole.js";
 
-const {
-	primaryRole,
-	primaryRoleMeta,
-	actualRoles,
-	canSwitchRole,
-	isPreviewing,
-	previewRole,
-	setPreviewRole,
-} = useUserRole();
+const { isAuthenticated, empNo, primaryRoleMeta, loginUrl } = useUserRole();
 
 const isMounted = ref(false);
 onMounted(() => {
 	isMounted.value = true;
 });
-
-const roleOptions = computed(() => Object.values(ROLES));
-const selectedValue = computed(() =>
-	isPreviewing.value ? previewRole.value : "ACTUAL",
-);
-
-function onRoleChange(event) {
-	setPreviewRole(event.target.value);
-}
 </script>
 
 <template>
 	<div v-if="isMounted" class="vp-role-badge-wrap">
-		<label v-if="canSwitchRole" class="vp-role-switcher" title="Preview documentation as role">
-			<span class="vp-role-dot" :class="{ 'is-preview': isPreviewing }" />
-			<span class="vp-role-prefix">{{ isPreviewing ? "Preview" : "Role" }}:</span>
-			<select
-				class="vp-role-select"
-				aria-label="Preview documentation role"
-				:value="selectedValue"
-				@change="onRoleChange"
-			>
-				<option value="ACTUAL">
-					{{ actualRoles[0] || "ADMIN" }} (Actual)
-				</option>
-				<option
-					v-for="role in roleOptions"
-					:key="role.key"
-					:value="role.key"
-				>
-					{{ role.label }} ({{ role.key }})
-				</option>
-			</select>
-		</label>
-
-		<span v-else class="vp-role-pill" :title="primaryRoleMeta.description">
+		<span
+			v-if="isAuthenticated"
+			class="vp-role-pill"
+			:title="primaryRoleMeta.description"
+		>
 			<span class="vp-role-dot" />
 			<span>{{ primaryRoleMeta.label }}</span>
+			<span v-if="empNo" class="vp-role-emp">({{ empNo }})</span>
 		</span>
+
+		<div v-else class="vp-guest-group">
+			<span class="vp-role-pill is-guest" title="ยังไม่ได้เข้าสู่ระบบ (Guest)">
+				<span class="vp-role-dot is-guest" />
+				<span>Guest</span>
+			</span>
+			<a :href="loginUrl" class="vp-login-btn">Login</a>
+		</div>
 	</div>
 </template>
 
@@ -66,7 +39,12 @@ function onRoleChange(event) {
 	margin-left: 12px;
 }
 
-.vp-role-switcher,
+.vp-guest-group {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
 .vp-role-pill {
 	display: inline-flex;
 	align-items: center;
@@ -82,6 +60,11 @@ function onRoleChange(event) {
 	white-space: nowrap;
 }
 
+.vp-role-emp {
+	color: var(--vp-c-text-2);
+	font-weight: 500;
+}
+
 .vp-role-dot {
 	width: 7px;
 	height: 7px;
@@ -90,34 +73,31 @@ function onRoleChange(event) {
 	flex-shrink: 0;
 }
 
-.vp-role-dot.is-preview {
-	background: var(--vp-c-warning-1);
+.vp-role-dot.is-guest {
+	background: var(--vp-c-text-3);
 }
 
-.vp-role-prefix {
-	color: var(--vp-c-text-2);
-	font-weight: 500;
-}
-
-.vp-role-select {
-	appearance: auto;
-	background: transparent;
-	border: none;
-	color: var(--vp-c-text-1);
+.vp-login-btn {
+	display: inline-flex;
+	align-items: center;
+	height: 28px;
+	padding: 0 10px;
+	background: var(--vp-c-brand-3);
+	color: var(--vp-c-white) !important;
 	font-size: 12px;
 	font-weight: 600;
-	cursor: pointer;
-	outline: none;
-	padding-right: 2px;
+	text-decoration: none;
+	line-height: 1;
+	white-space: nowrap;
+	transition: opacity 0.2s;
 }
 
-.vp-role-select option {
-	background: var(--vp-c-bg);
-	color: var(--vp-c-text-1);
+.vp-login-btn:hover {
+	opacity: 0.88;
 }
 
 @media (max-width: 767px) {
-	.vp-role-prefix {
+	.vp-role-emp {
 		display: none;
 	}
 }
