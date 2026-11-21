@@ -10,14 +10,14 @@ outline: deep
 
 <AnnotatedImage
   src="/images/vendor/vendor-users.png"
-  alt="หน้าจอ Vendor Users Management"
+  alt="หน้าจอ Vendor Users Management (Desktop)"
   caption="ภาพรวมหน้าจอ Vendor Users Management (SCM Users) — ชี้เมาส์หรือคลิกที่หมายเลขเพื่อดูคำอธิบายแต่ละส่วน"
   :markers="[
-    { x: 28, y: 28, title: 'ส่วนหัวหน้าจอ (Portal Access Header)', desc: 'แสดงชื่อโมดูล Vendor Users Management และป้ายควบคุมสิทธิ์ PORTAL ACCESS CONTROL' },
-    { x: 28, y: 41, title: 'ปุ่มส่งออกและเพิ่มผู้ใช้ (Action Buttons)', desc: 'ปุ่ม Export User List เพื่อดาวน์โหลดรายชื่อบัญชีทั้งหมด และปุ่ม + Add Vendor User เพื่อสร้างบัญชีคู่ค้าใหม่' },
-    { x: 26, y: 58, title: 'KPI บัญชีทั้งหมดและบัญชีที่ใช้งาน', desc: 'แสดงจำนวนบัญชีคู่ค้าทั้งหมด (Total Portal Users) จำนวนบริษัทคู่ค้า และสัดส่วนบัญชีที่เปิดใช้งาน (Active Accounts)' },
-    { x: 74, y: 77, title: 'KPI บัญชีรอยืนยันและบัญชีที่ถูกระงับ', desc: 'ติดตามบัญชี Pending Activation (ลิงก์ยืนยันหมดอายุใน 72 ชม.) และบัญชี Locked / Inactive ที่ต้องตรวจสอบสิทธิ์' },
-    { x: 42, y: 92, title: 'แท็บกรองสถานะและช่องค้นหา', desc: 'สลับดูรายการตามสถานะ (All / Active / Pending / Locked) และค้นหาด้วยชื่อ, Username, อีเมล หรือ Vendor Code' }
+    { x: 86, y: 13, title: 'ปุ่มส่งออกและเพิ่มผู้ใช้ (Action Buttons)', desc: 'ปุ่ม Export User List เพื่อดาวน์โหลดรายชื่อบัญชีทั้งหมด และปุ่ม + Add Vendor User เพื่อสร้างบัญชีคู่ค้าใหม่' },
+    { x: 61, y: 35, title: 'แถบ KPI สถานะบัญชี 4 การ์ด', desc: 'สรุปจำนวนบัญชีทั้งหมด (Total Portal Users), บัญชีที่ใช้งาน (Active), รอยืนยันใน 72 ชม. (Pending) และบัญชีที่ถูกระงับ (Locked/Inactive)' },
+    { x: 56, y: 51, title: 'แท็บสถานะและตัวกรอง (Tabs & Filter Strip)', desc: 'สลับดูตามสถานะบัญชี ค้นหาด้วยชื่อ/Username/อีเมล/Vendor Code กรองตามบริษัทคู่ค้าและ Portal Role พร้อมปุ่ม Reset' },
+    { x: 61, y: 69, title: 'ตารางบัญชีผู้ใช้งานคู่ค้า (Users Table)', desc: 'แสดงบัญชีผู้ใช้งาน บริษัทคู่ค้าที่ผูกไว้ ระดับสิทธิ์ Portal Role เวลาเข้าใช้งานล่าสุด สถานะ และปุ่มจัดการ Actions' },
+    { x: 61, y: 88, title: 'แถบนโยบายความปลอดภัย (Security & RBAC Policy)', desc: 'สรุปกฎความปลอดภัยหลัก: ลิงก์เปิดบัญชีหมดอายุใน 72 ชม., การกำหนดสิทธิ์ตามหน้าที่ (RBAC) และการระงับบัญชีที่ไม่ใช้งานเกิน 90 วัน' }
   ]"
 />
 
@@ -77,3 +77,11 @@ outline: deep
 ::: warning นโยบายความปลอดภัย (Access Governance)
 เมื่อคู่ค้าแจ้งเปลี่ยนผู้ติดต่อหรือมีพนักงานลาออก ควรปรับสถานะบัญชีเดิมเป็น **Inactive** ทันทีแทนการนำบัญชีเดิมไปให้ผู้อื่นใช้งานต่อ เพื่อรักษาความถูกต้องของ Audit Log บนระบบ E-SCM
 :::
+
+<RoleOnly :roles="['ADMIN']">
+
+::: info สำหรับผู้ดูแลระบบและทีมพัฒนา (Admin Only)
+ดูรายละเอียด Endpoints (`/pursys/vendors/users/*`), ไฟล์ `assets/script/vendor/users.js` และโครงสร้างฐานข้อมูลได้ที่หน้า [Technical Spec (Admin)](/vendor/tech-spec)
+:::
+
+</RoleOnly>

@@ -1,20 +1,8 @@
-import {
-	initAuthen,
-	sessionTimeOut,
-	clearAuth,
-} from "@amec/webasset/authen";
+import { initAuthen, sessionTimeOut, clearAuth } from "@amec/webasset/authen";
 import { getConfig } from "@amec/webasset/config";
 import { decryptText } from "@amec/webasset/crypto";
-import {
-	getMenu,
-	getGroup,
-	displayEmpInfo,
-} from "@amec/webasset/indexDB";
-import {
-	getCookie,
-	setCookie,
-	getTimeLeft,
-} from "@amec/webasset/jsCookie";
+import { getMenu, getGroup, displayEmpInfo } from "@amec/webasset/indexDB";
+import { getCookie, setCookie, getTimeLeft } from "@amec/webasset/jsCookie";
 import { initNavbar } from "@amec/webasset/navbar";
 import { showbgLoader } from "@amec/webasset/preloader";
 import {
@@ -162,11 +150,11 @@ export const tableOpt = {
 	drawCallback: function (settings) {
 		const api = this.api();
 		const pagination = $(this).closest(".dt-container").find(".dt-paging");
-		if (api.page.info().pages <= 1) {
-			pagination.addClass("hidden");
-		} else {
-			pagination.removeClass("hidden");
-		}
+		// if (api.page.info().pages <= 1) {
+		// 	pagination.addClass("hidden");
+		// } else {
+		// 	pagination.removeClass("hidden");
+		// }
 
 		const nav = pagination.find("nav");
 		nav.addClass("join");

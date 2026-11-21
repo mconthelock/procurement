@@ -5,7 +5,11 @@ import { showMessage } from "@amec/webasset/utils";
 import { activatedBtnRow } from "@amec/webasset/components/buttons";
 import { createTable } from "@amec/webasset/dataTable";
 import { tableOpt, escapeHtml } from "../utils.js";
-import { getVendors, getTemplate, exportExcel, linkVendorCodes } from "../service/index.js";
+import {
+	getVendors,
+	getTemplate,
+	exportExcel,
+} from "../service/index.js";
 import { extractDataForExport } from "./excel-data.js";
 
 let table = null;
@@ -36,23 +40,31 @@ function isDomesticVendor(row) {
 
 function isOverseaVendor(row) {
 	const code = String(row.VND_CODE || "").trim();
-	return code.startsWith("1") || code.startsWith("2") || code.startsWith("69");
+	return (
+		code.startsWith("1") || code.startsWith("2") || code.startsWith("69")
+	);
 }
 
 function isIndirectVendor(row) {
 	const code = String(row.VND_CODE || "").trim();
-	const type1 = String(row.VND_TYPE1 || "").toUpperCase().trim();
+	const type1 = String(row.VND_TYPE1 || "")
+		.toUpperCase()
+		.trim();
 	return code.startsWith("6") || type1 === "INDIRECT";
 }
 
 function isSubconVendor(row) {
 	const code = String(row.VND_CODE || "").trim();
-	const type1 = String(row.VND_TYPE1 || "").toUpperCase().trim();
+	const type1 = String(row.VND_TYPE1 || "")
+		.toUpperCase()
+		.trim();
 	return code.startsWith("8") || type1 === "SUBCON";
 }
 
 function getStatusBadge(status) {
-	const s = String(status ?? "").toUpperCase().trim();
+	const s = String(status ?? "")
+		.toUpperCase()
+		.trim();
 	if (s === "1" || s === "ACTIVE" || s === "") {
 		return '<span class="badge badge-xs badge-success font-mono font-bold uppercase">Active</span>';
 	}
@@ -68,7 +80,10 @@ function getStatusBadge(status) {
 function getDigitBadge(code) {
 	const raw = String(code || "").trim();
 	const first = raw.charAt(0);
-	const meta = DIGIT_META[first] || { short: `Group ${first || "-"}`, badge: "badge-ghost" };
+	const meta = DIGIT_META[first] || {
+		short: `Group ${first || "-"}`,
+		badge: "badge-ghost",
+	};
 	let label = meta.short;
 	if (first === "6" && raw.startsWith("69")) {
 		label = "69: Non-Prod Oversea";
@@ -87,10 +102,18 @@ function updateTabCounts(data) {
 
 	$('#vendorStatusTabs [data-count="ALL"]').text(total.toLocaleString());
 	$('#vendorStatusTabs [data-count="ACTIVE"]').text(active.toLocaleString());
-	$('#vendorStatusTabs [data-count="INACTIVE"]').text(inactive.toLocaleString());
-	$('#vendorStatusTabs [data-count="DOMESTIC"]').text(domestic.toLocaleString());
-	$('#vendorStatusTabs [data-count="OVERSEA"]').text(oversea.toLocaleString());
-	$('#vendorStatusTabs [data-count="INDIRECT"]').text(indirect.toLocaleString());
+	$('#vendorStatusTabs [data-count="INACTIVE"]').text(
+		inactive.toLocaleString(),
+	);
+	$('#vendorStatusTabs [data-count="DOMESTIC"]').text(
+		domestic.toLocaleString(),
+	);
+	$('#vendorStatusTabs [data-count="OVERSEA"]').text(
+		oversea.toLocaleString(),
+	);
+	$('#vendorStatusTabs [data-count="INDIRECT"]').text(
+		indirect.toLocaleString(),
+	);
 	$('#vendorStatusTabs [data-count="SUBCON"]').text(subcon.toLocaleString());
 }
 
@@ -102,11 +125,23 @@ function updateKpiAndTabs(data) {
 	const domestic = data.filter((r) => isDomesticVendor(r)).length;
 	const subcon = data.filter((r) => isSubconVendor(r)).length;
 	const nonProd = data.filter((r) => isIndirectVendor(r)).length;
-	const countries = new Set(data.map((r) => (r.VND_COUNTRY || "").trim().toUpperCase()).filter(Boolean)).size;
-	const currencies = new Set(data.map((r) => (r.VND_CURRENCY || "").trim().toUpperCase()).filter(Boolean)).size;
-	const withTax = data.filter((r) => String(r.VND_TAXNO || "").trim() !== "").length;
+	const countries = new Set(
+		data
+			.map((r) => (r.VND_COUNTRY || "").trim().toUpperCase())
+			.filter(Boolean),
+	).size;
+	const currencies = new Set(
+		data
+			.map((r) => (r.VND_CURRENCY || "").trim().toUpperCase())
+			.filter(Boolean),
+	).size;
+	const withTax = data.filter(
+		(r) => String(r.VND_TAXNO || "").trim() !== "",
+	).length;
 	const withAgreement = data.filter(
-		(r) => String(r.VND_CANO || "").trim() !== "" || String(r.VND_BANO || "").trim() !== "",
+		(r) =>
+			String(r.VND_CANO || "").trim() !== "" ||
+			String(r.VND_BANO || "").trim() !== "",
 	).length;
 
 	const activePct = total ? Math.round((active / total) * 100) : 0;
@@ -129,36 +164,69 @@ function updateKpiAndTabs(data) {
 }
 
 function populateFilterDropdowns(data) {
-	const countries = [...new Set(data.map((r) => (r.VND_COUNTRY || "").trim()).filter(Boolean))].sort();
-	const currencies = [...new Set(data.map((r) => (r.VND_CURRENCY || "").trim()).filter(Boolean))].sort();
+	const countries = [
+		...new Set(
+			data.map((r) => (r.VND_COUNTRY || "").trim()).filter(Boolean),
+		),
+	].sort();
+	const currencies = [
+		...new Set(
+			data.map((r) => (r.VND_CURRENCY || "").trim()).filter(Boolean),
+		),
+	].sort();
 
 	const $country = $("#vendorCountryFilter");
 	$country.find("option:not(:first)").remove();
 	countries.forEach((c) => {
-		$country.append(`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`);
+		$country.append(
+			`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`,
+		);
 	});
 
 	const $curr = $("#vendorCurrencyFilter");
 	$curr.find("option:not(:first)").remove();
 	currencies.forEach((cur) => {
-		$curr.append(`<option value="${escapeHtml(cur)}">${escapeHtml(cur)}</option>`);
+		$curr.append(
+			`<option value="${escapeHtml(cur)}">${escapeHtml(cur)}</option>`,
+		);
 	});
 }
 
 function applyAllFilters() {
 	if (!table) return;
 
-	const query = ($("#vendorSearchInput").val() || "").toString().toLowerCase().trim();
+	const query = ($("#vendorSearchInput").val() || "")
+		.toString()
+		.toLowerCase()
+		.trim();
 	const groupDigit = ($("#vendorGroupFilter").val() || "").toString().trim();
-	const country = ($("#vendorCountryFilter").val() || "").toString().trim().toUpperCase();
-	const currency = ($("#vendorCurrencyFilter").val() || "").toString().trim().toUpperCase();
+	const country = ($("#vendorCountryFilter").val() || "")
+		.toString()
+		.trim()
+		.toUpperCase();
+	const currency = ($("#vendorCurrencyFilter").val() || "")
+		.toString()
+		.trim()
+		.toUpperCase();
 
 	const baseFiltered = allVendorsData.filter((row) => {
 		const code = String(row.VND_CODE || "").trim();
 
 		if (groupDigit && !code.startsWith(groupDigit)) return false;
-		if (country && String(row.VND_COUNTRY || "").trim().toUpperCase() !== country) return false;
-		if (currency && String(row.VND_CURRENCY || "").trim().toUpperCase() !== currency) return false;
+		if (
+			country &&
+			String(row.VND_COUNTRY || "")
+				.trim()
+				.toUpperCase() !== country
+		)
+			return false;
+		if (
+			currency &&
+			String(row.VND_CURRENCY || "")
+				.trim()
+				.toUpperCase() !== currency
+		)
+			return false;
 
 		if (query) {
 			const hay = [
@@ -211,14 +279,13 @@ function updateSelectedCount() {
 	const $boxes = $("#table tbody .row-select");
 	const $checked = $("#table tbody .row-select:checked");
 	$("#selectedCounter").text(`${$checked.length} items`);
-	$("#btn-merge-selected")
-		.toggleClass("hidden", $checked.length < 2)
-		.toggleClass("inline-flex", $checked.length >= 2);
 
 	const headerCb = document.getElementById("headerCheckbox");
 	if (headerCb) {
-		headerCb.checked = $boxes.length > 0 && $checked.length === $boxes.length;
-		headerCb.indeterminate = $checked.length > 0 && $checked.length < $boxes.length;
+		headerCb.checked =
+			$boxes.length > 0 && $checked.length === $boxes.length;
+		headerCb.indeterminate =
+			$checked.length > 0 && $checked.length < $boxes.length;
 	}
 }
 
@@ -259,7 +326,7 @@ async function createVendorsTable(data) {
 				return `
 					<div class="flex flex-col gap-1">
 						<a href="${process.env.APP_ENV}/vendors/detail/${encodeURIComponent(data || "")}"
-							class="link link-hover font-mono font-bold text-primary text-sm">
+							class="link link-hover font-mono font-bold text-primary text-sm text-left">
 							${code}
 						</a>
 						<div class="flex flex-wrap items-center gap-1">
@@ -275,7 +342,8 @@ async function createVendorsTable(data) {
 			title: "Corporate Entity, Category &amp; Tax/Agreement",
 			className: "align-top py-3 min-w-[260px]",
 			render: (data, type, row) => {
-				if (type !== "display") return `${data || ""} ${row.VND_CATEGORY || ""} ${row.VND_TAXNO || ""}`;
+				if (type !== "display")
+					return `${data || ""} ${row.VND_CATEGORY || ""} ${row.VND_TAXNO || ""}`;
 				const categoryHtml = row.VND_CATEGORY
 					? `<div class="inline-flex items-center gap-1 mt-1 text-[11px] font-medium text-secondary">
 							<span class="material-symbols-outlined text-[14px] text-mute">category</span>
@@ -283,9 +351,18 @@ async function createVendorsTable(data) {
 						</div>`
 					: "";
 				const metaParts = [];
-				if (row.VND_TAXNO) metaParts.push(`Tax: <strong class="text-primary">${escapeHtml(row.VND_TAXNO)}</strong>`);
-				if (row.VND_CANO) metaParts.push(`CA: <strong class="text-primary">${escapeHtml(row.VND_CANO)}</strong>`);
-				if (row.VND_BANO) metaParts.push(`BA: <strong class="text-primary">${escapeHtml(row.VND_BANO)}</strong>`);
+				if (row.VND_TAXNO)
+					metaParts.push(
+						`Tax: <strong class="text-primary">${escapeHtml(row.VND_TAXNO)}</strong>`,
+					);
+				if (row.VND_CANO)
+					metaParts.push(
+						`CA: <strong class="text-primary">${escapeHtml(row.VND_CANO)}</strong>`,
+					);
+				if (row.VND_BANO)
+					metaParts.push(
+						`BA: <strong class="text-primary">${escapeHtml(row.VND_BANO)}</strong>`,
+					);
 				const metaHtml = metaParts.length
 					? `<div class="mt-1 text-[11px] font-mono text-mute flex flex-wrap gap-x-2 gap-y-0.5">${metaParts.join(" • ")}</div>`
 					: "";
@@ -301,7 +378,8 @@ async function createVendorsTable(data) {
 			title: "Settlement &amp; Currency",
 			className: "align-top py-3 text-nowrap",
 			render: (data, type, row) => {
-				if (type !== "display") return `${data || ""} ${row.VND_TERM || ""}`;
+				if (type !== "display")
+					return `${data || ""} ${row.VND_TERM || ""}`;
 				const curr = escapeHtml(data || "-");
 				const term = escapeHtml(row.VND_TERM || "-");
 				const vtype = row.VND_TYPE2
@@ -323,16 +401,21 @@ async function createVendorsTable(data) {
 			title: "Location &amp; Address",
 			className: "align-top py-3 min-w-[200px]",
 			render: (data, type, row) => {
-				if (type !== "display") return `${data || ""} ${row.VND_CITY || ""} ${row.VND_STATE || ""}`;
-				const cityState = [row.VND_CITY, row.VND_STATE].filter(Boolean).join(", ");
-				const addr = [row.VND_ADDRESS1, row.VND_ADDRESS2].filter(Boolean).join(" ");
+				if (type !== "display")
+					return `${data || ""} ${row.VND_CITY || ""} ${row.VND_STATE || ""}`;
+				const cityState = [row.VND_CITY, row.VND_STATE]
+					.filter(Boolean)
+					.join(", ");
+				const addr = [row.VND_ADDRESS1, row.VND_ADDRESS2]
+					.filter(Boolean)
+					.join(" ");
 				return `
 					<div class="flex items-center gap-1 font-bold text-primary">
 						<span class="material-symbols-outlined text-[14px] text-secondary shrink-0">location_on</span>
 						<span>${escapeHtml(data || "-")}</span>
 					</div>
 					${cityState ? `<div class="text-[11px] text-secondary font-medium">${escapeHtml(cityState)}</div>` : ""}
-					${addr ? `<div class="text-[11px] text-mute truncate max-w-[240px]" title="${escapeHtml(addr)}">${escapeHtml(addr)}</div>` : ""}
+					${addr ? `<div class="text-[11px] text-mute truncate max-w-60" title="${escapeHtml(addr)}">${escapeHtml(addr)}</div>` : ""}
 				`;
 			},
 		},
@@ -341,7 +424,8 @@ async function createVendorsTable(data) {
 			title: "Liaison Contact",
 			className: "align-top py-3 min-w-[160px]",
 			render: (data, type, row) => {
-				if (type !== "display") return `${data || ""} ${row.VND_PHONE || ""}`;
+				if (type !== "display")
+					return `${data || ""} ${row.VND_PHONE || ""}`;
 				const phone = row.VND_PHONE
 					? `<div class="flex items-center gap-1 font-mono text-[11px] text-mute mt-0.5">
 							<span class="material-symbols-outlined text-[13px]">call</span>
@@ -367,8 +451,12 @@ async function createVendorsTable(data) {
 			className: "align-top py-3 text-center text-nowrap",
 			render: (data, type, row) => {
 				if (type !== "display") return data ?? "";
-				const regDate = row.VND_REGISTED ? dayjs(row.VND_REGISTED).format("DD MMM YYYY") : "-";
-				const updDate = row.UPDATE_AT ? dayjs(row.UPDATE_AT).format("DD MMM YYYY") : "";
+				const regDate = row.VND_REGISTED
+					? dayjs(row.VND_REGISTED).format("DD MMM YYYY")
+					: "-";
+				const updDate = row.UPDATE_AT
+					? dayjs(row.UPDATE_AT).format("DD MMM YYYY")
+					: "";
 				return `
 					<div class="flex flex-col items-center gap-1">
 						${getStatusBadge(data)}
@@ -440,10 +528,10 @@ $(document).on("click", ".vendor-status-tab", function () {
 	$(".vendor-status-tab").each(function () {
 		const $btn = $(this);
 		const isActive = $btn.is($tab);
-		$btn.toggleClass("text-primary font-bold border-primary", isActive).toggleClass(
-			"text-mute font-semibold border-transparent",
-			!isActive,
-		);
+		$btn.toggleClass(
+			"text-primary font-bold border-primary",
+			isActive,
+		).toggleClass("text-mute font-semibold border-transparent", !isActive);
 	});
 
 	applyAllFilters();
@@ -482,33 +570,6 @@ $(document).on("click", "#selectAllPageBtn", () => {
 	const $master = $("#headerCheckbox");
 	if ($master.length) {
 		$master.prop("checked", !$master.is(":checked")).trigger("change");
-	}
-});
-
-// Merge Selected Vendors into 1 Group (any direction / multi-group merge)
-$(document).on("click", "#btn-merge-selected", async () => {
-	const selectedCodes = $("#table tbody .row-select:checked")
-		.map((_, el) => $(el).val())
-		.get()
-		.filter(Boolean);
-
-	if (selectedCodes.length < 2) return;
-
-	try {
-		await showLoader();
-		const merged = await linkVendorCodes({ VND_CODES: selectedCodes });
-		const groupId = merged?.GROUP_ID || merged?.data?.GROUP_ID || "";
-		await showMessage(
-			`Merged ${selectedCodes.length} Vendor Codes (${selectedCodes.join(", ")}) into group ${groupId}.`,
-			"success",
-		);
-		$("#headerCheckbox").prop("checked", false).trigger("change");
-		await reloadTable();
-	} catch (error) {
-		console.error(error);
-		await showMessage(error.message || "Failed to merge selected vendor codes");
-	} finally {
-		await showLoader({ show: false });
 	}
 });
 
@@ -562,7 +623,9 @@ $(document).on("click", "#btn-export-csv", () => {
 				r.VND_STATE,
 				r.VND_COUNTRY,
 				r.VND_STATUS,
-				r.VND_REGISTED ? dayjs(r.VND_REGISTED).format("YYYY-MM-DD") : "",
+				r.VND_REGISTED
+					? dayjs(r.VND_REGISTED).format("YYYY-MM-DD")
+					: "",
 			]
 				.map(esc)
 				.join(","),
@@ -605,7 +668,9 @@ $(document).ready(async () => {
 		await reloadTable();
 	} catch (error) {
 		console.error(error);
-		await showMessage(error.message || "Error initializing vendor directory");
+		await showMessage(
+			error.message || "Error initializing vendor directory",
+		);
 	} finally {
 		await showLoader({ show: false });
 	}

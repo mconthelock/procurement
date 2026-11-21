@@ -170,6 +170,11 @@ const vendor = [
 				link: "/vendor/users",
 				roles: ["ADMIN", "BUYER"],
 			},
+			{
+				text: "Technical Spec (Admin)",
+				link: "/vendor/tech-spec",
+				roles: ["ADMIN"],
+			},
 		],
 	},
 ];

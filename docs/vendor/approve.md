@@ -62,3 +62,11 @@ outline: deep
 :::
 
 </RoleOnly>
+
+<RoleOnly :roles="['ADMIN']">
+
+::: info สำหรับผู้ดูแลระบบและทีมพัฒนา (Admin Only)
+ดูรายละเอียด Route, `approval.js` / `frmapv.js`, API และรายการแก้ไข View/Mock API เพิ่มเติมได้ที่หน้า [Technical Spec (Admin)](/vendor/tech-spec)
+:::
+
+</RoleOnly>

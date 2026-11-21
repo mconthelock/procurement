@@ -97,6 +97,7 @@ export const PAGE_ROLE_RULES = [
 
 	{ prefix: "/product/", roles: ["ADMIN", "BUYER", "WAREHOUSE"] },
 
+	{ prefix: "/vendor/tech-spec", roles: ["ADMIN"] },
 	{ prefix: "/vendor/approve", roles: ["ADMIN", "APPROVER", "BUYER"] },
 	{ prefix: "/vendor/", roles: ["ADMIN", "BUYER"] },
 

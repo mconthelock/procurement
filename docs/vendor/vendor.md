@@ -78,14 +78,14 @@ outline: deep
 
 <AnnotatedImage
   src="/images/vendor/vendor-detail.png"
-  alt="หน้าจอ Vendor Detail"
-  caption="ภาพรวมหน้าจอ Vendor Detail — แสดงข้อมูลระบุตัวตน กลุ่มบริษัทในเครือ สถานะซิงก์ระบบ และสายอนุมัติ"
+  alt="หน้าจอ Vendor Detail (Desktop)"
+  caption="ภาพรวมหน้าจอ Vendor Detail — แสดงข้อมูลระบุตัวตน กลุ่มบริษัทในเครือ แถบ KPI 4 การ์ด และแท็บข้อมูลทั้ง 5 แท็บ"
   :markers="[
-    { x: 24, y: 26, title: 'ส่วนหัวข้อมูลคู่ค้า (Vendor Identity)', desc: 'แสดงรหัสคู่ค้า 5 หลัก ชื่อบริษัท ป้ายสถานะ (ACTIVE / DIRECT / 1099) เลขผู้เสียภาษี/Swift และหมวดสินค้า' },
-    { x: 34, y: 37, title: 'ปุ่มคำสั่งจัดการข้อมูล (Actions)', desc: 'ปุ่ม Request Update (Cover Sheet) สำหรับส่งคำขอแก้ไขข้อมูล, Request Delete, Export และปุ่มย้อนกลับ' },
-    { x: 76, y: 47, title: 'กลุ่มบริษัทที่เชื่อมโยง (Corporate Group)', desc: 'แสดงรหัสกลุ่ม (VGRP) และรหัสคู่ค้าต่างสกุลเงินในเครือเดียวกัน พร้อมปุ่ม Manage Group / Link Codes' },
-    { x: 26, y: 62, title: 'รหัสคู่ค้าและผลประเมิน (Code & EVA)', desc: 'แสดง Vendor Code 5 หลัก กลุ่มคู่ค้า สกุลเงินหลัก และเกรดประเมินคุณภาพคู่ค้าประจำปีงบประมาณ' },
-    { x: 50, y: 84, title: 'สถานะซิงก์และประวัติการแก้ไข (Sync & Monitoring)', desc: 'แสดงสถานะซิงก์กับ PRO / AS400 / E-SCM วันเวลาอัปเดตล่าสุด และสายการอนุมัติ (Buyer → SEM → DEM)' }
+    { x: 38, y: 18, title: 'ส่วนหัวข้อมูลคู่ค้า (Vendor Identity)', desc: 'แสดงรหัสคู่ค้า 5 หลัก ชื่อบริษัท ป้ายสถานะ (ACTIVE / DIRECT / 1099) เลขผู้เสียภาษี/Swift และหมวดสินค้า' },
+    { x: 78, y: 13, title: 'ปุ่มคำสั่งจัดการข้อมูล (Actions)', desc: 'ปุ่ม Request Update (Cover Sheet) สำหรับส่งคำขอแก้ไขข้อมูล, Request Delete, Export และปุ่มย้อนกลับ' },
+    { x: 62, y: 33, title: 'กลุ่มบริษัทที่เชื่อมโยง (Corporate Group)', desc: 'แสดงรหัสกลุ่ม (VGRP) และรหัสคู่ค้าต่างสกุลเงินในเครือเดียวกัน พร้อมปุ่ม Manage Group / Link Codes' },
+    { x: 61, y: 47, title: 'แถบ KPI สรุป 4 การ์ด (Summary Ribbon)', desc: 'แสดง Vendor Code 5 หลัก เกรดประเมิน EVA สถานะซิงก์ระบบ (PRO / AS400 / E-SCM) และสายการอนุมัติ (Buyer → SEM → DEM)' },
+    { x: 56, y: 61, title: 'แท็บรายละเอียด 5 แท็บ (Read-Only Master Tabs)', desc: 'สลับดู Overview & Documents, Financial & AS400, E-SCM Contacts, Evaluation & Compliance และ Change History' }
   ]"
 />
 
@@ -106,8 +106,8 @@ outline: deep
 
 <RoleOnly :roles="['ADMIN']">
 
-::: tip สำหรับผู้ดูแลระบบ (Admin)
-ผู้ดูแลระบบสามารถตรวจสอบและจัดการการจัดกลุ่มคู่ค้าเพิ่มเติมผ่าน **Vendor Group Manager Drawer** ในหน้า Vendor Detail รวมถึงตรวจสอบสิทธิ์การซิงก์ข้อมูลระหว่าง AS400 และ E-SCM ได้
+::: tip สำหรับผู้ดูแลระบบและทีมพัฒนา (Admin Only)
+ผู้ดูแลระบบสามารถตรวจสอบและจัดการการจัดกลุ่มคู่ค้าเพิ่มเติมผ่าน **Vendor Group Manager Drawer** ในหน้า Vendor Detail รวมถึงดูโครงสร้างโปรแกรม, Backend API และตารางฐานข้อมูล Oracle (`PURSYS`) ได้ที่หน้า [Technical Spec (Admin)](/vendor/tech-spec)
 :::
 
 </RoleOnly>
