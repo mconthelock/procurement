@@ -7,6 +7,7 @@ class Orders extends MY_Controller {
     }
 
 	public function index(){
-        $this->views('po/index');
+        $this->breadcrumb->add('Purchase Orders');
+        $this->views('po/index', ['title' => 'nav-orders']);
     }
 }

@@ -7,3 +7,19 @@ export async function getVendors(q = {}) {
 		data: q,
 	});
 }
+
+export async function getVendorHistory(vndCode) {
+	return fetchUtils({
+		url: `${process.env.APP_API}/pursys/vendors/history/`,
+		method: "POST",
+		data: { VENDCODE: vndCode },
+	});
+}
+
+export async function getVendorEvaluation(vndCode) {
+	return fetchUtils({
+		url: `${process.env.APP_API}/pursys/vendors/evaluation/`,
+		method: "POST",
+		data: { VENDCODE: vndCode },
+	});
+}
