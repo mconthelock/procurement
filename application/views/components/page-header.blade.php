@@ -49,14 +49,16 @@
                         $btnClass = "btn btn-sm {$btnVariantClass} gap-1.5";
                     @endphp
                     @if (!empty($action['href']))
-                        <a href="{{ $action['href'] }}" class="{{ $btnClass }}">
+                        <a @if (!empty($action['id'])) id="{{ $action['id'] }}" @endif
+                            href="{{ $action['href'] }}" class="{{ $btnClass }}">
                             @if (!empty($action['icon']))
                                 <span class="material-symbols-outlined text-[18px]">{{ $action['icon'] }}</span>
                             @endif
                             <span>{{ $action['label'] }}</span>
                         </a>
                     @else
-                        <button type="{{ $action['type'] ?? 'button' }}"
+                        <button @if (!empty($action['id'])) id="{{ $action['id'] }}" @endif
+                            type="{{ $action['type'] ?? 'button' }}"
                             @if (!empty($action['onclick'])) onclick="{{ $action['onclick'] }}" @endif
                             class="{{ $btnClass }}">
                             @if (!empty($action['icon']))

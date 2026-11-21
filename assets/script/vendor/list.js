@@ -11,19 +11,25 @@ let activeTab = "ALL";
 
 function isIndirectVendor(row) {
 	const code = String(row.VND_CODE || "").trim();
-	const type1 = String(row.VND_TYPE1 || "").toUpperCase().trim();
+	const type1 = String(row.VND_TYPE1 || "")
+		.toUpperCase()
+		.trim();
 	return code.startsWith("6") || type1 === "INDIRECT";
 }
 
 function isSubconVendor(row) {
 	const code = String(row.VND_CODE || "").trim();
-	const type1 = String(row.VND_TYPE1 || "").toUpperCase().trim();
+	const type1 = String(row.VND_TYPE1 || "")
+		.toUpperCase()
+		.trim();
 	return code.startsWith("8") || type1 === "SUBCON";
 }
 
 function isActiveStatus(status) {
 	if (status === 1 || status === "1") return true;
-	const s = String(status || "").toUpperCase().trim();
+	const s = String(status || "")
+		.toUpperCase()
+		.trim();
 	return s === "ACTIVE" || s === "A" || s === "";
 }
 
@@ -56,7 +62,9 @@ function toGeneralRecord(row) {
 }
 
 function getStatusBadge(status) {
-	const s = String(status ?? "").toUpperCase().trim();
+	const s = String(status ?? "")
+		.toUpperCase()
+		.trim();
 	if (s === "1" || s === "ACTIVE" || s === "") {
 		return '<span class="badge badge-xs badge-success font-mono font-bold uppercase">Active</span>';
 	}
@@ -78,7 +86,9 @@ function updateTabCounts(data) {
 	const active = data.filter((r) => isActiveStatus(r.VND_STATUS)).length;
 
 	$('#vendorListTabs [data-count="ALL"]').text(total.toLocaleString());
-	$('#vendorListTabs [data-count="INDIRECT"]').text(indirect.toLocaleString());
+	$('#vendorListTabs [data-count="INDIRECT"]').text(
+		indirect.toLocaleString(),
+	);
 	$('#vendorListTabs [data-count="SUBCON"]').text(subcon.toLocaleString());
 	$('#vendorListTabs [data-count="ACTIVE"]').text(active.toLocaleString());
 }
@@ -86,13 +96,19 @@ function updateTabCounts(data) {
 function updateKpi(data) {
 	const total = data.length;
 	const indirectRows = data.filter((r) => r.GROUP_KEY === "INDIRECT");
-	const indirectLocal = indirectRows.filter((r) => !r.VND_CODE.startsWith("69")).length;
+	const indirectLocal = indirectRows.filter(
+		(r) => !r.VND_CODE.startsWith("69"),
+	).length;
 	const indirectOversea = indirectRows.length - indirectLocal;
 	const subcon = data.filter((r) => r.GROUP_KEY === "SUBCON").length;
 	const active = data.filter((r) => isActiveStatus(r.VND_STATUS)).length;
 	const activePct = total ? Math.round((active / total) * 100) : 0;
-	const categories = new Set(data.map((r) => r.VND_CATEGORY.trim().toUpperCase()).filter(Boolean)).size;
-	const countries = new Set(data.map((r) => r.VND_COUNTRY.trim().toUpperCase()).filter(Boolean)).size;
+	const categories = new Set(
+		data.map((r) => r.VND_CATEGORY.trim().toUpperCase()).filter(Boolean),
+	).size;
+	const countries = new Set(
+		data.map((r) => r.VND_COUNTRY.trim().toUpperCase()).filter(Boolean),
+	).size;
 
 	$("#kpi-list-total").text(total.toLocaleString());
 	$("#kpi-list-indirect").text(indirectRows.length.toLocaleString());
@@ -107,32 +123,51 @@ function updateKpi(data) {
 }
 
 function populateDropdowns(data) {
-	const categories = [...new Set(data.map((r) => r.VND_CATEGORY.trim()).filter(Boolean))].sort();
-	const countries = [...new Set(data.map((r) => r.VND_COUNTRY.trim()).filter(Boolean))].sort();
+	const categories = [
+		...new Set(data.map((r) => r.VND_CATEGORY.trim()).filter(Boolean)),
+	].sort();
+	const countries = [
+		...new Set(data.map((r) => r.VND_COUNTRY.trim()).filter(Boolean)),
+	].sort();
 
 	const $cat = $("#listCategoryFilter");
 	$cat.find("option:not(:first)").remove();
 	categories.forEach((c) => {
-		$cat.append(`<option value="${escapeAttribute(c)}">${escapeHtml(c)}</option>`);
+		$cat.append(
+			`<option value="${escapeAttribute(c)}">${escapeHtml(c)}</option>`,
+		);
 	});
 
 	const $country = $("#listCountryFilter");
 	$country.find("option:not(:first)").remove();
 	countries.forEach((c) => {
-		$country.append(`<option value="${escapeAttribute(c)}">${escapeHtml(c)}</option>`);
+		$country.append(
+			`<option value="${escapeAttribute(c)}">${escapeHtml(c)}</option>`,
+		);
 	});
 }
 
 function applyFilters() {
 	if (!table) return;
 
-	const query = ($("#listSearchInput").val() || "").toString().toLowerCase().trim();
-	const category = ($("#listCategoryFilter").val() || "").toString().trim().toUpperCase();
-	const country = ($("#listCountryFilter").val() || "").toString().trim().toUpperCase();
+	const query = ($("#listSearchInput").val() || "")
+		.toString()
+		.toLowerCase()
+		.trim();
+	const category = ($("#listCategoryFilter").val() || "")
+		.toString()
+		.trim()
+		.toUpperCase();
+	const country = ($("#listCountryFilter").val() || "")
+		.toString()
+		.trim()
+		.toUpperCase();
 
 	const baseFiltered = scopedVendors.filter((row) => {
-		if (category && row.VND_CATEGORY.trim().toUpperCase() !== category) return false;
-		if (country && row.VND_COUNTRY.trim().toUpperCase() !== country) return false;
+		if (category && row.VND_CATEGORY.trim().toUpperCase() !== category)
+			return false;
+		if (country && row.VND_COUNTRY.trim().toUpperCase() !== country)
+			return false;
 		if (query) {
 			const hay = [
 				row.VND_CODE,
@@ -236,7 +271,8 @@ async function initTable(data) {
 			title: "Vendor Code &amp; Group",
 			className: "align-top py-3 text-nowrap",
 			render: (data, type, row) => {
-				if (type !== "display") return `${data || ""} ${row.GROUP_LABEL}`;
+				if (type !== "display")
+					return `${data || ""} ${row.GROUP_LABEL}`;
 				return `
 					<div class="flex flex-col gap-1">
 						<button type="button" data-code="${escapeAttribute(data)}"
@@ -277,8 +313,12 @@ async function initTable(data) {
 			render: (data, type, row) => {
 				if (type !== "display")
 					return `${data || ""} ${row.VND_ORIGIN || ""} ${row.VND_CITY || ""} ${row.VND_STATE || ""}`;
-				const cityState = [row.VND_CITY, row.VND_STATE].filter(Boolean).join(", ");
-				const addr = [row.VND_ADDRESS1, row.VND_ADDRESS2].filter(Boolean).join(" ");
+				const cityState = [row.VND_CITY, row.VND_STATE]
+					.filter(Boolean)
+					.join(", ");
+				const addr = [row.VND_ADDRESS1, row.VND_ADDRESS2]
+					.filter(Boolean)
+					.join(" ");
 				const originHtml = row.VND_ORIGIN
 					? `<div class="inline-flex items-center gap-1 mt-1 text-[11px] font-mono text-info font-semibold">
 							<span class="material-symbols-outlined text-[13px]">local_shipping</span>
@@ -291,7 +331,7 @@ async function initTable(data) {
 						<span>${escapeHtml(data || "-")}</span>
 					</div>
 					${cityState ? `<div class="text-[11px] text-secondary font-medium">${escapeHtml(cityState)}</div>` : ""}
-					${addr ? `<div class="text-[11px] text-mute truncate max-w-[240px]" title="${escapeAttribute(addr)}">${escapeHtml(addr)}</div>` : ""}
+					${addr ? `<div class="text-[11px] text-mute truncate max-w-60" title="${escapeAttribute(addr)}">${escapeHtml(addr)}</div>` : ""}
 					${originHtml}
 				`;
 			},
@@ -301,7 +341,8 @@ async function initTable(data) {
 			title: "Contact Information",
 			className: "align-top py-3 min-w-[160px]",
 			render: (data, type, row) => {
-				if (type !== "display") return `${data || ""} ${row.VND_PHONE || ""}`;
+				if (type !== "display")
+					return `${data || ""} ${row.VND_PHONE || ""}`;
 				const phone = row.VND_PHONE
 					? `<div class="flex items-center gap-1 font-mono text-[11px] text-mute mt-0.5">
 							<span class="material-symbols-outlined text-[13px]">call</span>
@@ -325,7 +366,8 @@ async function initTable(data) {
 			data: "VND_STATUS",
 			title: "Status",
 			className: "align-top py-3 text-center text-nowrap w-24",
-			render: (data, type) => (type === "display" ? getStatusBadge(data) : data ?? ""),
+			render: (data, type) =>
+				type === "display" ? getStatusBadge(data) : (data ?? ""),
 		},
 		{
 			data: "VND_CODE",
@@ -367,10 +409,10 @@ $(document).on("click", ".vendor-list-tab", function () {
 	$(".vendor-list-tab").each(function () {
 		const $btn = $(this);
 		const isActive = $btn.is($tab);
-		$btn.toggleClass("text-primary font-bold border-primary", isActive).toggleClass(
-			"text-mute font-semibold border-transparent",
-			!isActive,
-		);
+		$btn.toggleClass(
+			"text-primary font-bold border-primary",
+			isActive,
+		).toggleClass("text-mute font-semibold border-transparent", !isActive);
 	});
 
 	applyFilters();
@@ -398,9 +440,13 @@ $(document).on("click", ".btn-view-general", function () {
 	openGeneralDrawer($(this).data("code"));
 });
 
-$(document).on("click", "#closeGeneralDrawerBtn, #closeGeneralDrawerFooterBtn, #generalDrawerBackdrop", () => {
-	closeGeneralDrawer();
-});
+$(document).on(
+	"click",
+	"#closeGeneralDrawerBtn, #closeGeneralDrawerFooterBtn, #generalDrawerBackdrop",
+	() => {
+		closeGeneralDrawer();
+	},
+);
 
 $(document).on("keydown", (e) => {
 	if (e.key === "Escape" && !$("#vendorGeneralDrawer").hasClass("hidden")) {

@@ -9,7 +9,7 @@
             'icon' => 'download',
             'variant' => 'default',
             'type' => 'button',
-            'id' => 'btn-export-csv',
+            'id' => 'btn-export-approved',
         ],
         [
             'label' => 'Export Excel',
