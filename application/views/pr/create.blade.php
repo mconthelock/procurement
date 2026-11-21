@@ -6,7 +6,7 @@
             <div class="flex flex-col w-full text-text-body font-body-md">
                 <!-- Breadcrumb and System Status Bar -->
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between pb-space-md gap-space-sm">
-                    <div class="flex items-center flex-wrap text-caption font-caption text-text-muted gap-space-xs">
+                    <div class="flex items-center flex-wrap text-sm font-caption text-text-muted gap-space-xs">
                         <a class="hover:text-primary transition-colors" data-path="portal-overview" href="#">Home</a>
                         <span class="text-outline">/</span>
                         <a class="hover:text-primary transition-colors" data-path="purchase-orders"
@@ -19,7 +19,7 @@
                             (สร้างใบขอซื้อใหม่)</span>
                     </div>
                     <!-- Live Gateway Pill Stream -->
-                    <div class="flex items-center flex-wrap gap-space-sm text-caption font-caption">
+                    <div class="flex items-center flex-wrap gap-space-sm text-sm font-caption">
                         <div class="flex items-center gap-1.5 px-2.5 py-1 bg-surface-container-high text-on-surface">
                             <span class="inline-block w-2 h-2 rounded-full bg-status-success-text"></span>
                             <span class="font-data-mono text-[11px] font-semibold tracking-wider">SAP S/4HANA PR Gateway:
@@ -48,7 +48,7 @@
                                 (สร้างใบขอซื้อ / PR)
                             </h1>
                         </div>
-                        <p class="font-data-mono text-caption text-text-muted mt-0.5 pl-3.5">
+                        <p class="font-data-mono text-sm text-text-muted mt-0.5 pl-3.5">
                             Form PR-AMEC-2026-REV3 // Internal
                             Procurement &amp; Subcontractor Component
                             Requisition // Chonburi Works
@@ -90,13 +90,13 @@
                                         (ข้อมูลทั่วไปของเอกสาร PR)
                                     </h2>
                                 </div>
-                                <span class="text-caption font-meta-tag text-status-reject-text uppercase">* Mandatory
+                                <span class="text-sm font-meta-tag text-status-reject-text uppercase">* Mandatory
                                     Fields</span>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
                                 <!-- PR Number -->
                                 <div>
-                                    <label class="block text-caption font-meta-tag uppercase text-text-muted mb-1">
+                                    <label class="block text-sm font-meta-tag uppercase text-text-muted mb-1">
                                         PR Document Number (เลขที่ PR)
                                     </label>
                                     <div
@@ -110,7 +110,7 @@
                                 </div>
                                 <!-- Requisition Date -->
                                 <div>
-                                    <label class="block text-caption font-meta-tag uppercase text-text-muted mb-1">
+                                    <label class="block text-sm font-meta-tag uppercase text-text-muted mb-1">
                                         Requisition Date (วันที่ขอซื้อ)
                                     </label>
                                     <input
@@ -119,7 +119,7 @@
                                 </div>
                                 <!-- Target Delivery Date -->
                                 <div>
-                                    <label class="block text-caption font-meta-tag uppercase text-text-muted mb-1">
+                                    <label class="block text-sm font-meta-tag uppercase text-text-muted mb-1">
                                         Target Delivery Date
                                         (วันที่ต้องการส่งมอบ)
                                         <span class="text-status-reject-text">*</span>
@@ -132,7 +132,7 @@
                             <!-- Requesting Department & Plant Cost Center -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-space-md mt-space-md">
                                 <div>
-                                    <label class="block text-caption font-meta-tag uppercase text-text-muted mb-1">
+                                    <label class="block text-sm font-meta-tag uppercase text-text-muted mb-1">
                                         Requesting Department
                                         (ฝ่ายงานที่ขอซื้อ)
                                         <span class="text-status-reject-text">*</span>
@@ -162,7 +162,7 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-caption font-meta-tag uppercase text-text-muted mb-1">
+                                    <label class="block text-sm font-meta-tag uppercase text-text-muted mb-1">
                                         Plant / Cost Center
                                         (โรงงานและศูนย์ต้นทุน)
                                         <span class="text-status-reject-text">*</span>
@@ -172,13 +172,13 @@
                                         <span>AMEC Amata Plant 1
                                             (Chonburi)</span>
                                         <span
-                                            class="font-data-mono text-caption text-text-muted bg-surface px-2 py-0.5">CC-4100-ENG</span>
+                                            class="font-data-mono text-sm text-text-muted bg-surface px-2 py-0.5">CC-4100-ENG</span>
                                     </div>
                                 </div>
                             </div>
                             <!-- Requisition Type Selector -->
                             <div class="mt-space-md">
-                                <label class="block text-caption font-meta-tag uppercase text-text-muted mb-2">
+                                <label class="block text-sm font-meta-tag uppercase text-text-muted mb-2">
                                     Requisition Classification
                                     (ประเภทของรายการจัดซื้อ)
                                     <span class="text-status-reject-text">*</span>
@@ -227,22 +227,21 @@
                             <!-- Priority Level -->
                             <div
                                 class="mt-space-md pt-space-sm flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
-                                <span class="text-caption font-meta-tag uppercase text-text-muted">Requisition Urgency
+                                <span class="text-sm font-meta-tag uppercase text-text-muted">Requisition Urgency
                                     Priority
                                     (ระดับความเร่งด่วน)</span>
                                 <div class="flex items-center gap-space-sm">
-                                    <button
-                                        class="px-3 py-1 bg-primary text-on-primary text-caption font-bold tracking-wider"
+                                    <button class="px-3 py-1 bg-primary text-on-primary text-sm font-bold tracking-wider"
                                         type="button">
                                         NORMAL (ปกติ)
                                     </button>
                                     <button
-                                        class="px-3 py-1 bg-surface-container text-text-muted hover:text-primary text-caption font-bold tracking-wider transition-colors"
+                                        class="px-3 py-1 bg-surface-container text-text-muted hover:text-primary text-sm font-bold tracking-wider transition-colors"
                                         type="button">
                                         URGENT (ด่วน)
                                     </button>
                                     <button
-                                        class="px-3 py-1 bg-surface-container text-status-reject-text hover:bg-status-reject-bg text-caption font-bold tracking-wider transition-colors"
+                                        class="px-3 py-1 bg-surface-container text-status-reject-text hover:bg-status-reject-bg text-sm font-bold tracking-wider transition-colors"
                                         type="button">
                                         CRITICAL LINE STOP
                                         (วิกฤติเสี่ยงหยุดผลิต)
@@ -261,14 +260,13 @@
                                         (ข้อมูลคู่ค้าและเงื่อนไขการค้า)
                                     </h2>
                                 </div>
-                                <span
-                                    class="px-2 py-0.5 bg-status-success-bg text-status-success-text text-caption font-bold">
+                                <span class="px-2 py-0.5 bg-status-success-bg text-status-success-text text-sm font-bold">
                                     Grade A Certified Supplier
                                 </span>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-12 gap-space-md">
                                 <div class="md:col-span-8">
-                                    <label class="block text-caption font-meta-tag uppercase text-text-muted mb-1">
+                                    <label class="block text-sm font-meta-tag uppercase text-text-muted mb-1">
                                         Select Preferred Vendor
                                         (เลือกคู่ค้าที่ผ่านการรับรอง)
                                         <span class="text-status-reject-text">*</span>
@@ -299,22 +297,22 @@
                                     </select>
                                 </div>
                                 <div class="md:col-span-4">
-                                    <label class="block text-caption font-meta-tag uppercase text-text-muted mb-1">
+                                    <label class="block text-sm font-meta-tag uppercase text-text-muted mb-1">
                                         Procurement Currency (สกุลเงิน)
                                     </label>
                                     <div class="grid grid-cols-3 gap-1">
                                         <button
-                                            class="h-[38px] bg-primary text-on-primary font-bold text-caption tracking-wider"
+                                            class="h-[38px] bg-primary text-on-primary font-bold text-sm tracking-wider"
                                             type="button">
                                             THB (฿)
                                         </button>
                                         <button
-                                            class="h-[38px] bg-surface-container text-text-muted hover:text-primary font-bold text-caption tracking-wider"
+                                            class="h-[38px] bg-surface-container text-text-muted hover:text-primary font-bold text-sm tracking-wider"
                                             type="button">
                                             JPY (¥)
                                         </button>
                                         <button
-                                            class="h-[38px] bg-surface-container text-text-muted hover:text-primary font-bold text-caption tracking-wider"
+                                            class="h-[38px] bg-surface-container text-text-muted hover:text-primary font-bold text-sm tracking-wider"
                                             type="button">
                                             USD ($)
                                         </button>
@@ -323,7 +321,7 @@
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-space-md mt-space-md">
                                 <div>
-                                    <label class="block text-caption font-meta-tag uppercase text-text-muted mb-1">
+                                    <label class="block text-sm font-meta-tag uppercase text-text-muted mb-1">
                                         Vendor Key Account / Contact
                                     </label>
                                     <div
@@ -333,7 +331,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-caption font-meta-tag uppercase text-text-muted mb-1">
+                                    <label class="block text-sm font-meta-tag uppercase text-text-muted mb-1">
                                         Payment Terms
                                         (เงื่อนไขการชำระเงิน)
                                     </label>
@@ -344,7 +342,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-caption font-meta-tag uppercase text-text-muted mb-1">
+                                    <label class="block text-sm font-meta-tag uppercase text-text-muted mb-1">
                                         Delivery Incoterms &amp;
                                         Destination
                                     </label>
@@ -368,14 +366,14 @@
                                         (รายการชิ้นส่วนที่ขอซื้อ)
                                     </h2>
                                 </div>
-                                <span class="text-caption font-data-mono bg-surface-container px-2 py-1 text-primary">3
+                                <span class="text-sm font-data-mono bg-surface-container px-2 py-1 text-primary">3
                                     Active Requisition Lines</span>
                             </div>
                             <!-- Enterprise Tabular Grid -->
                             <div class="overflow-x-auto -mx-space-lg px-space-lg">
                                 <table class="w-full text-left font-body-sm">
                                     <thead>
-                                        <tr class="bg-surface-subtle text-caption font-meta-tag text-primary uppercase">
+                                        <tr class="bg-surface-subtle text-sm font-meta-tag text-primary uppercase">
                                             <th class="py-2.5 px-3 w-12 text-center">
                                                 #
                                             </th>
@@ -420,7 +418,7 @@
                                                     Metal Pressing &amp;
                                                     Guide Brackets
                                                 </div>
-                                                <div class="text-caption text-text-muted">
+                                                <div class="text-sm text-text-muted">
                                                     ชุดคานโครงลิฟต์ปั๊มขึ้นรูป
                                                     - Spec ST-41 / JIS
                                                     G3101 Standard
@@ -429,7 +427,7 @@
                                             <td class="py-3 px-3 text-right font-data-mono font-bold text-primary">
                                                 450
                                             </td>
-                                            <td class="py-3 px-3 text-center text-caption text-text-muted">
+                                            <td class="py-3 px-3 text-center text-sm text-text-muted">
                                                 Sets
                                             </td>
                                             <td class="py-3 px-3 text-right font-data-mono text-primary">
@@ -463,7 +461,7 @@
                                                     High-Tensile
                                                     Assembly
                                                 </div>
-                                                <div class="text-caption text-text-muted">
+                                                <div class="text-sm text-text-muted">
                                                     ตัวยึดรางลิฟต์แรงดึงสูงสำหรับปล่องลิฟต์ความเร็ว
                                                     2.5m/s (Nexiez)
                                                 </div>
@@ -471,7 +469,7 @@
                                             <td class="py-3 px-3 text-right font-data-mono font-bold text-primary">
                                                 1,200
                                             </td>
-                                            <td class="py-3 px-3 text-center text-caption text-text-muted">
+                                            <td class="py-3 px-3 text-center text-sm text-text-muted">
                                                 Pcs
                                             </td>
                                             <td class="py-3 px-3 text-right font-data-mono text-primary">
@@ -504,7 +502,7 @@
                                                     &amp; Powder Coating
                                                     (RoHS compliant)
                                                 </div>
-                                                <div class="text-caption text-text-muted">
+                                                <div class="text-sm text-text-muted">
                                                     แผ่นหน้าปัดปั๊มขึ้นรูปพ่นสีฝุ่นอุตสาหกรรม
                                                     มาตรฐานความปลอดภัย
                                                     RoHS
@@ -513,7 +511,7 @@
                                             <td class="py-3 px-3 text-right font-data-mono font-bold text-primary">
                                                 2,400
                                             </td>
-                                            <td class="py-3 px-3 text-center text-caption text-text-muted">
+                                            <td class="py-3 px-3 text-center text-sm text-text-muted">
                                                 Pcs
                                             </td>
                                             <td class="py-3 px-3 text-right font-data-mono text-primary">
@@ -570,7 +568,7 @@
                                         (เอกสารแนบและแบบ CAD)
                                     </h2>
                                 </div>
-                                <span class="text-caption font-data-mono text-text-muted">Max 50MB / Secure Vault</span>
+                                <span class="text-sm font-data-mono text-text-muted">Max 50MB / Secure Vault</span>
                             </div>
                             <!-- Drag & Drop Interactive Canvas -->
                             <div
@@ -583,7 +581,7 @@
                                     Drag and drop CAD (STEP, DWG, DXF),
                                     Spec Sheets, or Quotations here
                                 </div>
-                                <div class="text-caption text-text-muted mt-1">
+                                <div class="text-sm text-text-muted mt-1">
                                     or click to
                                     <span class="text-secondary underline">Browse AMEC local storage</span>
                                     (Supported: STEP, DWG, DXF, PDF,
@@ -599,14 +597,14 @@
                                         <div class="min-w-0">
                                             <span
                                                 class="font-data-mono text-body-sm font-semibold text-primary block truncate">KA517B647G04_3D_Model.step</span>
-                                            <span class="text-caption text-text-muted">14.2 MB // Checksum
+                                            <span class="text-sm text-text-muted">14.2 MB // Checksum
                                                 verified via Inazawa CAD
                                                 Bridge</span>
                                         </div>
                                     </div>
                                     <div class="flex items-center gap-3">
                                         <span
-                                            class="px-2 py-0.5 bg-status-success-bg text-status-success-text text-caption font-bold">Validated</span>
+                                            class="px-2 py-0.5 bg-status-success-bg text-status-success-text text-sm font-bold">Validated</span>
                                         <button class="text-text-muted hover:text-primary" type="button">
                                             <span class="material-symbols-outlined text-[18px]">close</span>
                                         </button>
@@ -619,7 +617,7 @@
                                         <div class="min-w-0">
                                             <span
                                                 class="font-data-mono text-body-sm font-semibold text-primary block truncate">Siam_Precision_Quotation_Q26-0811.pdf</span>
-                                            <span class="text-caption text-text-muted">1.8 MB // Signed
+                                            <span class="text-sm text-text-muted">1.8 MB // Signed
                                                 Quotation &amp;
                                                 Dimensional Spec
                                                 Sheet</span>
@@ -627,7 +625,7 @@
                                     </div>
                                     <div class="flex items-center gap-3">
                                         <span
-                                            class="px-2 py-0.5 bg-surface-container text-text-muted text-caption font-bold">Attached</span>
+                                            class="px-2 py-0.5 bg-surface-container text-text-muted text-sm font-bold">Attached</span>
                                         <button class="text-text-muted hover:text-primary" type="button">
                                             <span class="material-symbols-outlined text-[18px]">close</span>
                                         </button>
@@ -640,14 +638,14 @@
                                         <div class="min-w-0">
                                             <span
                                                 class="font-data-mono text-body-sm font-semibold text-primary block truncate">AMEC_Material_Spec_ST41.pdf</span>
-                                            <span class="text-caption text-text-muted">850 KB // Material
+                                            <span class="text-sm text-text-muted">850 KB // Material
                                                 Chemical Analysis
                                                 Certification</span>
                                         </div>
                                     </div>
                                     <div class="flex items-center gap-3">
                                         <span
-                                            class="px-2 py-0.5 bg-surface-container text-text-muted text-caption font-bold">Attached</span>
+                                            class="px-2 py-0.5 bg-surface-container text-text-muted text-sm font-bold">Attached</span>
                                         <button class="text-text-muted hover:text-primary" type="button">
                                             <span class="material-symbols-outlined text-[18px]">close</span>
                                         </button>
@@ -665,17 +663,16 @@
                                     (เหตุผลและความจำเป็นในการจัดซื้อ)
                                 </h2>
                             </div>
-                            <label class="block text-caption font-meta-tag uppercase text-text-muted mb-1">
+                            <label class="block text-sm font-meta-tag uppercase text-text-muted mb-1">
                                 Detailed Justification
                                 (โปรดระบุวัตถุประสงค์ รหัสโครงการ
                                 หรือรอบการประกอบลิฟต์)
                                 <span class="text-status-reject-text">*</span>
                             </label>
-                            <textarea
-                                class="w-full p-3 bg-surface text-primary font-body-sm shadow-sm focus:outline-none focus:bg-surface-subtle"
+                            <textarea class="w-full p-3 bg-surface text-primary font-body-sm shadow-sm focus:outline-none focus:bg-surface-subtle"
                                 rows="3">
     Procurement for AMEC Q3/2026 Nexiez-S High-Speed Passenger Elevator project batch #4026. Required for Chonburi assembly line 2 scheduled start on May 20, 2026. Direct delivery to Gate 7B buffer staging warehouse.</textarea>
-                            <div class="flex items-center justify-between mt-2 text-caption text-text-muted">
+                            <div class="flex items-center justify-between mt-2 text-sm text-text-muted">
                                 <span>Character Count: 248 / 1,000</span>
                                 <span>Security Compliance: Confidential
                                     Industrial Data</span>
@@ -700,17 +697,17 @@
                             </div>
                             <div class="flex flex-col gap-space-sm">
                                 <div class="bg-surface-subtle p-3">
-                                    <span class="text-caption font-meta-tag uppercase text-text-muted block">Requisition
+                                    <span class="text-sm font-meta-tag uppercase text-text-muted block">Requisition
                                         Estimated
                                         Total</span>
                                     <span
                                         class="font-data-mono text-h2 text-primary font-bold block mt-0.5">฿6,930,390.00</span>
-                                    <span class="text-caption text-text-muted">Thai Baht (Inclusive of 7%
+                                    <span class="text-sm text-text-muted">Thai Baht (Inclusive of 7%
                                         VAT)</span>
                                 </div>
                                 <!-- Budget Progress Indicator -->
                                 <div class="space-y-1.5 pt-1">
-                                    <div class="flex justify-between text-caption font-semibold">
+                                    <div class="flex justify-between text-sm font-semibold">
                                         <span class="text-text-muted font-meta-tag uppercase">Allocated Budget Cap:</span>
                                         <span class="font-data-mono text-primary">฿15,000,000.00</span>
                                     </div>
@@ -725,7 +722,7 @@
                                     </div>
                                 </div>
                                 <!-- Metadata table for SAP sync -->
-                                <div class="bg-surface-subtle p-3 space-y-1.5 text-caption mt-1">
+                                <div class="bg-surface-subtle p-3 space-y-1.5 text-sm mt-1">
                                     <div class="flex justify-between">
                                         <span class="text-text-muted">Cost Center:</span>
                                         <span class="font-data-mono font-semibold text-primary">CC-4100-ENG</span>
@@ -765,7 +762,7 @@
                                     </div>
                                     <div>
                                         <div class="flex items-center justify-between">
-                                            <span class="text-caption font-bold text-primary">1. Requestor
+                                            <span class="text-sm font-bold text-primary">1. Requestor
                                                 Initiated</span>
                                             <span
                                                 class="px-1.5 py-0.2 bg-status-success-bg text-status-success-text text-[10px] font-bold">READY</span>
@@ -773,7 +770,7 @@
                                         <p class="text-body-sm font-semibold text-primary mt-0.5">
                                             S. Narongrit (Dept. 4)
                                         </p>
-                                        <p class="text-caption text-text-muted">
+                                        <p class="text-sm text-text-muted">
                                             Senior Hoistway System
                                             Engineer
                                         </p>
@@ -787,7 +784,7 @@
                                     </div>
                                     <div>
                                         <div class="flex items-center justify-between">
-                                            <span class="text-caption font-bold text-primary">2. Department
+                                            <span class="text-sm font-bold text-primary">2. Department
                                                 Manager</span>
                                             <span
                                                 class="px-1.5 py-0.2 bg-status-pending-bg text-status-pending-text text-[10px] font-bold">PENDING</span>
@@ -795,7 +792,7 @@
                                         <p class="text-body-sm font-semibold text-primary mt-0.5">
                                             Mr. Kittipong P.
                                         </p>
-                                        <p class="text-caption text-text-muted">
+                                        <p class="text-sm text-text-muted">
                                             Head of Hoistway Engineering
                                             Dept.
                                         </p>
@@ -809,7 +806,7 @@
                                     </div>
                                     <div>
                                         <div class="flex items-center justify-between">
-                                            <span class="text-caption font-bold text-primary">3. Plant GM &amp;
+                                            <span class="text-sm font-bold text-primary">3. Plant GM &amp;
                                                 Director</span>
                                             <span class="text-[10px] text-text-muted font-bold">REQUIRED
                                                 (&gt;฿5M)</span>
@@ -817,7 +814,7 @@
                                         <p class="text-body-sm font-semibold text-primary mt-0.5">
                                             Mr. Katsunori Takahashi
                                         </p>
-                                        <p class="text-caption text-text-muted">
+                                        <p class="text-sm text-text-muted">
                                             General Manager, SCM &amp;
                                             Plant Operations
                                         </p>
@@ -831,14 +828,14 @@
                                     </div>
                                     <div>
                                         <div class="flex items-center justify-between">
-                                            <span class="text-caption font-bold text-primary">4. Final PO
+                                            <span class="text-sm font-bold text-primary">4. Final PO
                                                 Conversion</span>
                                             <span class="text-[10px] text-text-muted">PROCUREMENT</span>
                                         </div>
                                         <p class="text-body-sm font-semibold text-primary mt-0.5">
                                             Ms. P. Sukcharoen
                                         </p>
-                                        <p class="text-caption text-text-muted">
+                                        <p class="text-sm text-text-muted">
                                             Lead Buyer, Direct SCM
                                             Division
                                         </p>
@@ -898,7 +895,7 @@
                                         (บันทึกร่างและปิด)</span>
                                 </button>
                             </div>
-                            <div class="mt-space-md pt-space-sm flex items-start gap-2 text-caption text-text-muted">
+                            <div class="mt-space-md pt-space-sm flex items-start gap-2 text-sm text-text-muted">
                                 <span class="material-symbols-outlined text-[16px] text-secondary">support_agent</span>
                                 <div>
                                     Need procurement assistance? Contact
@@ -911,7 +908,7 @@
                 </div>
                 <!-- Plant Operations Quick Notice Footer Callout -->
                 <div
-                    class="mt-space-2xl bg-surface p-space-md shadow-sm flex flex-col md:flex-row items-center justify-between text-caption text-text-muted gap-space-sm">
+                    class="mt-space-2xl bg-surface p-space-md shadow-sm flex flex-col md:flex-row items-center justify-between text-sm text-text-muted gap-space-sm">
                     <div class="flex items-center gap-2">
                         <span class="material-symbols-outlined text-secondary text-[20px]">info</span>
                         <span>Requisition submissions are synchronized

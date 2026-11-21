@@ -11,7 +11,7 @@ export const initApp = async () => {
 			icon: `${process.env.APP_ENV}/assets/images/logo.svg`,
 			iconLogo: `${process.env.APP_ENV}/assets/images/logo.svg`,
 			programName: pgmName,
-			sidebarClass: `bg-white! text-black! border border-base-300! size-xl text-gray-50 md:py-5 md:shadow-lg`,
+			sidebarClass: `bg-white! text-black! border border-base-300! size-xl text-gray-50 md:shadow-lg`,
 		});
 	} catch (error) {
 		console.error(error);

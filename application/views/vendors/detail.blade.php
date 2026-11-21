@@ -1,6 +1,6 @@
 @extends('layouts/template')
 @section('contents')
-    <main class="w-full pt-[72px] bg-surface min-h-[calc(100vh-72px)]">
+    <main class="w-full bg-surface min-h-[calc(100vh-72px)]">
         <div class="flex flex-col w-full">
             <!-- Top Breadcrumb & Status Link -->
             <div class="w-full bg-surface-subtle border-b border-border-light">
@@ -144,7 +144,7 @@
                 <!-- Row 1: KPI & Assessment Scorecard (Mapped directly to PUREVA_FORM, PUREVA_SCORE, CAPITAL, PUR_LEVEL) -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md mb-space-2xl">
                     <!-- KPI 1: Overall Evaluation Score (PUREVA_FORM.JUDGEMENT & PUREVA_SCORE Total) -->
-                    <div class="bg-surface border border-border-light p-space-md shadow-sm flex flex-col justify-between">
+                    <div class="bg-surface border border-base-300 p-space-md shadow-sm flex flex-col justify-between">
                         <div class="flex items-start justify-between mb-space-sm">
                             <span class="font-meta-tag text-[11px] uppercase tracking-wider text-text-muted">PRO-EVA
                                 Judgement</span>
@@ -166,7 +166,7 @@
                     </div>
 
                     <!-- KPI 2: Purchasing Level & Volume (PUREVA_FORM.PUR_LEVEL) -->
-                    <div class="bg-surface border border-border-light p-space-md shadow-sm flex flex-col justify-between">
+                    <div class="bg-surface border border-base-300 p-space-md shadow-sm flex flex-col justify-between">
                         <div class="flex items-start justify-between mb-space-sm">
                             <span class="font-meta-tag text-[11px] uppercase tracking-wider text-text-muted">Purchase Volume
                                 Level</span>
@@ -186,7 +186,7 @@
                     </div>
 
                     <!-- KPI 3: Registered Capital (PUREVA_FORM.CAPITAL) -->
-                    <div class="bg-surface border border-border-light p-space-md shadow-sm flex flex-col justify-between">
+                    <div class="bg-surface border border-base-300 p-space-md shadow-sm flex flex-col justify-between">
                         <div class="flex items-start justify-between mb-space-sm">
                             <span class="font-meta-tag text-[11px] uppercase tracking-wider text-text-muted">Registered
                                 Capital</span>
@@ -207,7 +207,7 @@
                     </div>
 
                     <!-- KPI 4: Compliance Matrix (PUREVA_FORM.QM_STATUS, ENV_STATUS, CSR_STATUS) -->
-                    <div class="bg-surface border border-border-light p-space-md shadow-sm flex flex-col justify-between">
+                    <div class="bg-surface border border-base-300 p-space-md shadow-sm flex flex-col justify-between">
                         <div class="flex items-start justify-between mb-space-sm">
                             <span class="font-meta-tag text-[11px] uppercase tracking-wider text-text-muted">Audit &
                                 Compliance</span>
@@ -231,7 +231,7 @@
                 </div>
 
                 <!-- Navigation Tabs -->
-                <div class="w-full bg-surface border border-border-light mb-space-xl">
+                <div class="w-full bg-surface border border-base-300 mb-space-xl">
                     <div class="flex items-center overflow-x-auto gap-space-md px-space-md h-12">
                         <button
                             class="h-full inline-flex items-center font-meta-tag text-[13px] uppercase tracking-wider text-secondary font-bold shadow-[inset_0_-3px_0_#005cba]">
@@ -261,7 +261,7 @@
                     <!-- Left Column (8 cols) -->
                     <div class="lg:col-span-8 flex flex-col gap-space-xl">
                         <!-- SECTION 1: Legal Entity & Corporate Profile (PUREVA_FORM, PURVMM_FORM) -->
-                        <section class="bg-surface border border-border-light p-space-xl shadow-sm">
+                        <section class="bg-surface border border-base-300 p-space-xl shadow-sm">
                             <div
                                 class="flex items-center justify-between pb-space-sm mb-space-lg bg-surface-subtle p-3 border-b border-border-light">
                                 <div class="flex items-center gap-space-sm">
@@ -344,7 +344,7 @@
 
                             <!-- Registered Addresses (PURNVF_ADDRESS: English & Thai) -->
                             <div
-                                class="mt-space-lg pt-space-md border-t border-border-light grid grid-cols-1 md:grid-cols-2 gap-space-md">
+                                class="mt-space-lg pt-space-md border-t border-base-300 grid grid-cols-1 md:grid-cols-2 gap-space-md">
                                 <div class="p-space-md bg-surface-subtle border border-border-light">
                                     <div
                                         class="flex items-center gap-1 font-meta-tag text-[11px] uppercase text-primary font-bold">
@@ -373,7 +373,7 @@
                         </section>
 
                         <!-- SECTION 2: Evaluation Scores Breakdown (PUREVA_SCORE) -->
-                        <section class="bg-surface border border-border-light p-space-xl shadow-sm">
+                        <section class="bg-surface border border-base-300 p-space-xl shadow-sm">
                             <div
                                 class="flex items-center justify-between pb-space-sm mb-space-lg bg-surface-subtle p-3 border-b border-border-light">
                                 <div class="flex items-center gap-space-sm">
@@ -474,7 +474,7 @@
                         </section>
 
                         <!-- SECTION 3: 3-Year Turnover & Relations (PUREVA_PROFIT_TURNOVER & PUREVA_VENDOR_RELATION) -->
-                        <section class="bg-surface border border-border-light p-space-xl shadow-sm">
+                        <section class="bg-surface border border-base-300 p-space-xl shadow-sm">
                             <div
                                 class="flex items-center justify-between pb-space-sm mb-space-lg bg-surface-subtle p-3 border-b border-border-light">
                                 <div class="flex items-center gap-space-sm">
@@ -527,8 +527,7 @@
                             </div>
 
                             <!-- Stakeholders & Supplied Products (PUREVA_VENDOR_RELATION) -->
-                            <div
-                                class="pt-space-md border-t border-border-light grid grid-cols-1 md:grid-cols-2 gap-space-md">
+                            <div class="pt-space-md border-t border-base-300 grid grid-cols-1 md:grid-cols-2 gap-space-md">
                                 <div class="p-space-md bg-surface-subtle border border-border-light">
                                     <div class="font-meta-tag text-[11px] uppercase text-primary font-bold mb-2">
                                         Major Customers & Share [ENTITY_TYPE: C]
@@ -554,19 +553,19 @@
                                     </div>
                                     <div class="flex flex-wrap gap-1.5 pt-1">
                                         <span
-                                            class="bg-surface text-text-body font-body-sm text-[11px] px-2 py-1 border border-border-light font-medium">Elevator
+                                            class="bg-surface text-text-body font-body-sm text-[11px] px-2 py-1 border border-base-300 font-medium">Elevator
                                             Hoistway Beams</span>
                                         <span
-                                            class="bg-surface text-text-body font-body-sm text-[11px] px-2 py-1 border border-border-light font-medium">Guide
+                                            class="bg-surface text-text-body font-body-sm text-[11px] px-2 py-1 border border-base-300 font-medium">Guide
                                             Rail Brackets</span>
                                         <span
-                                            class="bg-surface text-text-body font-body-sm text-[11px] px-2 py-1 border border-border-light font-medium">Counterweight
+                                            class="bg-surface text-text-body font-body-sm text-[11px] px-2 py-1 border border-base-300 font-medium">Counterweight
                                             Frames</span>
                                         <span
-                                            class="bg-surface text-text-body font-body-sm text-[11px] px-2 py-1 border border-border-light font-medium">800T
+                                            class="bg-surface text-text-body font-body-sm text-[11px] px-2 py-1 border border-base-300 font-medium">800T
                                             Stamping Press Plates</span>
                                         <span
-                                            class="bg-surface text-text-body font-body-sm text-[11px] px-2 py-1 border border-border-light font-medium">Laser
+                                            class="bg-surface text-text-body font-body-sm text-[11px] px-2 py-1 border border-base-300 font-medium">Laser
                                             Profiling Sheets</span>
                                     </div>
                                 </div>
@@ -577,7 +576,7 @@
                     <!-- Right Column: Governance, Bank, SCM Users, Certs (4 cols) -->
                     <div class="lg:col-span-4 flex flex-col gap-space-xl">
                         <!-- SECTION 4: Quality & Compliance Status (PUREVA_FORM QM/ENV/CSR/LABOR) -->
-                        <section class="bg-surface border border-border-light p-space-lg shadow-sm">
+                        <section class="bg-surface border border-base-300 p-space-lg shadow-sm">
                             <div
                                 class="flex items-center justify-between pb-space-xs mb-space-md bg-surface-subtle p-2.5 border-b border-border-light">
                                 <h3 class="font-meta-tag text-[12px] uppercase text-primary font-bold">Section 4:
@@ -637,7 +636,7 @@
                         </section>
 
                         <!-- SECTION 5: Commercial Terms & Bank Info (PURVMM_FORM, PURSYS.VENDORS) -->
-                        <section class="bg-surface border border-border-light p-space-lg shadow-sm">
+                        <section class="bg-surface border border-base-300 p-space-lg shadow-sm">
                             <div
                                 class="flex items-center justify-between pb-space-xs mb-space-md bg-surface-subtle p-2.5 border-b border-border-light">
                                 <h3 class="font-meta-tag text-[12px] uppercase text-primary font-bold">Section 5: Bank &
@@ -661,11 +660,11 @@
                                     <span class="text-text-muted">Payment Method [VPAYTY]:</span>
                                     <span class="font-semibold text-primary">Direct Bank Transfer</span>
                                 </div>
-                                <div class="p-space-sm bg-surface-subtle border border-border-light mt-space-sm">
+                                <div class="p-space-sm bg-surface-subtle border border-base-300 mt-space-sm">
                                     <div class="font-meta-tag text-[10px] uppercase text-text-muted">Bank Information
                                         [BANKNAME & BRANCH]</div>
                                     <div class="font-bold text-primary mt-0.5">Bangkok Bank (BBL)</div>
-                                    <div class="text-caption text-text-muted">Branch: Amata City Chonburi</div>
+                                    <div class="text-sm text-text-muted">Branch: Amata City Chonburi</div>
                                     <div class="font-data-mono text-[11px] font-bold text-secondary mt-1">A/C:
                                         128-4-99820-1 [ACCNUMBER]</div>
                                 </div>
@@ -673,7 +672,7 @@
                         </section>
 
                         <!-- SECTION 6: Liaison Contacts & SCM Users (PURVMM_FORM, PURVMM_SCMUSR) -->
-                        <section class="bg-surface border border-border-light p-space-lg shadow-sm">
+                        <section class="bg-surface border border-base-300 p-space-lg shadow-sm">
                             <div
                                 class="flex items-center justify-between pb-space-xs mb-space-md bg-surface-subtle p-2.5 border-b border-border-light">
                                 <h3 class="font-meta-tag text-[12px] uppercase text-primary font-bold">Section 6: Contacts
@@ -683,7 +682,7 @@
 
                             <!-- Main Liaison Contact from PURVMM_FORM -->
                             <div
-                                class="p-space-sm bg-surface-subtle border border-border-light mb-space-sm font-body-sm text-[12px]">
+                                class="p-space-sm bg-surface-subtle border border-base-300 mb-space-sm font-body-sm text-[12px]">
                                 <div class="font-meta-tag text-[10px] uppercase text-secondary font-bold">Primary Liaison
                                     [CONTACT]</div>
                                 <div class="font-bold text-primary mt-0.5">Mr. Kittisak Promdee</div>
@@ -707,7 +706,7 @@
                                 </div>
                                 <div class="space-y-1.5 font-body-sm text-[11px]">
                                     <div
-                                        class="p-2 bg-surface-subtle border border-border-light flex justify-between items-center">
+                                        class="p-2 bg-surface-subtle border border-base-300 flex justify-between items-center">
                                         <div>
                                             <div class="font-semibold text-primary">Kittisak Promdee</div>
                                             <div class="font-data-mono text-text-muted text-[10px]">User: kitti_sp</div>
@@ -716,7 +715,7 @@
                                             class="bg-status-success-bg text-status-success-text text-[10px] font-bold px-1.5 py-0.5">ACTIVE</span>
                                     </div>
                                     <div
-                                        class="p-2 bg-surface-subtle border border-border-light flex justify-between items-center">
+                                        class="p-2 bg-surface-subtle border border-base-300 flex justify-between items-center">
                                         <div>
                                             <div class="font-semibold text-primary">Supaporn Meesuk</div>
                                             <div class="font-data-mono text-text-muted text-[10px]">User: supaporn_sp</div>
@@ -729,7 +728,7 @@
                         </section>
 
                         <!-- SECTION 7: File Attachments (WEBFORM.PUR_FILE) -->
-                        <section class="bg-surface border border-border-light p-space-lg shadow-sm">
+                        <section class="bg-surface border border-base-300 p-space-lg shadow-sm">
                             <div
                                 class="flex items-center justify-between pb-space-xs mb-space-md bg-surface-subtle p-2.5 border-b border-border-light">
                                 <h3 class="font-meta-tag text-[12px] uppercase text-primary font-bold">Section 7: Certified
@@ -739,7 +738,7 @@
                             <div class="space-y-space-xs font-body-sm text-[12px]">
                                 <!-- File 1: ISO 9001 (FILE_TYPE = 11) -->
                                 <div
-                                    class="flex items-center justify-between p-2 border border-border-light hover:bg-surface-subtle transition-colors">
+                                    class="flex items-center justify-between p-2 border border-base-300 hover:bg-surface-subtle transition-colors">
                                     <div class="flex items-center gap-2 overflow-hidden">
                                         <span
                                             class="material-symbols-outlined text-[18px] text-status-reject-text flex-shrink-0">description</span>
@@ -757,7 +756,7 @@
                                 </div>
                                 <!-- File 2: ISO 14001 (FILE_TYPE = 11) -->
                                 <div
-                                    class="flex items-center justify-between p-2 border border-border-light hover:bg-surface-subtle transition-colors">
+                                    class="flex items-center justify-between p-2 border border-base-300 hover:bg-surface-subtle transition-colors">
                                     <div class="flex items-center gap-2 overflow-hidden">
                                         <span
                                             class="material-symbols-outlined text-[18px] text-status-reject-text flex-shrink-0">description</span>
@@ -775,7 +774,7 @@
                                 </div>
                                 <!-- File 3: Company Registration Por.Por.20 (FILE_TYPE = 11) -->
                                 <div
-                                    class="flex items-center justify-between p-2 border border-border-light hover:bg-surface-subtle transition-colors">
+                                    class="flex items-center justify-between p-2 border border-base-300 hover:bg-surface-subtle transition-colors">
                                     <div class="flex items-center gap-2 overflow-hidden">
                                         <span
                                             class="material-symbols-outlined text-[18px] text-status-reject-text flex-shrink-0">description</span>
@@ -797,7 +796,7 @@
 
                 <!-- Bottom Verification Bar -->
                 <div
-                    class="mt-space-2xl bg-surface border border-border-light p-space-md shadow-sm flex flex-col md:flex-row items-center justify-between gap-space-md">
+                    class="mt-space-2xl bg-surface border border-base-300 p-space-md shadow-sm flex flex-col md:flex-row items-center justify-between gap-space-md">
                     <div class="flex items-center gap-space-sm text-text-body font-body-sm text-[13px]">
                         <span class="material-symbols-outlined text-[20px] text-status-success-text">verified</span>
                         <span>

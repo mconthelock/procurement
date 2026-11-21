@@ -5,24 +5,25 @@
         'ทะเบียนรายชื่อคู่ค้าทั้งหมด • Official registry of approved tier-1 manufacturing fabricators, electrical component suppliers, precision casting specialists, and logistics partners for AMEC Chonburi Works. Governed by Japanese industrial safety and ISO/J-SOX quality mandates.',
     'actionsList' => [
         [
-            'label' => 'Export XLS / CSV',
+            'label' => 'Download Approved List (.PDF)',
             'icon' => 'download',
             'variant' => 'default',
             'type' => 'button',
+            'onclick' => "alert('Downloading Official Approved Vendor List (.PDF)...')",
         ],
         [
-            'label' => 'Bulk Acknowledge (ยืนยัน)',
-            'icon' => 'checklist_rtl',
+            'label' => 'Export Ledger (.CSV)',
+            'icon' => 'table_view',
             'variant' => 'default',
             'type' => 'button',
-            'onclick' => 'bulkAcknowledgeModal()',
+            'onclick' => "alert('Exporting Vendor Ledger (.CSV)...')",
         ],
         [
-            'label' => '+ Create ASN',
-            'icon' => 'add_box',
-            'variant' => 'default',
+            'label' => '+ Register New Vendor',
+            'icon' => 'person_add',
+            'variant' => 'primary',
             'type' => 'button',
-            'onclick' => 'openASNDrawer()',
+            'href' => $_ENV['APP_ENV'] . '/Vendors/create',
         ],
     ],
 ])

@@ -16,7 +16,7 @@
                 {{ $systemTag }}
             </span>
             @if (!empty($alertTag))
-                <span class="text-caption text-error font-bold">
+                <span class="text-sm text-error font-bold">
                     {{ $alertTag }}
                 </span>
             @endif

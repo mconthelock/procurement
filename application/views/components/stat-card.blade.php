@@ -13,33 +13,34 @@
     $link = $link ?? null;
     $linkText = $linkText ?? 'Review List';
 
-    $borderTopClass = match($variant) {
+    $borderTopClass = match ($variant) {
         'primary' => 'border-t-2 border-primary',
         'error', 'danger', 'reject' => 'border-t-2 border-error',
         'warning', 'pending' => 'border-t-2 border-warning',
         'success' => 'border-t-2 border-success',
         'secondary' => 'border-t-2 border-secondary',
-        default => 'border-t-2 border-base-300'
+        default => 'border-t-2 border-base-300',
     };
 
-    $valueColorClass = match($variant) {
+    $valueColorClass = match ($variant) {
         'error', 'danger', 'reject' => 'text-error',
         'warning', 'pending' => 'text-warning',
-        default => 'text-primary'
+        default => 'text-primary',
     };
 
-    $badgeClass = match($badgeVariant) {
+    $badgeClass = match ($badgeVariant) {
         'warning', 'pending' => 'badge-warning',
         'success' => 'badge-success',
         'neutral' => 'badge-neutral',
-        default => 'badge-error'
+        default => 'badge-error',
     };
 @endphp
 
-<div class="card bg-base-100 p-4 shadow-sm border border-base-300 relative flex flex-col justify-between {{ $borderTopClass }}">
+<div
+    class="card bg-base-100 p-4 shadow-sm border border-base-300 relative flex flex-col justify-between {{ $borderTopClass }}">
     <div>
         <div class="flex items-center justify-between text-text-muted">
-            <span class="text-caption uppercase tracking-wider font-bold">
+            <span class="text-sm uppercase tracking-wider font-bold">
                 {{ $title }}
             </span>
             @if (!empty($badge))
@@ -47,7 +48,8 @@
                     {{ $badge }}
                 </span>
             @elseif (!empty($icon))
-                <span class="material-symbols-outlined text-[20px] {{ $variant === 'error' ? 'text-error' : 'text-text-muted' }}">
+                <span
+                    class="material-symbols-outlined text-[20px] {{ $variant === 'error' ? 'text-error' : 'text-text-muted' }}">
                     {{ $icon }}
                 </span>
             @endif
@@ -69,13 +71,14 @@
     </div>
 
     @if (!empty($footerText) || !empty($footerTrend) || !empty($link) || !empty($slot))
-        <div class="mt-2 pt-2 border-t border-base-200 flex items-center justify-between text-caption text-text-muted">
+        <div class="mt-2 pt-2 border-t border-base-200 flex items-center justify-between text-sm text-text-muted">
             @if (!empty($footerText))
                 <span>{{ $footerText }}</span>
             @endif
 
             @if (!empty($footerTrend))
-                <span class="{{ $footerTrendType === 'down' ? 'text-error' : 'text-success' }} font-semibold flex items-center gap-0.5">
+                <span
+                    class="{{ $footerTrendType === 'down' ? 'text-error' : 'text-success' }} font-semibold flex items-center gap-0.5">
                     <span class="material-symbols-outlined text-[14px]">
                         {{ $footerTrendType === 'down' ? 'trending_down' : 'trending_up' }}
                     </span>
@@ -84,7 +87,8 @@
             @endif
 
             @if (!empty($link))
-                <a href="{{ $link }}" class="text-secondary hover:underline font-semibold flex items-center gap-1">
+                <a href="{{ $link }}"
+                    class="text-secondary hover:underline font-semibold flex items-center gap-1">
                     {{ $linkText }}
                     <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
                 </a>
