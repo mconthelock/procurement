@@ -10,4 +10,13 @@ class Orders extends MY_Controller {
         $this->breadcrumb->add('Purchase Orders');
         $this->views('po/index', ['title' => 'nav-orders']);
     }
+
+    public function detail($id = ''){
+        $this->breadcrumb->add('Purchase Orders', '/orders');
+        $this->breadcrumb->add('Purchase Order Detail');
+        $this->views('po/detail', [
+            'id' => $id,
+            'title' => 'nav-orders'
+        ]);
+    }
 }

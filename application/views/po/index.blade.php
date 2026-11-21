@@ -21,8 +21,7 @@
         @include('po/index/directives')
     </main>
 
-    {{-- Overlays: Slide-Over PO Detail Drawer & Bulk Acknowledge Modal --}}
-    @include('po/index/drawer')
+    {{-- Overlay: Bulk Acknowledge Modal --}}
     @include('po/index/modal')
 @endsection
 

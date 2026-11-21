@@ -269,4 +269,72 @@
             </div>
         </div>
     </div>
+
+    <!-- Block 4: Categorized Compliance Documents & Attachments (PUR_FILE) -->
+    <div class="border border-base-300">
+        <div class="px-space-md py-3 bg-base-200 border-b border-base-300 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="w-1.5 h-4 bg-accent"></span>
+                <h2 class="text-xs font-bold uppercase tracking-wider text-primary">
+                    Compliance Documents &amp; Attachments (เอกสารแนบคู่ค้า)
+                </h2>
+                <span id="badge-count-docs" class="badge badge-xs badge-primary font-mono font-bold">0</span>
+            </div>
+            <span class="font-mono text-[11px] text-mute uppercase">Auto-Synced from EVA &amp; VMM</span>
+        </div>
+
+        <div class="p-space-md grid grid-cols-1 lg:grid-cols-2 gap-space-md">
+            <!-- Category 11: Company Certification / VAT Register / Company Profile -->
+            <div class="border border-base-300 flex flex-col">
+                <div class="px-3 py-2 bg-base-200 border-b border-base-300 flex items-center justify-between">
+                    <span class="text-xs font-bold uppercase tracking-wider text-primary">
+                        Company Cert. / VAT Register (PP.20) / Profile
+                    </span>
+                    <span class="badge badge-xs badge-primary font-mono">TYPE 11</span>
+                </div>
+                <div id="docs-group-11" class="p-3 space-y-2 text-xs">
+                    <span class="text-mute italic">No files in this category.</span>
+                </div>
+            </div>
+
+            <!-- Category 12: IE's Evaluation Document -->
+            <div class="border border-base-300 flex flex-col">
+                <div class="px-3 py-2 bg-base-200 border-b border-base-300 flex items-center justify-between">
+                    <span class="text-xs font-bold uppercase tracking-wider text-primary">
+                        IE's Evaluation Documents
+                    </span>
+                    <span class="badge badge-xs badge-secondary font-mono">TYPE 12</span>
+                </div>
+                <div id="docs-group-12" class="p-3 space-y-2 text-xs">
+                    <span class="text-mute italic">No files in this category.</span>
+                </div>
+            </div>
+
+            <!-- Category 13: QA's Evaluation Document -->
+            <div class="border border-base-300 flex flex-col">
+                <div class="px-3 py-2 bg-base-200 border-b border-base-300 flex items-center justify-between">
+                    <span class="text-xs font-bold uppercase tracking-wider text-primary">
+                        QA's Evaluation Documents
+                    </span>
+                    <span class="badge badge-xs badge-secondary font-mono">TYPE 13</span>
+                </div>
+                <div id="docs-group-13" class="p-3 space-y-2 text-xs">
+                    <span class="text-mute italic">No files in this category.</span>
+                </div>
+            </div>
+
+            <!-- Category 2: Other Supporting Documents -->
+            <div class="border border-base-300 flex flex-col">
+                <div class="px-3 py-2 bg-base-200 border-b border-base-300 flex items-center justify-between">
+                    <span class="text-xs font-bold uppercase tracking-wider text-primary">
+                        Other Supporting Documents
+                    </span>
+                    <span class="badge badge-xs badge-ghost font-mono">TYPE 2 / OTHER</span>
+                </div>
+                <div id="docs-group-other" class="p-3 space-y-2 text-xs">
+                    <span class="text-mute italic">No files in this category.</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

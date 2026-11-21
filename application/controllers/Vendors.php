@@ -12,7 +12,7 @@ class Vendors extends MY_Controller {
     }
 
     public function detail($id = ''){
-        $this->breadcrumb->add('Vendor Directory', '/vendors');
+        $this->breadcrumb->add('Vendor Directory', base_url('vendors'));
         $this->breadcrumb->add('Vendor Detail');
         $this->views('vendors/detail', [
             'id' => $id,
@@ -22,7 +22,7 @@ class Vendors extends MY_Controller {
 
     //Vendors Users
     public function users(){
-        $this->breadcrumb->add('Vendor Directory', '/vendors');
+        $this->breadcrumb->add('Vendor Directory', base_url('vendors/users'));
         $this->breadcrumb->add('Vendor Users');
         $this->views('vendors/users', [
             'title' => 'nav-vendors-users'

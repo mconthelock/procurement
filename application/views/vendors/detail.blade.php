@@ -22,7 +22,7 @@
                 <button type="button" role="tab" aria-selected="true" data-tab="tab-overview"
                     class="vendor-detail-tab flex items-center gap-2 px-space-md py-space-sm text-sm font-bold text-primary border-b-2 border-primary text-nowrap cursor-pointer">
                     <span class="material-symbols-outlined text-[18px]">business</span>
-                    <span>Overview &amp; Address</span>
+                    <span>Overview, Address &amp; Documents</span>
                 </button>
                 <button type="button" role="tab" aria-selected="false" data-tab="tab-financial"
                     class="vendor-detail-tab flex items-center gap-2 px-space-md py-space-sm text-sm font-semibold text-mute border-b-2 border-transparent text-nowrap cursor-pointer hover:text-primary transition-colors">
@@ -42,12 +42,6 @@
                     <span>Evaluation &amp; Compliance</span>
                     <span id="badge-eval-grade" class="badge badge-xs badge-ghost font-mono">-</span>
                 </button>
-                <button type="button" role="tab" aria-selected="false" data-tab="tab-documents"
-                    class="vendor-detail-tab flex items-center gap-2 px-space-md py-space-sm text-sm font-semibold text-mute border-b-2 border-transparent text-nowrap cursor-pointer hover:text-primary transition-colors">
-                    <span class="material-symbols-outlined text-[18px]">folder_open</span>
-                    <span>Documents</span>
-                    <span id="badge-count-docs" class="badge badge-xs font-mono">0</span>
-                </button>
                 <button type="button" role="tab" aria-selected="false" data-tab="tab-history"
                     class="vendor-detail-tab flex items-center gap-2 px-space-md py-space-sm text-sm font-semibold text-mute border-b-2 border-transparent text-nowrap cursor-pointer hover:text-primary transition-colors">
                     <span class="material-symbols-outlined text-[18px]">history</span>
@@ -61,7 +55,6 @@
             @include('vendors/detail/tab-financial')
             @include('vendors/detail/tab-scm')
             @include('vendors/detail/tab-evaluation')
-            @include('vendors/detail/tab-documents')
             @include('vendors/detail/tab-history')
 
             {{-- Read-Only Footer Strip --}}
