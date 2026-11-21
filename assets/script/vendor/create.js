@@ -5,7 +5,7 @@ import { showMessage } from "@amec/webasset/utils";
 import { currentUser } from "@amec/webasset/api/amec";
 import { createBtn, activatedBtnRow } from "@amec/webasset/components/buttons";
 import { createTable } from "@amec/webasset/dataTable";
-import { initApp, tableOpt } from "../utils.js";
+import { tableOpt } from "../utils.js";
 import { getPayments } from "../service/payment.js";
 import { getCurrencies } from "../service/currency.js";
 import { getAddressMST } from "../service/addressth.js";
@@ -24,7 +24,7 @@ function getUniqueValues(dataArray, key) {
 $(document).ready(async () => {
 	try {
 		await showLoader();
-		await initApp({ submenu: ".nav-vendors" });
+		await window.appReady;
 		const payments = await getPayments();
 		const $paymentSelects = $(".payment-select");
 		payments.forEach((payment) => {

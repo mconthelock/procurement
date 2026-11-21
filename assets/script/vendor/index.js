@@ -9,7 +9,7 @@ import { showMessage } from "@amec/webasset/utils";
 import { currentUser } from "@amec/webasset/api/amec";
 import { createBtn, activatedBtnRow } from "@amec/webasset/components/buttons";
 import { createTable } from "@amec/webasset/dataTable";
-import { initApp, tableOpt, tableFillSelect } from "../utils.js";
+import { tableOpt, tableFillSelect } from "../utils.js";
 import { getVendors, getTemplate, exportExcel } from "../service/index.js";
 
 import { extractDataForExport } from "./excel-data.js";
@@ -93,71 +93,71 @@ async function reloadTable() {
 	const data = await getVendors();
 	//const filteredData = data.filter((item) => item.VND_STATUS > 0);
 	// await populateFilters(filteredData);
-	// if (!table) {
-	// 	await createVendorsTable(filteredData);
-	// } else {
-	// 	table.clear();
-	// 	table.rows.add(filteredData);
-	// 	table.draw();
-	// }
+	if (!table) {
+		await createVendorsTable(data);
+	} else {
+		table.clear();
+		table.rows.add(data);
+		table.draw();
+	}
 }
 
 async function createVendorsTable(data) {
 	const opt = { ...tableOpt };
 	opt.data = data;
-	opt.columns = [
-		{ data: "VND_CODE", title: "Code" },
-		{ data: "VND_NAME", title: "Name" },
-		{
-			data: "VND_ADDRESS1",
-			title: "Address",
-			render: (data, type, row) => {
-				const addressParts = [
-					row.VND_ADDRESS1,
-					row.VND_ADDRESS2,
-					row.VND_CITY,
-					row.VND_STATE,
-				].filter(Boolean);
-				return addressParts.join(", ");
-			},
-		},
-		{ data: "VND_COUNTRY", title: "Country", className: "text-nowrap" },
-		{
-			data: "VND_REGISTED",
-			title: "Registered",
-			render: (data, type, row) => {
-				if (type == "display") {
-					return data ? dayjs(data).format("DD MMM YYYY") : "";
-				}
-				return data;
-			},
-		},
-		{
-			data: "VND_STATUS",
-			title: "Status",
-			render: (data, type) => {
-				if (type == "display") {
-					const statusMap = {
-						0: `<div class="badge badge-warning">Creating</div>`,
-						1: `<div class="badge badge-success">Active</div>`,
-						2: `<div class="badge badge-error">Inactive</div>`,
-					};
-					return statusMap[data] || "Unknown";
-				}
-				return data;
-			},
-		},
-		{
-			data: "VND_CODE",
-			title: "Actions",
-			className: "text-center",
-			orderable: false,
-			render: (data, type, row) => {
-				return `<a href="/procurement/vendors/detail/${data}" class="btn btn-sm btn-ghost btn-circle text-lg text-primary hover:text-xl"><i class="fi fi-rr-settings-sliders"></i></a>`;
-			},
-		},
-	];
-
+	// opt.columns = [
+	// 	{ data: "VND_CODE", title: "Code" },
+	// 	{ data: "VND_NAME", title: "Name" },
+	// 	{
+	// 		data: "VND_ADDRESS1",
+	// 		title: "Address",
+	// 		render: (data, type, row) => {
+	// 			const addressParts = [
+	// 				row.VND_ADDRESS1,
+	// 				row.VND_ADDRESS2,
+	// 				row.VND_CITY,
+	// 				row.VND_STATE,
+	// 			].filter(Boolean);
+	// 			return addressParts.join(", ");
+	// 		},
+	// 	},
+	// 	{ data: "VND_COUNTRY", title: "Country", className: "text-nowrap" },
+	// 	{
+	// 		data: "VND_REGISTED",
+	// 		title: "Registered",
+	// 		render: (data, type, row) => {
+	// 			if (type == "display") {
+	// 				return data ? dayjs(data).format("DD MMM YYYY") : "";
+	// 			}
+	// 			return data;
+	// 		},
+	// 	},
+	// 	{
+	// 		data: "VND_STATUS",
+	// 		title: "Status",
+	// 		render: (data, type) => {
+	// 			if (type == "display") {
+	// 				const statusMap = {
+	// 					0: `<div class="badge badge-warning">Creating</div>`,
+	// 					1: `<div class="badge badge-success">Active</div>`,
+	// 					2: `<div class="badge badge-error">Inactive</div>`,
+	// 				};
+	// 				return statusMap[data] || "Unknown";
+	// 			}
+	// 			return data;
+	// 		},
+	// 	},
+	// 	{
+	// 		data: "VND_CODE",
+	// 		title: "Actions",
+	// 		className: "text-center",
+	// 		orderable: false,
+	// 		render: (data, type, row) => {
+	// 			return `<a href="/procurement/vendors/detail/${data}" class="btn btn-sm btn-ghost btn-circle text-lg text-primary hover:text-xl"><i class="fi fi-rr-settings-sliders"></i></a>`;
+	// 		},
+	// 	},
+	// ];
+	opt.columns = [{ data: "VND_CODE", title: "Code" }];
 	opt.initComplete = async function (settings, json) {
 		const { container } = tableOpt.initComplete.call(this, settings, json);
 		$(".dt-search").addClass("hidden");

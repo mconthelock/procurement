@@ -1,6 +1,5 @@
 import { showLoader } from "@amec/webasset/preloader";
 import { showMessage } from "@amec/webasset/utils";
-import { initApp } from "../utils.js";
 // import $ from "jquery";
 // import Chart from "chart.js/auto";
 // window.$ = window.jQuery = $;
@@ -24,7 +23,7 @@ $(document).ready(async () => {
 		vendorList = vendors;
 		renderCategoryOptions(categories);
 
-		await initApp({ submenu: ".nav-products" });
+		await window.appReady;
 		const id = $("#prod_id_hidden").val();
 
 		if (id) {

@@ -1,7 +1,6 @@
 import { showLoader } from "@amec/webasset/preloader";
 import { showMessage, showConfirm } from "@amec/webasset/utils";
 import { createBtn, activatedBtnRow } from "@amec/webasset/components/buttons";
-import { initApp } from "../utils.js";
 import { getVendors } from "../service/index.js";
 import { getAddressMST } from "../service/addressth.js";
 import { getPayments } from "../service/payment.js";
@@ -327,7 +326,7 @@ $(document).ready(async () => {
 			alert("ไม่พบข้อมูลที่ต้องการแก้ไข");
 		}
 		await showLoader();
-		await initApp({ submenu: ".navmenu-newinq" });
+		await window.appReady;
 		const mode = $("#vnd-id").val() != "" ? 2 : 1;
 		await setButton(mode);
 	} catch (error) {

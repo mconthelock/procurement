@@ -7,7 +7,7 @@
         @include('vendors/index/kpi')
         @include('vendors/index/filters')
         @include('vendors/index/table')
-        @include('vendors/index/footer')
+        {{-- @include('vendors/index/footer') --}}
     </main>
 
     @include('vendors/index/drawer')

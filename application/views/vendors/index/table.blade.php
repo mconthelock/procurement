@@ -6,11 +6,6 @@
         <div class="flex items-center gap-space-md text-mute">
             <span>Active View: <strong class="text-primary" id="activeViewSummary">Showing 8 of 8 Vendor
                     records</strong></span>
-            <span class="w-px h-3 bg-base-300 hidden sm:inline-block"></span>
-            <span class="flex items-center gap-1">
-                <span class="material-symbols-outlined text-[14px] text-secondary">verified_user</span>
-                AMEC Approved Vendor List (AVL) FY2025
-            </span>
         </div>
         <div class="flex items-center gap-space-sm">
             <span class="text-mute">Selected: <strong class="text-primary" id="selectedCounter">0
@@ -23,8 +18,8 @@
 
     <!-- Responsive Table -->
     <div class="overflow-x-auto">
-        <table id="vendorTable" class="table table-sm w-full border-collapse text-left">
-            <thead>
+        <table id="table" class="table table-sm w-full border-collapse text-left">
+            {{-- <thead>
                 <tr class="bg-primary text-white text-xs uppercase tracking-wider">
                     <th class="w-10 text-center">
                         <input id="headerCheckbox" type="checkbox"
@@ -41,11 +36,11 @@
                     <th class="text-center">Status</th>
                     <th class="text-center w-36">Actions</th>
                 </tr>
-            </thead>
-            <tbody id="vendorTableBody" class="divide-y divide-base-200 text-xs">
+            </thead> --}}
+            {{-- <tbody id="vendorTableBody" class="divide-y divide-base-200 text-xs">
                 <!-- Vendor 1: Siam Precision -->
-                <tr class="vendor-row hover:bg-base-200/60 transition-colors" data-status="ACTIVE"
-                    data-tier="TIER-1" data-commodity="SHEET_METAL" data-grade="GRADE_A">
+                <tr class="vendor-row hover:bg-base-200/60 transition-colors" data-status="ACTIVE" data-tier="TIER-1"
+                    data-commodity="SHEET_METAL" data-grade="GRADE_A">
                     <td class="text-center align-top py-3">
                         <input type="checkbox" class="row-select checkbox checkbox-xs checkbox-primary"
                             onchange="updateSelectedCount()" />
@@ -110,8 +105,8 @@
                 </tr>
 
                 <!-- Vendor 2: Chokchai Engineering -->
-                <tr class="vendor-row hover:bg-base-200/60 transition-colors" data-status="ACTIVE"
-                    data-tier="TIER-1" data-commodity="SHEET_METAL" data-grade="GRADE_A">
+                <tr class="vendor-row hover:bg-base-200/60 transition-colors" data-status="ACTIVE" data-tier="TIER-1"
+                    data-commodity="SHEET_METAL" data-grade="GRADE_A">
                     <td class="text-center align-top py-3">
                         <input type="checkbox" class="row-select checkbox checkbox-xs checkbox-primary"
                             onchange="updateSelectedCount()" />
@@ -238,7 +233,8 @@
                                 <span class="material-symbols-outlined text-[14px]">gavel</span>
                                 Review CAR
                             </button>
-                            <button type="button" onclick="alert('Issuing Corrective Action Request (CAR) for V-422605-TH...')"
+                            <button type="button"
+                                onclick="alert('Issuing Corrective Action Request (CAR) for V-422605-TH...')"
                                 class="btn btn-xs btn-outline border-error text-error font-semibold flex items-center justify-center gap-1">
                                 <span class="material-symbols-outlined text-[13px]">warning</span>
                                 Issue Notice
@@ -314,8 +310,8 @@
                 </tr>
 
                 <!-- Vendor 5: Thai Sumitomo Electric -->
-                <tr class="vendor-row hover:bg-base-200/60 transition-colors" data-status="ACTIVE"
-                    data-tier="TIER-1" data-commodity="ELECTRICAL" data-grade="GRADE_A">
+                <tr class="vendor-row hover:bg-base-200/60 transition-colors" data-status="ACTIVE" data-tier="TIER-1"
+                    data-commodity="ELECTRICAL" data-grade="GRADE_A">
                     <td class="text-center align-top py-3">
                         <input type="checkbox" class="row-select checkbox checkbox-xs checkbox-primary"
                             onchange="updateSelectedCount()" />
@@ -380,8 +376,8 @@
                 </tr>
 
                 <!-- Vendor 6: Eastern Precision Casting -->
-                <tr class="vendor-row hover:bg-base-200/60 transition-colors" data-status="ACTIVE"
-                    data-tier="TIER-1" data-commodity="CASTING" data-grade="GRADE_A">
+                <tr class="vendor-row hover:bg-base-200/60 transition-colors" data-status="ACTIVE" data-tier="TIER-1"
+                    data-commodity="CASTING" data-grade="GRADE_A">
                     <td class="text-center align-top py-3">
                         <input type="checkbox" class="row-select checkbox checkbox-xs checkbox-primary"
                             onchange="updateSelectedCount()" />
@@ -446,8 +442,8 @@
                 </tr>
 
                 <!-- Vendor 7: Nippon Sanso Gas & Metal -->
-                <tr class="vendor-row hover:bg-base-200/60 transition-colors" data-status="ACTIVE"
-                    data-tier="TIER-1" data-commodity="SHEET_METAL" data-grade="GRADE_A">
+                <tr class="vendor-row hover:bg-base-200/60 transition-colors" data-status="ACTIVE" data-tier="TIER-1"
+                    data-commodity="SHEET_METAL" data-grade="GRADE_A">
                     <td class="text-center align-top py-3">
                         <input type="checkbox" class="row-select checkbox checkbox-xs checkbox-primary"
                             onchange="updateSelectedCount()" />
@@ -537,7 +533,9 @@
                     <td class="align-top py-3">
                         <div class="flex flex-col gap-1">
                             <span class="badge badge-xs badge-ghost font-mono font-bold">TIER-2 SUB</span>
-                            <span class="badge badge-xs bg-base-200 border-base-300 text-primary font-mono font-bold">GRADE B QUALIFIED</span>
+                            <span
+                                class="badge badge-xs bg-base-200 border-base-300 text-primary font-mono font-bold">GRADE
+                                B QUALIFIED</span>
                         </div>
                     </td>
                     <td class="align-top py-3">
@@ -576,12 +574,12 @@
                         </div>
                     </td>
                 </tr>
-            </tbody>
+            </tbody> --}}
         </table>
     </div>
 
     <!-- Table Footer Pagination Bar -->
-    <div
+    {{-- <div
         class="px-space-md py-3 bg-base-100 border-t border-base-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-mute">
         <div>Showing <strong class="text-primary">1 - 8</strong> of <strong class="text-primary">148</strong>
             Registered Vendors</div>
@@ -592,5 +590,5 @@
             <button type="button" class="join-item btn btn-xs btn-outline border-base-300">3</button>
             <button type="button" class="join-item btn btn-xs btn-outline border-base-300">»</button>
         </div>
-    </div>
+    </div> --}}
 </div>

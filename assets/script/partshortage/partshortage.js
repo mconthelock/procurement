@@ -1,5 +1,4 @@
 import { showbgLoader, showLoader } from "@amec/webasset/preloader";
-import { initApp } from "../utils.js";
 
 // Import Dependencies
 import "../../style/partshortage/partshortage.css";
@@ -8,7 +7,6 @@ import { showMessage, showErrorMessage } from "@amec/webasset/utils";
 import { setDatePicker } from "@amec/webasset/flatpickr";
 import { currentUser } from "@amec/webasset/api/amec";
 import { fetchUtils } from "@amec/webasset/api/fetch-utils";
-import { appReady } from "../apps.js"; // Import appReady from apps.js
 import { formatDbDateForDisplay, JobItemDTO } from "./JobItemDTO.js";
 
 /**
@@ -325,7 +323,7 @@ async function initMyTable() {
 $(async function () {
 	try {
 		//await showbgLoader();
-		await appReady; // Ensure the app is ready before proceeding
+		await window.appReady; // Ensure the app is ready before proceeding
 		showLoader({ show: true });
 		// Fetch current user information
 		const user = await currentUser();

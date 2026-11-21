@@ -5,7 +5,7 @@ import { showMessage } from "@amec/webasset/utils";
 import { currentUser } from "@amec/webasset/api/amec";
 import { createBtn, activatedBtnRow } from "@amec/webasset/components/buttons";
 import { createTable } from "@amec/webasset/dataTable";
-import { initApp, tableOpt } from "../utils.js";
+import { tableOpt } from "../utils.js";
 import {
 	getProducts,
 	getTemplate,
@@ -20,7 +20,7 @@ let categoryMap = {};
 $(document).ready(async () => {
 	try {
 		await showLoader();
-		await initApp({ submenu: ".nav-products" });
+		await window.appReady;
 
 		const categories = await getCategories();
 		categories.forEach((cat) => {

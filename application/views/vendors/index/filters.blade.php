@@ -1,11 +1,11 @@
 <!-- Section 3: Navigation Tabs & Precision Filter Strip -->
-<div class="bg-base-100 shadow-sm border border-base-300 flex flex-col">
+<div class="border border-base-300 flex flex-col shadow-sm">
     <!-- Status Navigation Tabs -->
-    <div class="flex items-center border-b border-base-200 overflow-x-auto px-space-md pt-2" id="vendorStatusTabs">
+    <div class="flex items-center border-b border-base-300 overflow-x-auto px-space-md pt-2" id="vendorStatusTabs">
         <button
             class="vendor-status-tab flex items-center gap-2 px-space-md py-space-sm text-sm font-bold text-primary border-b-2 border-primary text-nowrap cursor-pointer"
             data-status="" type="button">
-            <span>All Registered Vendors</span>
+            <span>All Vendors</span>
             <span class="badge badge-xs badge-primary font-mono" data-count="ALL">8</span>
         </button>
         <button
@@ -26,19 +26,19 @@
         <button
             class="vendor-status-tab flex items-center gap-2 px-space-md py-space-sm text-sm font-semibold text-mute border-b-2 border-transparent text-nowrap cursor-pointer"
             data-status="RECERT_DUE" type="button">
-            <span>Re-cert Due &lt; 30d</span>
+            <span>Direct</span>
             <span class="badge badge-xs badge-warning font-mono font-bold" data-count="RECERT_DUE">1</span>
         </button>
         <button
             class="vendor-status-tab flex items-center gap-2 px-space-md py-space-sm text-sm font-semibold text-mute border-b-2 border-transparent text-nowrap cursor-pointer"
             data-status="TIER-1" type="button">
-            <span>Tier-1 Direct</span>
+            <span>Indirect</span>
             <span class="badge badge-xs badge-ghost font-mono" data-count="TIER-1">6</span>
         </button>
         <button
             class="vendor-status-tab flex items-center gap-2 px-space-md py-space-sm text-sm font-semibold text-mute border-b-2 border-transparent text-nowrap cursor-pointer"
             data-status="TIER-2" type="button">
-            <span>Tier-2 Subcontractor</span>
+            <span>Subcontractor</span>
             <span class="text-mute font-mono text-[11px]" data-count="TIER-2">(2)</span>
         </button>
     </div>
@@ -84,8 +84,7 @@
             </select>
         </div>
         <div>
-            <button id="vendorFilterReset"
-                class="btn btn-sm btn-primary w-full h-9.5 flex items-center justify-center"
+            <button id="vendorFilterReset" class="btn btn-sm btn-primary w-full h-9.5 flex items-center justify-center"
                 title="Reset Filters" type="button">
                 <span class="material-symbols-outlined text-[18px]">restart_alt</span>
             </button>

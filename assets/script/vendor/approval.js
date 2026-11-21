@@ -5,7 +5,7 @@ import { showMessage } from "@amec/webasset/utils";
 import { currentUser } from "@amec/webasset/api/amec";
 import { createBtn, activatedBtnRow } from "@amec/webasset/components/buttons";
 import { createTable } from "@amec/webasset/dataTable";
-import { initApp, tableOpt } from "../utils.js";
+import { tableOpt } from "../utils.js";
 import { getVendors, getTemplate, exportExcel } from "../service/index.js";
 import { getVendorsApv } from "../service/approval.js";
 import { extractApvDataForExport } from "./excel-data.js";
@@ -14,7 +14,7 @@ var table;
 $(document).ready(async () => {
 	try {
 		await showLoader();
-		await initApp({ submenu: ".nav-vendors" });
+		await window.appReady;
 		const data = await getVendorsApv();
 		const options = await tableVendorApvOption(data);
 		table = await createTable(options);

@@ -2,7 +2,8 @@ import "@flaticon/flaticon-uicons/css/all/all.css";
 import dayjs from "dayjs";
 import { initApp } from "./utils";
 
-export const appReady = await initApp();
+export const appReady = (window.appReady = initApp());
+await appReady;
 // $(async function () {
 // 	try {
 // 	} catch (error) {

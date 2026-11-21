@@ -1,9 +1,8 @@
 import { showbgLoader } from "@amec/webasset/preloader";
-import { initApp } from "./utils.js";
 $(async function () {
 	try {
-		await showbgLoader();
-		await initApp({ submenu: ".navmenu-newinq" });
+		await window.appReady;
+		await showbgLoader({ show: false });
 	} catch (error) {
 		console.log(error);
 	}

@@ -1,5 +1,4 @@
 import { showErrorMessage, showMessage } from "@amec/webasset/utils";
-import { initApp } from "../utils";
 import { tableItemMaster } from "./table";
 import { getPlanner, getCountry, getOriginBulkList } from "./data";
 import select2 from "select2";
@@ -12,7 +11,7 @@ import { modalUpload } from "./modal-upload";
 select2();
 $(async function () {
 	try {
-		await initApp();
+		await window.appReady;
 		tableItemMaster.init();
 		const planners = await getPlanner();
 		const country = await getCountry();
