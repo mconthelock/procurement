@@ -15,6 +15,7 @@
     <link rel="apple-touch-icon" href="{{ $_ENV['APP_IMG'] }}/favicon.ico">
     <link rel="apple-touch-startup-image" href="{{ $_ENV['APP_IMG'] }}/cube.png">
     <link rel="stylesheet" href="{{ $_ENV['APP_CSS'] }}/tailwind.css?ver={{ $GLOBALS['version'] }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     @yield('styles')
     <script src="{{ $_ENV['APP_ENV'] }}/script.js"></script>
 </head>
@@ -33,8 +34,8 @@
                 </div>
             </div>
         </div>
-        <div class="drawer-side z-51! md:px-3 md:py-5">
-            <div id="sidebar" class="max-h-[75vh]"></div>
+        <div class="drawer-side z-51!">
+            <div id="sidebar" class="h-full"></div>
         </div>
     </div>
 

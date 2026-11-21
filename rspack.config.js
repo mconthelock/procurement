@@ -73,6 +73,17 @@ module.exports = {
 					to: path.resolve(__dirname, "assets/images"),
 					noErrorOnMissing: true,
 				},
+				{
+					from: path.resolve(
+						__dirname,
+						"node_modules/material-symbols/*.woff2",
+					),
+					to: path.resolve(
+						__dirname,
+						"assets/fonts/material-symbols/[name][ext]",
+					),
+					noErrorOnMissing: true,
+				},
 			],
 		}),
 	],

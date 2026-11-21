@@ -236,7 +236,7 @@
 
             <!-- Enterprise Vendor Table (Sharp 0px, Heavy Data Density) -->
             <div class="w-full bg-white border border-border-light overflow-x-auto shadow-sm">
-                <table class="w-full text-left border-collapse min-w-[1240px]">
+                <table class="w-full text-left border-collapse min-w-310">
                     <thead>
                         <tr
                             class="bg-white-subtle border-b-2 border-border-dark font-label-sm text-[11px] uppercase tracking-wider text-gray-700">
