@@ -11,6 +11,11 @@ class Vendors extends MY_Controller {
         $this->views('vendors/index', ['title' => 'nav-vendors']);
     }
 
+    public function list(){
+        $this->breadcrumb->add('Vendor List (Indirect & Subcontractor)');
+        $this->views('vendors/list', ['title' => 'nav-vendors-list']);
+    }
+
     public function detail($id = ''){
         $this->breadcrumb->add('Vendor Directory', base_url('vendors'));
         $this->breadcrumb->add('Vendor Detail');

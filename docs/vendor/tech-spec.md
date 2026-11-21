@@ -26,7 +26,51 @@ outline: deep
 
 ---
 
-## 2. โครงสร้างไฟล์ของโมดูล Vendors
+## 2. แผนผังการทำงานและสายการอนุมัติ (System & Approval Flowchart)
+
+แผนผังด้านล่างแสดงลำดับการทำงานทั้งหมดตั้งแต่การยืนยันตัวตนผ่าน `@amec/webasset`, การดูทะเบียนคู่ค้า, การยื่นคำขอขึ้นทะเบียน/แก้ไขผ่าน Cover Sheet (`PRO-QP-A-020`), สายการอนุมัติ 3 ระดับ (`Buyer → SEM → DEM`) ไปจนถึงการซิงก์ข้อมูลลงฐานข้อมูล Oracle (`PURSYS`), ระบบ **AS400 ERP** และ **E-SCM Portal**:
+
+<VendorFlowDiagrams diagram="system-flow" />
+
+### สรุปการไหลของสถานะ (Lifecycle Steps)
+1. **Authentication**: หน้าแอปตรวจสอบ Cookie (`procurement`) และอ่านสิทธิ์จาก IndexedDB (`userAuth.group`) ผ่าน `initApp()` ใน `assets/script/utils.js`
+2. **Directory & Detail**: `vendor/index.js` เรียก `POST /pursys/vendors/search/` แสดงตารางทะเบียนคู่ค้า เมื่อคลิกเปิดรายบริษัท `vendor/detail.js` จะโหลดข้อมูลแบบ Read-Only จาก 4 API พร้อมกัน (`detail`, `history`, `evaluation`, `groups/by-code`)
+3. **Cover Sheet Request**: ผู้ใช้งานไม่สามารถแก้ข้อมูลหลักโดยตรงในหน้า Detail แต่ต้องส่งคำขอผ่าน `/procurement/vendors/create` (โหมด `ADD` หรือ `U` = Update) เพื่อสร้างใบคำขอสถานะ `Running (1)`
+4. **Approval Chain (`Buyer → SEM → DEM`)**:
+   - หาก **Reject (`3`)**: ส่งกลับให้ Buyer แก้ไขข้อมูลหรือแนบเอกสารเพิ่ม
+   - หาก **Approve (`2`)**: บันทึก Revision ลง `PURSYS`, ซิงก์รหัสคู่ค้า 5 หลักไปยัง **AS400** (`AS400: SYNCED`) และเปิดใช้งานร่วมกับระบบ **E-SCM / EDI**
+
+---
+
+## 3. แผนผังการเชื่อมโยงข้อมูล (Data Lineage & ER Diagram)
+
+แผนผังแสดงการเชื่อมโยงตั้งแต่หน้าจอ **Blade + JS → REST API (`APP_API`) → ตาราง Oracle (`PURSYS`) → ระบบภายนอก (AS400 / NAS / E-SCM)**:
+
+<VendorFlowDiagrams diagram="data-lineage" />
+
+### Key Linkage Rules (กุญแจหลักในการเชื่อมโยงข้อมูล)
+- **Internal Entity Key (`VND_ID` ↔ `VENDOR_ID`)**:
+  - `PUR_VENDORS.VND_ID` (Auto-Identity) เป็น Primary Key หลัก เชื่อมแบบ `1:N` ไปยัง `PUR_VENDORS_ADDRESS`, `PUR_VENDORS_CODE`, และ `PUR_VENDORS_ATTFILE` ผ่านคอลัมน์ `VENDOR_ID`
+- **Business / ERP Key (`CODE_NUM` / `VENDCODE` 5 หลัก)**:
+  - รหัสคู่ค้า 5 หลัก (เช่น `10000`, `10003`, `19000`) คือ Key กลางที่ Frontend ส่งไปใน API (`/detail/`, `/history/`, `/evaluation/`, `/groups/by-code/`), ใช้ซิงก์กับ **AS400 ERP**, ใช้ผูกกลุ่มบริษัทต่างสกุลเงิน (`VGRP-xxxxx`) และใช้ผูกกับบัญชีผู้ใช้คู่ค้า (`VND_CODE`) ในระบบ E-SCM
+- **Multi-Currency Corporate Group (`VGRP-*`)**:
+  - บริษัทคู่ค้า 1 แห่งที่มีหลายสกุลเงิน (เช่น `JPY`, `USD`, `THB`) จะมีหลายรหัส 5 หลักใน `PUR_VENDORS_CODE` แต่ถูกจัดกลุ่มร่วมกันภายใต้รหัสกลุ่ม `VGRP-*` โดยกำหนด 1 รหัสเป็น **Primary Code** ผ่าน `/pursys/vendors/groups/set-primary/`
+- **Document Storage (`PUR_VENDORS_ATTFILE` ↔ NAS)**:
+  - ฐานข้อมูลเก็บเฉพาะ Metadata (`FILE_NAME` ชื่อไฟล์บนดิสก์ และ `UFILE_NAME` ชื่อไฟล์ต้นฉบับ) ส่วนไฟล์จริงจัดเก็บบน NAS ตาม Path `FILE_ATTACH` ใน `.env`
+
+---
+
+## 4. แผนผังการจัดการบัญชีคู่ค้า (E-SCM User Provisioning Flow)
+
+<VendorFlowDiagrams diagram="scm-user-flow" />
+
+- เมื่อสร้างผู้ใช้ใหม่ผ่าน `POST /pursys/vendors/users/` ระบบจะผูกบัญชีเข้ากับ `VND_CODE` และ `USER_ROLE` โดยเริ่มที่สถานะ **`Pending Activation (0)`** พร้อมลิงก์ยืนยันตัวตนที่มีอายุ **72 ชั่วโมง**
+- หลังคู่ค้าตั้งรหัสผ่านสำเร็จ สถานะจะเปลี่ยนเป็น **`Active (1)`** และได้รับสิทธิ์เข้าถึงโมดูลตาม **RBAC** (`ADMIN`, `SALES`, `LOGISTICS`, `QA`)
+- หากไม่มีการเข้าสู่ระบบเกิน **90 วัน** หรือผู้ดูแลระบบสั่งระงับ สถานะจะเปลี่ยนเป็น **`Locked / Inactive (2)`** พร้อมบันทึก Audit Trail ทุกครั้ง
+
+---
+
+## 5. โครงสร้างไฟล์ของโมดูล Vendors
 
 ```text
 procurement/
@@ -62,7 +106,7 @@ procurement/
 
 ---
 
-## 3. Route → Controller → View → JS Bundle Mapping
+## 6. Route → Controller → View → JS Bundle Mapping
 
 อ้างอิงจาก `application/controllers/Vendors.php` และ `assets/script/vendor/_entry.js`:
 
@@ -77,9 +121,9 @@ procurement/
 
 ---
 
-## 4. Backend API ที่เรียกใช้งาน
+## 7. Backend API ที่เรียกใช้งาน
 
-### 4.1 Vendor Master & Group APIs (`assets/script/service/vendors.js`)
+### 7.1 Vendor Master & Group APIs (`assets/script/service/vendors.js`)
 เรียกผ่าน `fetchUtils` ไปยัง `${process.env.APP_API}`:
 
 | Service Function | Method | Endpoint | Payload หลัก | การใช้งาน |
@@ -94,7 +138,7 @@ procurement/
 | `setPrimaryVendorCode(data)` | `POST` | `/pursys/vendors/groups/set-primary/` | ข้อมูลรหัสหลัก | ตั้งรหัสคู่ค้าหลัก (Primary Code) ของกลุ่ม |
 | `unlinkVendorCode(data)` | `POST` | `/pursys/vendors/groups/unlink/` | ข้อมูลรหัสที่ต้องการแยก | ยกเลิกการผูกรหัสคู่ค้าออกจากกลุ่ม |
 
-### 4.2 Vendor Portal Users APIs (`assets/script/service/vendor-users.js`)
+### 7.2 Vendor Portal Users APIs (`assets/script/service/vendor-users.js`)
 
 | Service Function | Method | Endpoint | Payload / Params | การใช้งาน |
 | :--- | :---: | :--- | :--- | :--- |
@@ -103,13 +147,13 @@ procurement/
 | `updateVendorUser(id, data)` | `PUT` | `/pursys/vendors/users/{id}` | ข้อมูลที่แก้ไข | แก้ไข Role, แผนก หรือสถานะบัญชี |
 | `resetVendorUserPassword(id)` | `POST` | `/pursys/vendors/users/{id}/reset-password` | Path param `id` | ส่งลิงก์รีเซ็ตรหัสผ่านให้คู่ค้า |
 
-### 4.3 Approval & Master Lookup Services
+### 7.3 Approval & Master Lookup Services
 - **`assets/script/service/approval.js`**: `getVendorsApv(id)` ปัจจุบันเรียก `${process.env.MOCK_API}/vendorApprovals/${id}`
 - **Master Lookups**: `country.js`, `currency.js`, `payment.js`, `addressth.js`, `excel.js` ใช้ดึงข้อมูลประเทศ สกุลเงิน เงื่อนไขชำระเงิน ที่อยู่ไทย และสร้างไฟล์ Excel
 
 ---
 
-## 5. โครงสร้างตารางฐานข้อมูลที่เกี่ยวข้อง (Oracle Schema: `PURSYS`)
+## 8. โครงสร้างตารางฐานข้อมูลที่เกี่ยวข้อง (Oracle Schema: `PURSYS`)
 
 ความสัมพันธ์หลักใช้ `VND_ID` จาก `PUR_VENDORS` เป็น Foreign Key เชื่อมไปยังตารางลูก (`VENDOR_ID`):
 
@@ -120,7 +164,7 @@ PURSYS.PUR_VENDORS (PK: VND_ID)
  └── 1:N ──▶ PURSYS.PUR_VENDORS_ATTFILE  (FK: VENDOR_ID, PK: FILE_ID)
 ```
 
-### 5.1 `PURSYS.PUR_VENDORS` (ตารางทะเบียนคู่ค้าหลัก)
+### 8.1 `PURSYS.PUR_VENDORS` (ตารางทะเบียนคู่ค้าหลัก)
 อ้างอิงจาก `VENDORS.sql` — Tablespace `PURSYS`, Primary Key `PK_VENDORS (VND_ID)`:
 
 | Column | Type | Constraint / Default | คำอธิบาย |
@@ -142,7 +186,7 @@ PURSYS.PUR_VENDORS (PK: VND_ID)
 | `BRANCH` | `VARCHAR2(50)` | — | สาขาธนาคาร |
 | `ACCNUMBER` | `VARCHAR2(10)` | — | เลขที่บัญชีธนาคาร |
 
-### 5.2 `PURSYS.PUR_VENDORS_ADDRESS` (ตารางที่อยู่คู่ค้า)
+### 8.2 `PURSYS.PUR_VENDORS_ADDRESS` (ตารางที่อยู่คู่ค้า)
 อ้างอิงจาก `VENDORS_ADDR.sql`:
 
 | Column | Type | Constraint | คำอธิบาย |
@@ -157,7 +201,7 @@ PURSYS.PUR_VENDORS (PK: VND_ID)
 | `ADDR_COUNTRY` | `VARCHAR2(200)` | — | ประเทศ |
 | `ADDR_ZIPCODE` | `VARCHAR2(50)` | — | รหัสไปรษณีย์ |
 
-### 5.3 `PURSYS.PUR_VENDORS_CODE` (ตารางรหัสคู่ค้า 5 หลัก & เงื่อนไขการค้า)
+### 8.3 `PURSYS.PUR_VENDORS_CODE` (ตารางรหัสคู่ค้า 5 หลัก & เงื่อนไขการค้า)
 อ้างอิงจาก `VENDORS_CODE.sql` — Primary Key `PK_VENDORS_CODE (CODE_ID)`:
 
 | Column | Type | Constraint / Default | คำอธิบาย |
@@ -172,7 +216,7 @@ PURSYS.PUR_VENDORS (PK: VND_ID)
 | `CODE_PAY` | `VARCHAR2(8)` | — | เงื่อนไขการชำระเงิน (Payment Term เช่น `C2`) |
 | `CODE_TYPE` | `NUMBER` | — | ประเภทรหัส / กลุ่มย่อย |
 
-### 5.4 `PURSYS.PUR_VENDORS_ATTFILE` (ตารางเอกสารแนบคู่ค้า)
+### 8.4 `PURSYS.PUR_VENDORS_ATTFILE` (ตารางเอกสารแนบคู่ค้า)
 อ้างอิงจาก `VENDORS_FILE.sql` — Primary Key `PK_VENDORS_ATTFILE (FILE_ID)`:
 
 | Column | Type | Constraint | คำอธิบาย |
@@ -182,7 +226,7 @@ PURSYS.PUR_VENDORS (PK: VND_ID)
 | `FILE_NAME` | `VARCHAR2(30)` | `NOT NULL` | ชื่อไฟล์ที่จัดเก็บจริงบน NAS (`FILE_ATTACH` ใน `.env`) |
 | `UFILE_NAME` | `VARCHAR2(256)` | `NOT NULL` | ชื่อไฟล์ต้นฉบับตอนอัปโหลด |
 
-### 5.5 ตาราง/ระบบภายนอกที่เชื่อมโยงเพิ่มเติม
+### 8.5 ตาราง/ระบบภายนอกที่เชื่อมโยงเพิ่มเติม
 - **`PURSYS.VENDORS` (Master Registry / AS400 Sync)**: ตารางหลักฝั่ง Backend API ที่รวมข้อมูลจาก AS400, Tax ID, CA/BA No. และสถานะ Sync (`PRO`, `AS400`, `E-SCM`)
 - **Vendor Group & Linkage (`VGRP-*`)**: เก็บความสัมพันธ์ของรหัสคู่ค้าหลายสกุลเงินภายใต้บริษัทแม่เดียวกัน
 - **Vendor Evaluation (`EVA`) & Change History**: เก็บประวัติคะแนนประเมินประจำปีและ Revision Log ของ Cover Sheet
@@ -190,7 +234,7 @@ PURSYS.PUR_VENDORS (PK: VND_ID)
 
 ---
 
-## 6. คำสั่งสำหรับพัฒนาและ Build
+## 9. คำสั่งสำหรับพัฒนาและ Build
 
 ```bash
 # พัฒนาพร้อม Watch CSS (Tailwind) + JS (Rspack)
@@ -208,7 +252,7 @@ npm run docs:build
 
 ---
 
-## 7. จุดที่ต้องปรับปรุงและข้อควรระวัง (Known Issues & Roadmap)
+## 10. จุดที่ต้องปรับปรุงและข้อควรระวัง (Known Issues & Roadmap)
 
 ::: warning รายการที่ควรแก้ไขในการพัฒนารอบถัดไป
 1. **Case-Sensitivity ของ View ใน `Vendors.php`**: เมธอด `create()`, `approval()`, และ `form()` เรียก `$this->views('Vendors/...')` (ตัว V ใหญ่) ในขณะที่โฟลเดอร์จริงคือ `application/views/vendors/` (ตัว v เล็ก) ซึ่งจะเกิด Error `View [Vendors.approval] not found` บน Linux Server — ควรแก้เป็นตัวพิมพ์เล็กและสร้างไฟล์ `approval.blade.php` / `frmapv.blade.php` ให้ครบ
