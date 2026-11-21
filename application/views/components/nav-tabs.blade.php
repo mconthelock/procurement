@@ -13,7 +13,7 @@
                 $tabId = $tab['id'] ?? '';
                 $tabLabel = $tab['label'] ?? '';
                 $tabCount = $tab['count'] ?? null;
-                $isActive = !empty($tab['active']) || ($activeTab === $tabId);
+                $isActive = !empty($tab['active']) || $activeTab === $tabId;
                 $isUrgent = !empty($tab['urgent']);
                 $hasDot = !empty($tab['dot']);
 
@@ -22,19 +22,20 @@
                 } elseif ($isUrgent) {
                     $btnClass = 'text-error hover:text-error border-b-2 border-error font-bold';
                 } else {
-                    $btnClass = 'text-text-muted hover:text-primary border-b-2 border-transparent font-semibold';
+                    $btnClass = 'text-mute hover:text-primary border-b-2 border-transparent font-semibold';
                 }
             @endphp
-            <button type="button"
-                @if (!empty($tabId)) data-tab="{{ $tabId }}" @endif
+            <button type="button" @if (!empty($tabId)) data-tab="{{ $tabId }}" @endif
                 onclick="{{ $tab['onclick'] ?? $onTabClick . '(\'' . $tabId . '\')' }}"
                 class="flex items-center gap-2 px-3 py-2 text-body-sm whitespace-nowrap transition-colors {{ $btnClass }}">
                 @if ($hasDot)
-                    <span class="w-2 h-2 {{ $tab['dotColor'] ?? ($isUrgent ? 'bg-error' : 'bg-success') }} rounded-full"></span>
+                    <span
+                        class="w-2 h-2 {{ $tab['dotColor'] ?? ($isUrgent ? 'bg-error' : 'bg-success') }} rounded-full"></span>
                 @endif
                 <span>{{ $tabLabel }}</span>
                 @if ($tabCount !== null)
-                    <span class="badge badge-sm {{ $isActive ? 'badge-primary' : ($isUrgent ? 'badge-error' : 'badge-neutral') }} font-mono text-[11px]">
+                    <span
+                        class="badge badge-sm {{ $isActive ? 'badge-primary' : ($isUrgent ? 'badge-error' : 'badge-neutral') }} font-mono text-[11px]">
                         {{ $tabCount }}
                     </span>
                 @endif

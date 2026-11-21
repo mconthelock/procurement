@@ -5,7 +5,7 @@
             <!-- Top Breadcrumb & Status Link -->
             <div class="w-full bg-surface-subtle border-b border-border-light">
                 <div class="max-w-[1380px] mx-auto px-gutter py-2 flex flex-wrap items-center justify-between gap-space-sm">
-                    <nav class="flex items-center gap-space-xs font-meta-tag text-[12px] text-text-muted">
+                    <nav class="flex items-center gap-space-xs font-meta-tag text-[12px] text-mute">
                         <a class="hover:text-secondary transition-colors" href="#">Home</a>
                         <span class="text-outline-variant">/</span>
                         <a class="hover:text-secondary transition-colors" href="#">Supplier Portal</a>
@@ -14,7 +14,7 @@
                         <span class="text-outline-variant">/</span>
                         <span class="text-primary font-bold">Siam Precision Engineering Co., Ltd. (V-884029-TH)</span>
                     </nav>
-                    <div class="flex items-center gap-space-md font-meta-tag text-[11px] text-text-muted">
+                    <div class="flex items-center gap-space-md font-meta-tag text-[11px] text-mute">
                         <span class="inline-flex items-center gap-1.5">
                             <span class="w-2 h-2 rounded-full bg-status-success-text"></span>
                             <span>Workflow Status: Approved (CST = 2)</span>
@@ -32,7 +32,7 @@
                         <!-- Identity Block (Data from PURSYS.VENDORS, PURVMM_FORM, PUREVA_FORM) -->
                         <div class="flex items-start gap-space-md max-w-4xl">
                             <div
-                                class="w-16 h-16 bg-primary text-on-primary flex items-center justify-center font-h2 text-h2 font-bold tracking-tight flex-shrink-0 shadow-sm">
+                                class="w-16 h-16 bg-primary text-on-primary flex items-center justify-center font-h2 font-bold tracking-tight flex-shrink-0 shadow-sm">
                                 SP
                             </div>
                             <div class="flex flex-col gap-space-xs">
@@ -44,7 +44,7 @@
                                     </span>
                                     <!-- VENDGROUPTYPE -->
                                     <span
-                                        class="bg-surface-container-high text-on-surface font-meta-tag text-[11px] px-2 py-0.5 uppercase font-semibold">
+                                        class="bg-surface-container-high font-meta-tag text-[11px] px-2 py-0.5 uppercase font-semibold">
                                         TIER-1 DIRECT (VENDGROUPTYPE: Direct)
                                     </span>
                                     <!-- JUDGEMENT / MJUDGEMENT -->
@@ -54,18 +54,16 @@
                                         EVALUATION GRADE A (JUDGEMENT: A)
                                     </span>
                                     <!-- TAXID / VND_TAXNO -->
-                                    <span
-                                        class="bg-surface-container text-text-muted font-data-mono text-[11px] px-2 py-0.5">
+                                    <span class="bg-surface-container text-mute font-data-mono text-[11px] px-2 py-0.5">
                                         TAX ID: 0105550000000
                                     </span>
                                 </div>
                                 <!-- VND_NAME / COMNAME -->
-                                <h1 class="font-h2 text-h2 text-primary font-bold tracking-tight">
+                                <h1 class="font-h2 text-primary font-bold tracking-tight">
                                     Siam Precision Engineering Co., Ltd.
                                 </h1>
                                 <!-- VND_TNAME (from PURNVF_ADDRESS Thai / VND_TNAME) -->
-                                <div
-                                    class="font-body-md text-text-muted font-normal flex flex-wrap items-center gap-space-md">
+                                <div class="font-body-md text-mute font-normal flex flex-wrap items-center gap-space-md">
                                     <span class="text-text-body font-medium">บริษัท สยาม พรีซิชั่น เอ็นจิเนียริ่ง
                                         จำกัด</span>
                                     <span class="text-outline-variant">•</span>
@@ -112,7 +110,7 @@
                         class="mt-space-lg pt-space-md bg-surface-container-low px-space-md py-space-sm flex flex-wrap items-center justify-between gap-space-md text-[13px] border border-border-light">
                         <div class="flex flex-wrap items-center gap-space-md">
                             <span
-                                class="inline-flex items-center gap-1 font-meta-tag text-[11px] uppercase tracking-wider text-text-muted">
+                                class="inline-flex items-center gap-1 font-meta-tag text-[11px] uppercase tracking-wider text-mute">
                                 <span
                                     class="material-symbols-outlined text-[16px] text-status-success-text">check_circle</span>
                                 Status:
@@ -122,16 +120,16 @@
                                 ACTIVE (VND_STATUS)
                             </span>
                             <span class="text-outline-variant">|</span>
-                            <span class="text-text-muted font-body-sm">Operation: <strong
+                            <span class="text-mute font-body-sm">Operation: <strong
                                     class="text-primary font-semibold">Annual Evaluation (A)</strong></span>
                             <span class="text-outline-variant">|</span>
-                            <span class="text-text-muted font-body-sm">Currency: <strong
-                                    class="text-primary font-data-mono">THB (฿)</strong></span>
+                            <span class="text-mute font-body-sm">Currency: <strong class="text-primary font-data-mono">THB
+                                    (฿)</strong></span>
                             <span class="text-outline-variant">|</span>
-                            <span class="text-text-muted font-body-sm">Payment Term: <strong
+                            <span class="text-mute font-body-sm">Payment Term: <strong
                                     class="text-primary font-data-mono">TERMCODE: N60</strong></span>
                         </div>
-                        <div class="flex items-center gap-space-sm font-data-mono text-[12px] text-text-muted">
+                        <div class="flex items-center gap-space-sm font-data-mono text-[12px] text-mute">
                             <span class="material-symbols-outlined text-[16px]">calendar_today</span>
                             Registered Date: <strong class="text-primary font-semibold">2018-04-10</strong>
                         </div>
@@ -146,13 +144,13 @@
                     <!-- KPI 1: Overall Evaluation Score (PUREVA_FORM.JUDGEMENT & PUREVA_SCORE Total) -->
                     <div class="bg-surface border border-base-300 p-space-md shadow-sm flex flex-col justify-between">
                         <div class="flex items-start justify-between mb-space-sm">
-                            <span class="font-meta-tag text-[11px] uppercase tracking-wider text-text-muted">PRO-EVA
+                            <span class="font-meta-tag text-[11px] uppercase tracking-wider text-mute">PRO-EVA
                                 Judgement</span>
                             <span class="material-symbols-outlined text-[18px] text-status-success-text">verified</span>
                         </div>
                         <div>
                             <div class="flex items-baseline gap-space-xs">
-                                <span class="font-h1 text-h1 font-bold text-primary tracking-tight">Grade A</span>
+                                <span class="text-2xl text-h1 font-bold text-primary tracking-tight">Grade A</span>
                             </div>
                             <p
                                 class="font-body-sm text-[12px] text-status-success-text mt-1 font-semibold flex items-center gap-1">
@@ -168,13 +166,13 @@
                     <!-- KPI 2: Purchasing Level & Volume (PUREVA_FORM.PUR_LEVEL) -->
                     <div class="bg-surface border border-base-300 p-space-md shadow-sm flex flex-col justify-between">
                         <div class="flex items-start justify-between mb-space-sm">
-                            <span class="font-meta-tag text-[11px] uppercase tracking-wider text-text-muted">Purchase Volume
+                            <span class="font-meta-tag text-[11px] uppercase tracking-wider text-mute">Purchase Volume
                                 Level</span>
                             <span class="material-symbols-outlined text-[18px] text-secondary">trending_up</span>
                         </div>
                         <div>
                             <div class="flex items-baseline gap-space-xs">
-                                <span class="font-h1 text-h1 font-bold text-primary tracking-tight">Level A</span>
+                                <span class="text-2xl text-h1 font-bold text-primary tracking-tight">Level A</span>
                             </div>
                             <p class="font-body-sm text-[12px] text-text-body mt-1 font-semibold">
                                 Volume: &gt;= ฿1,000,000 / Month
@@ -188,14 +186,14 @@
                     <!-- KPI 3: Registered Capital (PUREVA_FORM.CAPITAL) -->
                     <div class="bg-surface border border-base-300 p-space-md shadow-sm flex flex-col justify-between">
                         <div class="flex items-start justify-between mb-space-sm">
-                            <span class="font-meta-tag text-[11px] uppercase tracking-wider text-text-muted">Registered
+                            <span class="font-meta-tag text-[11px] uppercase tracking-wider text-mute">Registered
                                 Capital</span>
                             <span class="material-symbols-outlined text-[18px] text-primary">account_balance</span>
                         </div>
                         <div>
                             <div class="flex items-baseline gap-space-xs">
-                                <span class="font-h1 text-h1 font-bold text-primary tracking-tight">฿180M</span>
-                                <span class="font-meta-tag text-[12px] text-text-muted uppercase">THB</span>
+                                <span class="text-2xl text-h1 font-bold text-primary tracking-tight">฿180M</span>
+                                <span class="font-meta-tag text-[12px] text-mute uppercase">THB</span>
                             </div>
                             <p class="font-data-mono text-[12px] text-text-body mt-1 font-semibold">
                                 Fully Paid-Up (Cap. Cur: THB)
@@ -209,14 +207,15 @@
                     <!-- KPI 4: Compliance Matrix (PUREVA_FORM.QM_STATUS, ENV_STATUS, CSR_STATUS) -->
                     <div class="bg-surface border border-base-300 p-space-md shadow-sm flex flex-col justify-between">
                         <div class="flex items-start justify-between mb-space-sm">
-                            <span class="font-meta-tag text-[11px] uppercase tracking-wider text-text-muted">Audit &
+                            <span class="font-meta-tag text-[11px] uppercase tracking-wider text-mute">Audit &
                                 Compliance</span>
                             <span class="material-symbols-outlined text-[18px] text-status-success-text">policy</span>
                         </div>
                         <div>
                             <div class="flex items-baseline gap-space-xs">
-                                <span class="font-h1 text-h1 font-bold text-status-success-text tracking-tight">100%</span>
-                                <span class="font-meta-tag text-[12px] text-text-muted uppercase">Pass</span>
+                                <span
+                                    class="text-2xl text-h1 font-bold text-status-success-text tracking-tight">100%</span>
+                                <span class="font-meta-tag text-[12px] text-mute uppercase">Pass</span>
                             </div>
                             <p
                                 class="font-body-sm text-[12px] text-status-success-text mt-1 font-semibold flex items-center gap-1">
@@ -238,19 +237,19 @@
                             01. Legal Entity & Facility Profile
                         </button>
                         <button
-                            class="h-full inline-flex items-center font-meta-tag text-[13px] uppercase tracking-wider text-text-muted hover:text-primary transition-colors">
+                            class="h-full inline-flex items-center font-meta-tag text-[13px] uppercase tracking-wider text-mute hover:text-primary transition-colors">
                             02. Evaluation Scores (PUR-EVA)
                         </button>
                         <button
-                            class="h-full inline-flex items-center font-meta-tag text-[13px] uppercase tracking-wider text-text-muted hover:text-primary transition-colors">
+                            class="h-full inline-flex items-center font-meta-tag text-[13px] uppercase tracking-wider text-mute hover:text-primary transition-colors">
                             03. Financials & Stakeholder Relations
                         </button>
                         <button
-                            class="h-full inline-flex items-center font-meta-tag text-[13px] uppercase tracking-wider text-text-muted hover:text-primary transition-colors">
+                            class="h-full inline-flex items-center font-meta-tag text-[13px] uppercase tracking-wider text-mute hover:text-primary transition-colors">
                             04. Bank & Commercial Terms
                         </button>
                         <button
-                            class="h-full inline-flex items-center font-meta-tag text-[13px] uppercase tracking-wider text-text-muted hover:text-primary transition-colors">
+                            class="h-full inline-flex items-center font-meta-tag text-[13px] uppercase tracking-wider text-mute hover:text-primary transition-colors">
                             05. SCM Users & Attachments
                         </button>
                     </div>
@@ -269,37 +268,37 @@
                                     <h2 class="font-h3 text-[18px] text-primary font-bold">Section 1: Legal Entity &
                                         Corporate Structure</h2>
                                 </div>
-                                <span class="font-data-mono text-[11px] text-text-muted uppercase">PURVMM Ref:
+                                <span class="font-data-mono text-[11px] text-mute uppercase">PURVMM Ref:
                                     EVANO-2025-0042</span>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
                                 <div class="space-y-space-md">
                                     <div>
-                                        <div class="font-meta-tag text-[11px] uppercase text-text-muted tracking-wider">
+                                        <div class="font-meta-tag text-[11px] uppercase text-mute tracking-wider">
                                             Registered Corporate Title (EN) [COMNAME]</div>
                                         <div class="font-body-md text-primary font-semibold mt-0.5">Siam Precision
                                             Engineering Co., Ltd.</div>
                                     </div>
                                     <div>
-                                        <div class="font-meta-tag text-[11px] uppercase text-text-muted tracking-wider">
+                                        <div class="font-meta-tag text-[11px] uppercase text-mute tracking-wider">
                                             Registered Corporate Title (TH) [VND_TNAME]</div>
                                         <div class="font-body-md text-text-body font-medium mt-0.5">บริษัท สยาม พรีซิชั่น
                                             เอ็นจิเนียริ่ง จำกัด</div>
                                     </div>
                                     <div>
-                                        <div class="font-meta-tag text-[11px] uppercase text-text-muted tracking-wider">
+                                        <div class="font-meta-tag text-[11px] uppercase text-mute tracking-wider">
                                             Commercial Registration & Tax ID [TAX_ID / CORPORATE_ID]</div>
                                         <div class="font-data-mono text-primary font-semibold mt-0.5">0105550000000 (DBD
                                             Registration)</div>
                                     </div>
                                     <div>
-                                        <div class="font-meta-tag text-[11px] uppercase text-text-muted tracking-wider">
+                                        <div class="font-meta-tag text-[11px] uppercase text-mute tracking-wider">
                                             Legal Entity Type [COM_TYPE / LEGAL_STATUS]</div>
                                         <div class="font-body-md text-text-body font-medium mt-0.5">Company Limited (Co.,
                                             Ltd.) / Active</div>
                                     </div>
                                     <div>
-                                        <div class="font-meta-tag text-[11px] uppercase text-text-muted tracking-wider">
+                                        <div class="font-meta-tag text-[11px] uppercase text-mute tracking-wider">
                                             Business Type Category [BUSTYPE_REG / BUSTYPE_SUB]</div>
                                         <div class="font-body-sm text-text-body font-medium mt-0.5">Manufacturer &
                                             Fabricator / Elevator Structural Parts</div>
@@ -307,33 +306,33 @@
                                 </div>
                                 <div class="space-y-space-md">
                                     <div>
-                                        <div class="font-meta-tag text-[11px] uppercase text-text-muted tracking-wider">
+                                        <div class="font-meta-tag text-[11px] uppercase text-mute tracking-wider">
                                             Registered Capital [CAPITAL & CAPITAL_CUR]</div>
                                         <div class="font-data-mono text-primary font-semibold mt-0.5">฿180,000,000 THB
                                             (Fully Paid-Up)</div>
                                     </div>
                                     <div>
-                                        <div class="font-meta-tag text-[11px] uppercase text-text-muted tracking-wider">
+                                        <div class="font-meta-tag text-[11px] uppercase text-mute tracking-wider">
                                             Year Established [ESTABLISHED]</div>
                                         <div class="font-body-md text-primary font-semibold mt-0.5">1998 (Operating 28
                                             Years)</div>
                                     </div>
                                     <div>
-                                        <div class="font-meta-tag text-[11px] uppercase text-text-muted tracking-wider">
+                                        <div class="font-meta-tag text-[11px] uppercase text-mute tracking-wider">
                                             Workforce Headcount [EMPDIRECT / EMPINDIRECT / AVGAGE]</div>
                                         <div class="font-body-md text-primary font-semibold mt-0.5">
                                             450 Staff (Direct: 380, Indirect: 70) • Avg. Age: 34 Yrs
                                         </div>
                                     </div>
                                     <div>
-                                        <div class="font-meta-tag text-[11px] uppercase text-text-muted tracking-wider">
+                                        <div class="font-meta-tag text-[11px] uppercase text-mute tracking-wider">
                                             Factory & Land Footprint [FACTORY / LAND]</div>
                                         <div class="font-body-sm text-text-body font-medium mt-0.5">
                                             Land: 25.0 Rai • Factory Floor Area: 18,500.0 Sq.m.
                                         </div>
                                     </div>
                                     <div>
-                                        <div class="font-meta-tag text-[11px] uppercase text-text-muted tracking-wider">
+                                        <div class="font-meta-tag text-[11px] uppercase text-mute tracking-wider">
                                             Purchase Category [PRODCAT / VENDCAT]</div>
                                         <div class="font-body-sm text-secondary font-semibold mt-0.5">
                                             Sheet Metal, Hoistway Structure & Stamping
@@ -401,7 +400,7 @@
                                     <tbody class="divide-y divide-border-light font-body-sm text-[13px]">
                                         <tr>
                                             <td class="py-3 px-3 font-semibold text-primary">Quality Management System</td>
-                                            <td class="py-3 px-3 text-text-muted">Process capability, zero-defect control &
+                                            <td class="py-3 px-3 text-mute">Process capability, zero-defect control &
                                                 QA system</td>
                                             <td class="py-3 px-3 text-right font-data-mono">30</td>
                                             <td
@@ -413,7 +412,7 @@
                                         </tr>
                                         <tr>
                                             <td class="py-3 px-3 font-semibold text-primary">Delivery & Order Service</td>
-                                            <td class="py-3 px-3 text-text-muted">On-time delivery performance, ASN
+                                            <td class="py-3 px-3 text-mute">On-time delivery performance, ASN
                                                 accuracy & schedule compliance</td>
                                             <td class="py-3 px-3 text-right font-data-mono">25</td>
                                             <td
@@ -426,7 +425,7 @@
                                         <tr>
                                             <td class="py-3 px-3 font-semibold text-primary">Price & Cost Down
                                                 Competitiveness</td>
-                                            <td class="py-3 px-3 text-text-muted">Cost reduction initiatives, transparent
+                                            <td class="py-3 px-3 text-mute">Cost reduction initiatives, transparent
                                                 breakdown & quotation response</td>
                                             <td class="py-3 px-3 text-right font-data-mono">20</td>
                                             <td class="py-3 px-3 text-right font-data-mono font-bold text-primary">18</td>
@@ -437,7 +436,7 @@
                                         <tr>
                                             <td class="py-3 px-3 font-semibold text-primary">Environmental & Green
                                                 Standards</td>
-                                            <td class="py-3 px-3 text-text-muted">ISO 14001, hazardous substance
+                                            <td class="py-3 px-3 text-mute">ISO 14001, hazardous substance
                                                 elimination & RoHS conformity</td>
                                             <td class="py-3 px-3 text-right font-data-mono">15</td>
                                             <td class="py-3 px-3 text-right font-data-mono font-bold text-primary">10</td>
@@ -448,7 +447,7 @@
                                         <tr>
                                             <td class="py-3 px-3 font-semibold text-primary">CSR, Safety & Labor Compliance
                                             </td>
-                                            <td class="py-3 px-3 text-text-muted">Labor standards, workplace safety
+                                            <td class="py-3 px-3 text-mute">Labor standards, workplace safety
                                                 protocols & legal compliance</td>
                                             <td class="py-3 px-3 text-right font-data-mono">10</td>
                                             <td class="py-3 px-3 text-right font-data-mono font-bold text-primary">7</td>
@@ -482,7 +481,7 @@
                                     <h2 class="font-h3 text-[18px] text-primary font-bold">Section 3: Financial History &
                                         Stakeholder Relations</h2>
                                 </div>
-                                <span class="font-meta-tag text-[11px] uppercase text-text-muted">PUREVA Sub-Tables</span>
+                                <span class="font-meta-tag text-[11px] uppercase text-mute">PUREVA Sub-Tables</span>
                             </div>
 
                             <!-- Financial Turnover Table (PUREVA_PROFIT_TURNOVER) -->
@@ -506,21 +505,21 @@
                                             <td class="py-2.5 px-3 text-right font-semibold text-primary">฿450,000,000</td>
                                             <td class="py-2.5 px-3 text-right text-status-success-text font-semibold">
                                                 +฿38,500,000</td>
-                                            <td class="py-2.5 px-3 text-right text-text-muted">8.55%</td>
+                                            <td class="py-2.5 px-3 text-right text-mute">8.55%</td>
                                         </tr>
                                         <tr>
                                             <td class="py-2.5 px-3 font-bold text-primary">2023</td>
                                             <td class="py-2.5 px-3 text-right font-semibold text-primary">฿415,000,000</td>
                                             <td class="py-2.5 px-3 text-right text-status-success-text font-semibold">
                                                 +฿32,100,000</td>
-                                            <td class="py-2.5 px-3 text-right text-text-muted">7.73%</td>
+                                            <td class="py-2.5 px-3 text-right text-mute">7.73%</td>
                                         </tr>
                                         <tr>
                                             <td class="py-2.5 px-3 font-bold text-primary">2022</td>
                                             <td class="py-2.5 px-3 text-right font-semibold text-primary">฿380,000,000</td>
                                             <td class="py-2.5 px-3 text-right text-status-success-text font-semibold">
                                                 +฿29,400,000</td>
-                                            <td class="py-2.5 px-3 text-right text-text-muted">7.73%</td>
+                                            <td class="py-2.5 px-3 text-right text-mute">7.73%</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -592,7 +591,7 @@
                                         <span
                                             class="bg-status-success-bg text-status-success-text border border-status-success-border font-meta-tag text-[10px] px-1.5 py-0.5">PASS</span>
                                     </div>
-                                    <div class="font-caption text-text-muted mt-1">[QM_REASON] Certified by TUV Rheinland
+                                    <div class="font-caption text-mute mt-1">[QM_REASON] Certified by TUV Rheinland
                                         (Valid)</div>
                                 </div>
                                 <!-- ENV_STATUS (ISO 14001) -->
@@ -602,7 +601,7 @@
                                         <span
                                             class="bg-status-success-bg text-status-success-text border border-status-success-border font-meta-tag text-[10px] px-1.5 py-0.5">PASS</span>
                                     </div>
-                                    <div class="font-caption text-text-muted mt-1">[ENV_REASON] Certified by SGS Thailand
+                                    <div class="font-caption text-mute mt-1">[ENV_REASON] Certified by SGS Thailand
                                         (Valid)</div>
                                 </div>
                                 <!-- CSR_STATUS -->
@@ -612,7 +611,7 @@
                                         <span
                                             class="bg-status-success-bg text-status-success-text border border-status-success-border font-meta-tag text-[10px] px-1.5 py-0.5">PASS</span>
                                     </div>
-                                    <div class="font-caption text-text-muted mt-1">[CSR_REASON] Compliant with AMEC Supply
+                                    <div class="font-caption text-mute mt-1">[CSR_REASON] Compliant with AMEC Supply
                                         Chain Charter</div>
                                 </div>
                                 <!-- LABOR_STATUS -->
@@ -622,12 +621,12 @@
                                         <span
                                             class="bg-status-success-bg text-status-success-text border border-status-success-border font-meta-tag text-[10px] px-1.5 py-0.5">PASS</span>
                                     </div>
-                                    <div class="font-data-mono text-[11px] text-text-muted mt-1">Labor Est. Date:
+                                    <div class="font-data-mono text-[11px] text-mute mt-1">Labor Est. Date:
                                         1998-05-12</div>
                                 </div>
                                 <!-- COMPLIANCE -->
                                 <div class="p-space-sm bg-surface-container-low border border-border-light">
-                                    <div class="font-meta-tag text-[10px] uppercase text-text-muted">Statutory Compliance
+                                    <div class="font-meta-tag text-[10px] uppercase text-mute">Statutory Compliance
                                         [COMPLIANCE]</div>
                                     <div class="font-semibold text-primary mt-0.5">RoHS 2.0 / REACH / Conflict-Free
                                         Minerals</div>
@@ -645,26 +644,26 @@
                             </div>
                             <div class="space-y-space-sm font-body-sm text-[12px]">
                                 <div class="flex justify-between py-1 border-b border-border-light">
-                                    <span class="text-text-muted">Payment Term [TERMCODE]:</span>
+                                    <span class="text-mute">Payment Term [TERMCODE]:</span>
                                     <span class="font-data-mono font-bold text-primary">N60 (Credit 60 Days)</span>
                                 </div>
                                 <div class="flex justify-between py-1 border-b border-border-light">
-                                    <span class="text-text-muted">Settlement Currency [CURCODE]:</span>
+                                    <span class="text-mute">Settlement Currency [CURCODE]:</span>
                                     <span class="font-data-mono font-bold text-primary">THB (Thai Baht)</span>
                                 </div>
                                 <div class="flex justify-between py-1 border-b border-border-light">
-                                    <span class="text-text-muted">Trade Incoterm [TRADE_CODE]:</span>
+                                    <span class="text-mute">Trade Incoterm [TRADE_CODE]:</span>
                                     <span class="font-data-mono font-bold text-primary">DAP AMEC Chonburi</span>
                                 </div>
                                 <div class="flex justify-between py-1 border-b border-border-light">
-                                    <span class="text-text-muted">Payment Method [VPAYTY]:</span>
+                                    <span class="text-mute">Payment Method [VPAYTY]:</span>
                                     <span class="font-semibold text-primary">Direct Bank Transfer</span>
                                 </div>
                                 <div class="p-space-sm bg-surface-subtle border border-base-300 mt-space-sm">
-                                    <div class="font-meta-tag text-[10px] uppercase text-text-muted">Bank Information
+                                    <div class="font-meta-tag text-[10px] uppercase text-mute">Bank Information
                                         [BANKNAME & BRANCH]</div>
                                     <div class="font-bold text-primary mt-0.5">Bangkok Bank (BBL)</div>
-                                    <div class="text-sm text-text-muted">Branch: Amata City Chonburi</div>
+                                    <div class="text-sm text-mute">Branch: Amata City Chonburi</div>
                                     <div class="font-data-mono text-[11px] font-bold text-secondary mt-1">A/C:
                                         128-4-99820-1 [ACCNUMBER]</div>
                                 </div>
@@ -686,14 +685,14 @@
                                 <div class="font-meta-tag text-[10px] uppercase text-secondary font-bold">Primary Liaison
                                     [CONTACT]</div>
                                 <div class="font-bold text-primary mt-0.5">Mr. Kittisak Promdee</div>
-                                <div class="font-caption text-text-muted">Senior Sales & QA Manager</div>
+                                <div class="font-caption text-mute">Senior Sales & QA Manager</div>
                                 <div class="mt-2 space-y-1 font-data-mono text-[11px]">
                                     <div class="flex items-center gap-1 text-text-body">
-                                        <span class="material-symbols-outlined text-[13px] text-text-muted">mail</span>
+                                        <span class="material-symbols-outlined text-[13px] text-mute">mail</span>
                                         <span>kitti@siamprecision.co.th [EMAIL]</span>
                                     </div>
                                     <div class="flex items-center gap-1 text-text-body">
-                                        <span class="material-symbols-outlined text-[13px] text-text-muted">call</span>
+                                        <span class="material-symbols-outlined text-[13px] text-mute">call</span>
                                         <span>+66 38-450-891 [TELNO]</span>
                                     </div>
                                 </div>
@@ -709,7 +708,7 @@
                                         class="p-2 bg-surface-subtle border border-base-300 flex justify-between items-center">
                                         <div>
                                             <div class="font-semibold text-primary">Kittisak Promdee</div>
-                                            <div class="font-data-mono text-text-muted text-[10px]">User: kitti_sp</div>
+                                            <div class="font-data-mono text-mute text-[10px]">User: kitti_sp</div>
                                         </div>
                                         <span
                                             class="bg-status-success-bg text-status-success-text text-[10px] font-bold px-1.5 py-0.5">ACTIVE</span>
@@ -718,7 +717,7 @@
                                         class="p-2 bg-surface-subtle border border-base-300 flex justify-between items-center">
                                         <div>
                                             <div class="font-semibold text-primary">Supaporn Meesuk</div>
-                                            <div class="font-data-mono text-text-muted text-[10px]">User: supaporn_sp</div>
+                                            <div class="font-data-mono text-mute text-[10px]">User: supaporn_sp</div>
                                         </div>
                                         <span
                                             class="bg-status-success-bg text-status-success-text text-[10px] font-bold px-1.5 py-0.5">ACTIVE</span>
@@ -745,7 +744,7 @@
                                         <div class="truncate">
                                             <div class="font-semibold text-primary truncate">ISO_9001_Certificate_TUV.pdf
                                             </div>
-                                            <div class="font-caption text-[10px] text-text-muted">Type: 11 (Certificate) •
+                                            <div class="font-caption text-[10px] text-mute">Type: 11 (Certificate) •
                                                 2024-05-10</div>
                                         </div>
                                     </div>
@@ -763,7 +762,7 @@
                                         <div class="truncate">
                                             <div class="font-semibold text-primary truncate">ISO_14001_Certificate_SGS.pdf
                                             </div>
-                                            <div class="font-caption text-[10px] text-text-muted">Type: 11 (Certificate) •
+                                            <div class="font-caption text-[10px] text-mute">Type: 11 (Certificate) •
                                                 2024-06-15</div>
                                         </div>
                                     </div>
@@ -780,7 +779,7 @@
                                             class="material-symbols-outlined text-[18px] text-status-reject-text flex-shrink-0">description</span>
                                         <div class="truncate">
                                             <div class="font-semibold text-primary truncate">DBD_Certificate_PP20.pdf</div>
-                                            <div class="font-caption text-[10px] text-text-muted">Type: 11 (VAT/Reg) •
+                                            <div class="font-caption text-[10px] text-mute">Type: 11 (VAT/Reg) •
                                                 2024-01-12</div>
                                         </div>
                                     </div>
@@ -805,7 +804,7 @@
                         </span>
                     </div>
                     <div class="flex items-center gap-space-md font-meta-tag text-[12px]">
-                        <span class="text-text-muted uppercase">Evaluation Cycle:</span>
+                        <span class="text-mute uppercase">Evaluation Cycle:</span>
                         <span class="bg-surface-container px-2.5 py-1 text-primary font-bold">Annual (PRO-EVA
                             FY2025)</span>
                     </div>

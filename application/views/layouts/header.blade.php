@@ -7,23 +7,23 @@
             <span class="font-caption text-sm text-status-reject-text font-bold">SUPPLIER IDENTITY &amp; ACCESS
                 GOVERNANCE • ISO 27001 / J-SOX COMPLIANT</span>
         </div>
-        <h1 class="font-h1 text-h2 md:text-h1 text-on-surface leading-tight font-bold tracking-tight">
+        <h1 class="text-2xl md:text-2xl leading-tight font-bold tracking-tight">
             User Profile &amp; Security Settings
         </h1>
-        <p class="font-body-md text-body-md text-text-muted">
+        <p class="font-body-md text-body-md text-mute">
             ข้อมูลโปรไฟล์และความปลอดภัยผู้ใช้งาน • Detailed account credentials, enterprise role authorization,
             corporate entity linkage for AMEC extranet access.
         </p>
     </div>
     <div class="flex flex-wrap items-center gap-space-sm shrink-0">
         <button
-            class="px-space-md py-2.5 bg-surface hover:bg-surface-subtle text-on-surface font-caption text-sm font-bold flex items-center gap-2 shadow-sm transition-colors border border-border-medium"
+            class="px-space-md py-2.5 bg-surface hover:bg-surface-subtle font-caption text-sm font-bold flex items-center gap-2 shadow-sm transition-colors border border-border-medium"
             type="button">
             <span class="material-symbols-outlined text-[18px]">edit_document</span>
             <span class="">Edit Profile Info</span>
         </button>
         <button
-            class="px-space-md py-2.5 bg-surface hover:bg-surface-subtle text-on-surface font-caption text-sm font-bold flex items-center gap-2 shadow-sm transition-colors border border-border-medium"
+            class="px-space-md py-2.5 bg-surface hover:bg-surface-subtle font-caption text-sm font-bold flex items-center gap-2 shadow-sm transition-colors border border-border-medium"
             type="button">
             <span class="material-symbols-outlined text-[18px]">file_download</span>
             <span class="">Audit Log (.PDF)</span>

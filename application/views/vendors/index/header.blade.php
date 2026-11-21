@@ -1,8 +1,8 @@
+<!-- Section 1: Standard Page Header Component -->
 @include('components.page-header', [
     'systemTag' => 'AMEC-PRO-SYS-TH',
     'title' => 'Vendor Directory',
-    'description' =>
-        'ทะเบียนรายชื่อคู่ค้าทั้งหมด • Official registry of approved tier-1 manufacturing fabricators, electrical component suppliers, precision casting specialists, and logistics partners for AMEC Chonburi Works. Governed by Japanese industrial safety and ISO/J-SOX quality mandates.',
+    'description' => 'ทะเบียนรายชื่อคู่ค้าทั้งหมด • Official registry of approved suppliers',
     'actionsList' => [
         [
             'label' => 'Download Approved List (.PDF)',

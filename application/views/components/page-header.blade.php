@@ -1,5 +1,5 @@
 @php
-    $systemTag = $systemTag ?? 'AMEC-PRO-SYS-TH';
+    $systemTag = $systemTag ?? 'PUR-008P';
     $alertTag = $alertTag ?? null;
     $title = $title ?? '';
     $description = $description ?? '';
@@ -11,7 +11,7 @@
 <div
     class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-space-md bg-base-100 p-space-lg shadow-sm border-b border-base-300">
     <div class="space-y-space-xs max-w-3xl">
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-3">
             <span class="badge badge-primary font-mono text-[11px] uppercase tracking-wider font-bold">
                 {{ $systemTag }}
             </span>
@@ -21,11 +21,11 @@
                 </span>
             @endif
         </div>
-        <h1 class="font-h1 text-h2 md:text-h1 text-on-surface leading-tight font-bold tracking-tight">
+        <h1 class="text-2xl md:text-2xl leading-tight font-black uppercase tracking-tight">
             {{ $title }}
         </h1>
         @if (!empty($description))
-            <p class="text-body-md text-text-muted">
+            <p class="text-body-md text-mute">
                 {{ $description }}
             </p>
         @endif

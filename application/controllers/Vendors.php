@@ -7,10 +7,13 @@ class Vendors extends MY_Controller {
     }
 
     public function index(){
+        $this->breadcrumb->add('Vendor Directory');
         $this->views('vendors/index');
     }
 
     public function detail($id = ''){
+        $this->breadcrumb->add('Vendor Directory', '/vendors');
+        $this->breadcrumb->add('Vendor Detail');
         $this->views('Vendors/detail', [
             'id' => $id
         ]);

@@ -9,13 +9,13 @@
     $class = $class ?? '';
     $bodyClass = $bodyClass ?? '';
 
-    $borderTopClass = match($borderTop) {
+    $borderTopClass = match ($borderTop) {
         'primary' => 'border-t-2 border-primary',
         'error', 'danger' => 'border-t-2 border-error',
         'warning' => 'border-t-2 border-warning',
         'success' => 'border-t-2 border-success',
         'secondary' => 'border-t-2 border-secondary',
-        default => ''
+        default => '',
     };
 @endphp
 
@@ -32,7 +32,7 @@
                         {{ $title }}
                     </h2>
                     @if (!empty($subtitle))
-                        <p class="text-xs text-text-muted m-0">{{ $subtitle }}</p>
+                        <p class="text-xs text-mute m-0">{{ $subtitle }}</p>
                     @endif
                 </div>
                 @if (!empty($badge))

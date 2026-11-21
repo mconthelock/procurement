@@ -39,7 +39,7 @@
 <div
     class="card bg-base-100 p-4 shadow-sm border border-base-300 relative flex flex-col justify-between {{ $borderTopClass }}">
     <div>
-        <div class="flex items-center justify-between text-text-muted">
+        <div class="flex items-center justify-between text-mute">
             <span class="text-sm uppercase tracking-wider font-bold">
                 {{ $title }}
             </span>
@@ -49,17 +49,17 @@
                 </span>
             @elseif (!empty($icon))
                 <span
-                    class="material-symbols-outlined text-[20px] {{ $variant === 'error' ? 'text-error' : 'text-text-muted' }}">
+                    class="material-symbols-outlined text-[20px] {{ $variant === 'error' ? 'text-error' : 'text-mute' }}">
                     {{ $icon }}
                 </span>
             @endif
         </div>
 
         <div class="mt-2 flex items-baseline justify-between">
-            <div class="text-h2 font-bold {{ $valueColorClass }}">
+            <div class="font-bold {{ $valueColorClass }}">
                 {{ $value }}
                 @if (!empty($unit))
-                    <span class="text-body-sm text-text-muted font-normal ml-1">{{ $unit }}</span>
+                    <span class="text-body-sm text-mute font-normal ml-1">{{ $unit }}</span>
                 @endif
             </div>
             @if (!empty($secondaryValue))
@@ -71,7 +71,7 @@
     </div>
 
     @if (!empty($footerText) || !empty($footerTrend) || !empty($link) || !empty($slot))
-        <div class="mt-2 pt-2 border-t border-base-200 flex items-center justify-between text-sm text-text-muted">
+        <div class="mt-2 pt-2 border-t border-base-200 flex items-center justify-between text-sm text-mute">
             @if (!empty($footerText))
                 <span>{{ $footerText }}</span>
             @endif

@@ -20,7 +20,7 @@ $(document).ready(async () => {
 	try {
 		await showLoader();
 		await reloadTable();
-		await bindEvents();
+		//await bindEvents();
 	} catch (error) {
 		console.error(error);
 		await showMessage(error.message || "Error initializing app");
@@ -91,15 +91,15 @@ async function populateFilters(data) {
 
 async function reloadTable() {
 	const data = await getVendors();
-	const filteredData = data.filter((item) => item.VND_STATUS > 0);
-	await populateFilters(filteredData);
-	if (!table) {
-		await createVendorsTable(filteredData);
-	} else {
-		table.clear();
-		table.rows.add(filteredData);
-		table.draw();
-	}
+	//const filteredData = data.filter((item) => item.VND_STATUS > 0);
+	// await populateFilters(filteredData);
+	// if (!table) {
+	// 	await createVendorsTable(filteredData);
+	// } else {
+	// 	table.clear();
+	// 	table.rows.add(filteredData);
+	// 	table.draw();
+	// }
 }
 
 async function createVendorsTable(data) {
