@@ -288,11 +288,11 @@ defineProps({
 			<text x="522" y="82" text-anchor="middle" class="node-sub">Status = 1 (RBAC Ready)</text>
 
 			<rect x="650" y="18" width="290" height="106" rx="6" class="node-box node-neutral" />
-			<text x="795" y="42" text-anchor="middle" class="node-title">E-SCM Portal Modules (RBAC)</text>
-			<text x="668" y="64" class="db-field">• ADMIN     : All + User Management</text>
-			<text x="668" y="81" class="db-field">• SALES     : PO + Change Notice + Drawings</text>
-			<text x="668" y="98" class="db-field">• LOGISTICS : PO (View) + ASN + Delivery</text>
-			<text x="668" y="115" class="db-field">• QA        : Claim Slip (CAR) + Drawings</text>
+			<text x="795" y="42" text-anchor="middle" class="node-title">E-SCM Shared Scope &amp; Position</text>
+			<text x="668" y="64" class="db-field">• Shared across grouped VENDORS_CODE</text>
+			<text x="668" y="81" class="db-field">• Position: Sales / Production / QA</text>
+			<text x="668" y="98" class="db-field">• Position: Logistics / Finance / Mgmt</text>
+			<text x="668" y="115" class="db-field">• New accounts auto-start as PENDING</text>
 
 			<!-- Bottom Audit / Inactivity Bar -->
 			<rect x="220" y="142" width="390" height="54" rx="6" class="node-box node-red" />

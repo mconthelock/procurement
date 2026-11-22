@@ -3,7 +3,7 @@ import { createModal, setModal } from "@amec/webasset/components/modal";
 import { readInput } from "@amec/webasset/excel";
 import { showLoader } from "@amec/webasset/preloader";
 import { showErrorMessage, showMessage } from "@amec/webasset/utils";
-import { uploadOrigin } from "./data";
+import { uploadItemOrigin } from "../service/index.js";
 import { currentUser } from "@amec/webasset/api/amec";
 
 export const modalUpload = {
@@ -30,37 +30,37 @@ export const modalUpload = {
 			closeBackdrop: false,
 			className: "self-start mt-[1%]",
 			body: `
-                <div class="flex flex-col gap-5">
-                    <div class="alert alert-warning shadow-sm">
-                        <i class="fi fi-rr-triangle-warning text-xl"></i>
+                <div class="flex flex-col gap-space-md">
+                    <div class="bg-warning/10 border border-warning/40 border-l-4 border-l-warning p-3 flex items-start gap-2.5">
+                        <span class="material-symbols-outlined text-warning text-[22px] shrink-0 mt-0.5">warning</span>
 
-                        <div class="text-sm">
-                            <div class="font-bold text-base">Important!</div>
-                            <div>
+                        <div class="text-xs">
+                            <div class="font-bold text-sm text-primary uppercase tracking-wider">Important</div>
+                            <div class="text-secondary mt-0.5">
                                 Please fill in
-                                <strong>Bulk Code</strong> and
-                                <strong>Country</strong>
+                                <strong class="text-primary">Bulk Code</strong> and
+                                <strong class="text-primary">Country</strong>
                                 for each row.
                             </div>
-                            <div class="font-bold text-red-700 mt-1">
-                                ⚠ Rows without Bulk Code or Country will NOT be saved.
+                            <div class="font-bold text-error mt-1">
+                                Rows without Bulk Code or Country will NOT be saved.
                             </div>
                         </div>
                     </div>
                     <!-- Upload Area -->
-                    <div class="flex items-center gap-4 p-4 rounded-xl bg-base-200/50 border border-base-300">
-                        <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-primary/10">
-                            <i class="fi fi-sr-file-excel text-2xl text-primary"></i>
+                    <div class="flex items-center gap-4 p-4 bg-base-200 border border-base-300">
+                        <div class="flex items-center justify-center w-11 h-11 bg-base-100 border border-base-300 shrink-0">
+                            <span class="material-symbols-outlined text-[24px] text-primary">table_view</span>
                         </div>
 
                         <div class="flex-1 min-w-0">
-                            <div class="font-semibold">
-                                Excel File
+                            <div class="text-xs font-bold uppercase tracking-wider text-primary">
+                                Excel File (.xlsx / .xls)
                             </div>
 
                             <div
                                 id="selected-file-name"
-                                class="text-sm text-base-content/60 truncate"
+                                class="text-xs text-mute font-mono truncate mt-0.5"
                             >
                                 Please select an Excel file
                             </div>
@@ -68,10 +68,10 @@ export const modalUpload = {
 
                         <label
                             for="excel-file"
-                            class="btn btn-outline btn-sm cursor-pointer"
+                            class="btn btn-outline btn-sm cursor-pointer gap-1.5"
                         >
-                            <i class="fi fi-sr-folder-open"></i>
-                            Choose File
+                            <span class="material-symbols-outlined text-[18px]">folder_open</span>
+                            <span>Choose File</span>
                         </label>
 
                         <input
@@ -84,23 +84,23 @@ export const modalUpload = {
                     </div>
 
                     <!-- Actions -->
-                    <div class="flex justify-end gap-3">
+                    <div class="flex justify-end gap-2 pt-2 border-t border-base-200">
 
                         <button
                             id="template-excel"
-                            class="btn btn-outline"
+                            class="btn btn-sm btn-outline gap-1.5"
                             type="button"
                         >
-                            <i class="fi fi-sr-file-download text-lg"></i>
+                            <span class="material-symbols-outlined text-[18px]">download</span>
                             <span>Download Template</span>
                         </button>
 
                         <button
                             id="upload-excel"
-                            class="btn btn-primary"
+                            class="btn btn-sm btn-primary gap-1.5"
                             type="button"
                         >
-                            <i class="fi fi-sr-file-upload text-lg"></i>
+                            <span class="material-symbols-outlined text-[18px]">upload_file</span>
                             <span>Upload Excel</span>
                         </button>
 
@@ -151,9 +151,9 @@ export const modalUpload = {
 
 			const size = (file.size / 1024 / 1024).toFixed(2);
 			self.selectedFileName().html(`
-                <i class="fi fi-sr-file-excel text-success"></i>
+                <span class="material-symbols-outlined text-[15px] text-success align-middle">description</span>
                 ${file.name}
-                <span class="text-base-content/50">(${size} MB)</span>
+                <span class="text-mute">(${size} MB)</span>
             `);
 		});
 
@@ -202,7 +202,7 @@ export const modalUpload = {
 					showMessage("No valid data to upload.", "warning");
 					return;
 				}
-				const res = await uploadOrigin(mapData);
+				const res = await uploadItemOrigin(mapData);
 				if (!res.status) {
 					throw new Error(res.message);
 				}

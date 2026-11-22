@@ -1,5 +1,10 @@
+import "select2/dist/css/select2.min.css";
+import "@amec/webasset/css/select2.min.css";
+import select2 from "select2";
 import { showLoader } from "@amec/webasset/preloader";
 import { showMessage } from "@amec/webasset/utils";
+
+select2();
 import {
 	getVendors,
 	getVendorDetail,
@@ -1104,8 +1109,8 @@ $(document).on("input change", "#historySearchInput, #historyModeFilter, #histor
 
 $(document).on("click", "#historyFilterReset", () => {
 	$("#historySearchInput").val("");
-	$("#historyModeFilter").val("");
-	$("#historyStatusFilter").val("");
+	$("#historyModeFilter").val("").trigger("change.select2");
+	$("#historyStatusFilter").val("").trigger("change.select2");
 	applyHistoryFilters();
 });
 
@@ -1309,6 +1314,17 @@ $(document).ready(async () => {
 	try {
 		await showLoader();
 		await window.appReady;
+
+		$("#historyModeFilter").select2({
+			placeholder: "All Modes (A / U / D)",
+			allowClear: true,
+			width: "100%",
+		});
+		$("#historyStatusFilter").select2({
+			placeholder: "All Statuses",
+			allowClear: true,
+			width: "100%",
+		});
 
 		const vendorId =
 			$("#vnd-id").val() || window.location.pathname.split("/").pop();

@@ -64,8 +64,8 @@ outline: deep
 
 <VendorFlowDiagrams diagram="scm-user-flow" />
 
-- เมื่อสร้างผู้ใช้ใหม่ผ่าน `POST /pursys/vendors/users/` ระบบจะผูกบัญชีเข้ากับ `VND_CODE` และ `USER_ROLE` โดยเริ่มที่สถานะ **`Pending Activation (0)`** พร้อมลิงก์ยืนยันตัวตนที่มีอายุ **72 ชั่วโมง**
-- หลังคู่ค้าตั้งรหัสผ่านสำเร็จ สถานะจะเปลี่ยนเป็น **`Active (1)`** และได้รับสิทธิ์เข้าถึงโมดูลตาม **RBAC** (`ADMIN`, `SALES`, `LOGISTICS`, `QA`)
+- เมื่อสร้างผู้ใช้ใหม่ผ่าน `POST /pursys/vendors/users/` ระบบจะผูกบัญชีเข้ากับ `VND_CODE` และ `USER_ROLE` (Position / Responsibility เช่น Sales, Production, Logistics, QA, Finance, Management) โดยเริ่มที่สถานะ **`Pending Activation (0)`** อัตโนมัติพร้อมลิงก์ยืนยันตัวตนที่มีอายุ **72 ชั่วโมง**
+- หลังผ่านขั้นตอนอนุมัติและตั้งรหัสผ่านสำเร็จ สถานะจะเปลี่ยนเป็น **`Active (1)`** โดยได้รับสิทธิ์ E-SCM ร่วมกันทุกรหัสคู่ค้าในกลุ่มบริษัทเดียวกัน (`PURSYS.VENDORS_CODE`)
 - หากไม่มีการเข้าสู่ระบบเกิน **90 วัน** หรือผู้ดูแลระบบสั่งระงับ สถานะจะเปลี่ยนเป็น **`Locked / Inactive (2)`** พร้อมบันทึก Audit Trail ทุกครั้ง
 
 ---
@@ -76,10 +76,12 @@ outline: deep
 procurement/
 ├── application/
 │   ├── controllers/
-│   │   └── Vendors.php                    # Controller หลักของโมดูล Vendors
+│   │   └── Vendors.php                    # Controller หลัก (index, list, detail, users)
 │   └── views/vendors/
-│       ├── index.blade.php                # หน้า Vendor Directory
+│       ├── index.blade.php                # หน้า Vendor Directory (Buyer / Admin)
 │       ├── index/                         # Partial: header, kpi, filters, table, drawer, footer
+│       ├── list.blade.php                 # หน้า Approved Vendor List (Indirect & Subcon Read-Only)
+│       ├── list/                          # Partial: header, kpi, filters, table, drawer, directives
 │       ├── detail.blade.php               # หน้า Vendor Detail (5 Tabs Read-Only)
 │       ├── detail/                        # Partial: header, summary, tab-overview, tab-financial,
 │       │                                  #          tab-scm, tab-evaluation, tab-history,
@@ -89,18 +91,19 @@ procurement/
 ├── assets/script/
 │   ├── vendor/
 │   │   ├── _entry.js                      # Rspack entry points ของโมดูล Vendors
-│   │   ├── index.js                       # Logic หน้า Vendor Directory (KPI, Filters, DataTable, Export)
-│   │   ├── detail.js                      # Logic หน้า Vendor Detail (Tabs, Group Manager, Diff Drawer)
-│   │   ├── users.js                       # Logic หน้า Vendor Users (CRUD, Reset Password, RBAC)
-│   │   ├── create.js                      # Logic หน้าขึ้นทะเบียน/แก้ไขคู่ค้า (Cover Sheet)
-│   │   ├── approval.js                    # Logic หน้าตารางติดตามการอนุมัติ
-│   │   ├── frmapv.js                      # Logic หน้าฟอร์มพิจารณาอนุมัติ
+│   │   ├── index.js                       # Entry หน้า Vendor Directory (Export & Coordination)
+│   │   ├── index-table.js                 # Logic ตาราง, KPI, Select2 Filters ของ Vendor Directory
+│   │   ├── list.js                        # Logic หน้า Approved Vendor List (General Read-Only + Drawer)
+│   │   ├── detail.js                      # Logic หน้า Vendor Detail (Tabs, Select2, Group Manager, Diff)
+│   │   ├── users.js                       # Logic หน้า Vendor Users (CRUD, Position/Duty, Reset Password)
+│   │   ├── create.js / approval.js / frmapv.js  # สคริปต์ฟอร์มคำขอ/อนุมัติ (Legacy / Standalone)
 │   │   └── excel-data.js                  # ตัวช่วยแปลงข้อมูลสำหรับ Export Excel
 │   └── service/
 │       ├── vendors.js                     # API client สำหรับ /pursys/vendors/*
 │       ├── vendor-users.js                # API client สำหรับ /pursys/vendors/users/*
+│       ├── excel.js                       # Service สร้างและดาวน์โหลดไฟล์ Excel
 │       ├── approval.js                    # API client สำหรับคำขออนุมัติ
-│       ├── country.js / currency.js / payment.js / addressth.js / excel.js
+│       └── country.js / currency.js / payment.js / addressth.js
 └── VENDORS.sql, VENDORS_ADDR.sql, VENDORS_CODE.sql, VENDORS_FILE.sql
 ```
 
@@ -112,12 +115,12 @@ procurement/
 
 | URL Route | Controller Method | Blade View | Rspack Bundle (`assets/dist/js/`) | Source JS |
 | :--- | :--- | :--- | :--- | :--- |
-| `/procurement/vendors` | `Vendors::index()` | `vendors/index` | `vendors.js` | `assets/script/vendor/index.js` |
-| `/procurement/vendors/detail/{id}` | `Vendors::detail($id)` | `vendors/detail` | `vendors_detail.js` | `assets/script/vendor/detail.js` |
-| `/procurement/vendors/users` | `Vendors::users()` | `vendors/users` | `vendors_users.js` | `assets/script/vendor/users.js` |
-| `/procurement/vendors/create` | `Vendors::create()` | `Vendors/create` | `create.js` | `assets/script/vendor/create.js` |
-| `/procurement/vendors/approval/{id}` | `Vendors::approval($id)` | `Vendors/approval` | `approval.js` | `assets/script/vendor/approval.js` |
-| `/procurement/vendors/form/{id}` | `Vendors::form($id)` | `Vendors/frmapv` | `frmapv.js` | `assets/script/vendor/frmapv.js` |
+| `/procurement/vendors` | `Vendors::index()` | `vendors/index` | `vendors.js` | `vendor/index.js` + `index-table.js` |
+| `/procurement/vendors/list` | `Vendors::list()` | `vendors/list` | `vendors_list.js` | `vendor/list.js` |
+| `/procurement/vendors/detail/{id}` | `Vendors::detail($id)` | `vendors/detail` | `vendors_detail.js` | `vendor/detail.js` |
+| `/procurement/vendors/users` | `Vendors::users()` | `vendors/users` | `vendors_users.js` | `vendor/users.js` |
+
+*(หมายเหตุ: เมธอด `create()`, `approval()`, และ `form()` ถูกนำออกจาก `Vendors.php` แล้ว แต่ entry `create.js`, `approval.js`, `frmapv.js` ยังคงอยู่ใน `_entry.js` สำหรับอ้างอิง/ต่อยอด)*
 
 ---
 
@@ -255,8 +258,8 @@ npm run docs:build
 ## 10. จุดที่ต้องปรับปรุงและข้อควรระวัง (Known Issues & Roadmap)
 
 ::: warning รายการที่ควรแก้ไขในการพัฒนารอบถัดไป
-1. **Case-Sensitivity ของ View ใน `Vendors.php`**: เมธอด `create()`, `approval()`, และ `form()` เรียก `$this->views('Vendors/...')` (ตัว V ใหญ่) ในขณะที่โฟลเดอร์จริงคือ `application/views/vendors/` (ตัว v เล็ก) ซึ่งจะเกิด Error `View [Vendors.approval] not found` บน Linux Server — ควรแก้เป็นตัวพิมพ์เล็กและสร้างไฟล์ `approval.blade.php` / `frmapv.blade.php` ให้ครบ
-2. **Backend Endpoint สำหรับ SCM Users**: `POST /pursys/vendors/users/search/` ยังตอบ `404 Not Found` บน API Server ฝั่ง Local (`localhost:3001`) ต้อง Implement Route ฝั่ง Backend เพิ่มเติม
-3. **ย้าย Approval API ออกจาก Mock**: `assets/script/service/approval.js` ยังชี้ไปที่ `process.env.MOCK_API` ควรเปลี่ยนมาใช้ `process.env.APP_API` เมื่อ Backend พร้อม
-4. **ความยาวฟิลด์ `ACCNUMBER`**: ใน `PUR_VENDORS` กำหนด `ACCNUMBER VARCHAR2(10)` หากมีเลขบัญชีต่างประเทศหรือบัญชี 12–16 หลัก ควรขยายขนาดคอลัมน์ก่อนรองรับคู่ค้าต่างประเทศเพิ่มเติม
+1. **Backend Endpoint สำหรับ SCM Users**: `POST /pursys/vendors/users/search/` ยังตอบ `404 Not Found` บน API Server ฝั่ง Local (`localhost:3001`) ต้อง Implement Route ฝั่ง Backend เพิ่มเติม
+2. **ย้าย Approval API ออกจาก Mock**: `assets/script/service/approval.js` ยังชี้ไปที่ `process.env.MOCK_API` ควรเปลี่ยนมาใช้ `process.env.APP_API` และผูกเส้นทาง Webflow/Cover Sheet ให้สมบูรณ์
+3. **ความยาวฟิลด์ `ACCNUMBER`**: ใน `PUR_VENDORS` กำหนด `ACCNUMBER VARCHAR2(10)` หากมีเลขบัญชีต่างประเทศหรือบัญชี 12–16 หลัก ควรขยายขนาดคอลัมน์ก่อนรองรับคู่ค้าต่างประเทศเพิ่มเติม
+4. **ล้าง Entry เก่าใน `_entry.js`**: หากไม่มีแผนใช้งานหน้า `create`, `approval`, `frmapv` แบบ Standalone ใน CI3 แล้ว สามารถลบออกจาก `assets/script/vendor/_entry.js` เพื่อลดเวลา Build ของ Rspack
 :::

@@ -23,6 +23,6 @@ class Orders extends MY_Controller {
     public function report(){
         $this->breadcrumb->add('Purchase Orders', base_url('orders'));
         $this->breadcrumb->add('Search Report');
-        $this->views('po/report', ['title' => 'nav-orders']);
+        $this->views('po/report', ['title' => 'nav-orders-report']);
     }
 }

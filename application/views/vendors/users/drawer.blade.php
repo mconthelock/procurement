@@ -44,8 +44,8 @@
                     <span class="font-bold text-primary" id="drawer-user-name">-</span>
                 </div>
                 <div>
-                    <span class="uppercase text-mute block font-bold">Portal Role</span>
-                    <span class="font-mono font-bold text-secondary" id="drawer-user-role">-</span>
+                    <span class="uppercase text-mute block font-bold">Position / Duty</span>
+                    <span class="font-semibold text-secondary" id="drawer-user-role">-</span>
                 </div>
                 <div>
                     <span class="uppercase text-mute block font-bold">Vendor Code</span>
@@ -85,12 +85,15 @@
                 </div>
             </div>
 
-            <!-- Assigned Portal Modules -->
-            <div class="p-space-md bg-base-200 border-l-4 border-primary space-y-2 text-xs">
+            <!-- E-SCM Shared Scope Info -->
+            <div class="p-space-md bg-base-200 border-l-4 border-primary space-y-1 text-xs">
                 <span class="uppercase tracking-wider font-bold text-primary block">
-                    Authorized Portal Modules (สิทธิ์การเข้าถึงระบบ)
+                    E-SCM Portal Access Scope
                 </span>
-                <div id="drawer-user-modules" class="flex flex-wrap gap-1.5"></div>
+                <p class="text-secondary leading-relaxed">
+                    Standard E-SCM supplier access is shared across all Vendor Codes grouped under this corporate vendor
+                    (<span class="font-mono font-semibold text-primary">PURSYS.VENDORS_CODE</span>). Position / responsibility is recorded for AMEC coordination reference.
+                </p>
             </div>
         </div>
 

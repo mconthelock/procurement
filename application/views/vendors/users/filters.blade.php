@@ -56,12 +56,8 @@
         </div>
         <div class="md:col-span-2">
             <select id="user-role-filter"
-                class="select select-sm w-full h-9.5 bg-base-100 border border-base-300 text-sm focus:border-accent focus:outline-none">
-                <option value="">All Portal Roles</option>
-                <option value="ADMIN">Vendor Admin</option>
-                <option value="SALES">Sales / PO Handler</option>
-                <option value="LOGISTICS">Logistics / ASN</option>
-                <option value="QA">Quality / Claim</option>
+                class="select select-sm w-full h-9.5 bg-base-100 border border-base-300 text-xs focus:border-accent focus:outline-none">
+                <option value="">All Positions / Duties</option>
             </select>
         </div>
         <div>

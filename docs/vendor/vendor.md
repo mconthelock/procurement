@@ -47,9 +47,9 @@ outline: deep
 - **Overseas (1, 2, 6, 9)**: คู่ค้าต่างประเทศ
 - **Subcontractor (8)**: ผู้รับเหมาช่วง
 
-### ตัวกรองละเอียด (Filter Strip)
+### ตัวกรองละเอียด (Filter Strip — รองรับ Select2)
 - **ช่องค้นหา (Search)**: ค้นหาได้จากรหัสคู่ค้า (Vendor Code), ชื่อบริษัท, เลขผู้เสียภาษี (Tax ID), หมวดหมู่, ผู้ติดต่อ หรือเมือง/จังหวัด
-- **Vendor Group (1–8)**: กรองตามกลุ่มคู่ค้าหลักของ AMEC:
+- **Vendor Group (1–8)** *(Select2)*: กรองตามกลุ่มคู่ค้าหลักของ AMEC:
   1. `1` — Overseas (MELCO Group)
   2. `2` — Overseas (Non-MELCO)
   3. `3` — Domestic BOI
@@ -58,21 +58,29 @@ outline: deep
   6. `6` — Non-Production (AMEC PO)
   7. `7` — Domestic FTA Privilege
   8. `8` — Sub-Contractor
-- **Country & Currency**: กรองตามประเทศและสกุลเงินที่ทำการซื้อขาย
+- **Country & Currency** *(Select2)*: กรองตามประเทศและสกุลเงินที่ทำการซื้อขาย พร้อมปุ่มล้างค่าแบบรายช่อง (`allowClear`)
 - ปุ่ม **Reset Filters** (ไอคอนลูกศรวน) เพื่อล้างเงื่อนไขการกรองทั้งหมด
 
 ---
 
-## 3. การส่งออกข้อมูลและลงทะเบียนคู่ค้าใหม่
+## 3. การส่งออกข้อมูล (Export)
 
-ที่มุมขวาบนของหน้า Vendor Directory มีปุ่มคำสั่งหลัก 3 รายการ:
-1. **Export Approved List (.CSV)** — ส่งออกรายชื่อคู่ค้าที่ผ่านการกรองเป็นไฟล์ `.csv`
-2. **Export Excel (.XLSX)** — ส่งออกข้อมูลคู่ค้าแบบละเอียดเป็นไฟล์ Excel
-3. **+ Register New Vendor** — เปิดหน้าฟอร์ม (`/procurement/vendors/create`) เพื่อยื่นคำขอขึ้นทะเบียนคู่ค้าใหม่เข้าสู่ขั้นตอนการอนุมัติ
+ที่มุมขวาบนของหน้า Vendor Directory มีปุ่มส่งออกข้อมูลหลัก 2 รายการ:
+1. **Export Approved List** — ส่งออกรายชื่อคู่ค้าที่ผ่านการอนุมัติตามตัวกรองปัจจุบัน
+2. **Export Excel** — ส่งออกข้อมูลคู่ค้าแบบละเอียดเป็นไฟล์ `.xlsx` (ผ่าน `service/excel.js`)
 
 ---
 
-## 4. หน้ารายละเอียดคู่ค้า (Vendor Detail)
+## 4. หน้า Approved Vendor List สำหรับผู้ใช้งานทั่วไป (`/procurement/vendors/list`)
+
+สำหรับพนักงาน AMEC ทั่วไปที่ต้องการค้นหาข้อมูลคู่ค้ากลุ่ม **Indirect** และ **Subcontractor** ระบบมีหน้า **Approved Vendor List** (`READ-ONLY • GENERAL VIEW`) แยกไว้เฉพาะ:
+- แสดงเฉพาะข้อมูลบริษัทและข้อมูลติดต่อทั่วไป (ซ่อนข้อมูลการเงิน บัญชีธนาคาร และสัญญาที่เป็นความลับ)
+- มีแถบ KPI สรุปยอดคู่ค้ากลุ่ม Indirect, Subcontractor และ Active Approved
+- รองรับตัวกรองแบบ Select2 และปุ่มคลิกดูรายละเอียดผ่าน **Slide-Over General Information Drawer** โดยไม่ต้องออกจากหน้าตาราง
+
+---
+
+## 5. หน้ารายละเอียดคู่ค้า (Vendor Detail)
 
 เมื่อคลิกเลือกคู่ค้าจากตาราง ระบบจะเปิดหน้า **Vendor Detail** (`/procurement/vendors/detail/{id}`) ในโหมด **Read-Only Official Record** แบ่งข้อมูลออกเป็น 5 แท็บหลัก:
 

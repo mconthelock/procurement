@@ -1,9 +1,14 @@
+import "select2/dist/css/select2.min.css";
+import "@amec/webasset/css/select2.min.css";
 import "@amec/webasset/css/dataTable.min.css";
+import select2 from "select2";
 import { showLoader } from "@amec/webasset/preloader";
 import { showMessage } from "@amec/webasset/utils";
 import { createTable } from "@amec/webasset/dataTable";
 import { tableOpt, escapeHtml, escapeAttribute } from "../utils.js";
 import { getVendors } from "../service/index.js";
+
+select2();
 
 let table = null;
 let scopedVendors = [];
@@ -144,6 +149,20 @@ function populateDropdowns(data) {
 		$country.append(
 			`<option value="${escapeAttribute(c)}">${escapeHtml(c)}</option>`,
 		);
+	});
+
+	if ($cat.hasClass("select2-hidden-accessible")) $cat.select2("destroy");
+	$cat.select2({
+		placeholder: "All Categories",
+		allowClear: true,
+		width: "100%",
+	});
+
+	if ($country.hasClass("select2-hidden-accessible")) $country.select2("destroy");
+	$country.select2({
+		placeholder: "All Countries",
+		allowClear: true,
+		width: "100%",
 	});
 }
 
@@ -429,8 +448,8 @@ $(document).on(
 
 $(document).on("click", "#listFilterReset", () => {
 	$("#listSearchInput").val("");
-	$("#listCategoryFilter").val("");
-	$("#listCountryFilter").val("");
+	$("#listCategoryFilter").val("").trigger("change.select2");
+	$("#listCountryFilter").val("").trigger("change.select2");
 	activeTab = "ALL";
 	$('.vendor-list-tab[data-filter-tab="ALL"]').trigger("click");
 });

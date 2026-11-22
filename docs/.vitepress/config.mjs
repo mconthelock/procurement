@@ -49,10 +49,12 @@ export default defineConfig({
 		nav: [
 			{ text: "Home", link: "/" },
 			{ text: "Guide", link: "/quick-start" },
+			{ text: "Change Log", link: "/changelog" },
 		],
 		sidebar: {
 			"/": [
 				{ text: "Quick Start", link: "/quick-start", roles: ["*"] },
+				{ text: "Change Log", link: "/changelog", roles: ["*"] },
 				{
 					text: "P/R Management",
 					link: "/pr/create",

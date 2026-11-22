@@ -224,6 +224,15 @@
 			border-color 150ms ease;
 	}
 
+	#sidebar #sidebar-menu a .sidebar-text,
+	#sidebar #sidebar-menu summary .sidebar-text {
+		font-weight: 400 !important;
+	}
+
+	#sidebar #sidebar-menu a.menu-focus .sidebar-text {
+		font-weight: 700 !important;
+	}
+
 	#sidebar #sidebar-menu .sidebar-menu-icon,
 	#sidebar #sidebar-menu .sidebar-sub-menu-icon {
 		color: #6b7280;
@@ -315,6 +324,71 @@
 		color: var(--color-mute);
 	}
 
+	/* Collapsed Sidebar (75px Rail) — Scoped strictly to #sidebar.collapsed */
+	#sidebar.collapsed .sidebar-head {
+		width: 100% !important;
+		justify-content: center !important;
+		padding: 0.625rem 0 !important;
+		gap: 0 !important;
+	}
+
+	#sidebar.collapsed #sidebar-menu {
+		align-items: center !important;
+		padding-inline: 0 !important;
+	}
+
+	#sidebar.collapsed #sidebar-menu > li {
+		width: 100% !important;
+		padding-inline: 0.5rem !important;
+	}
+
+	#sidebar.collapsed #sidebar-menu details {
+		width: 100% !important;
+	}
+
+	#sidebar.collapsed #sidebar-menu details > ul {
+		display: none !important;
+	}
+
+	#sidebar.collapsed #sidebar-menu a,
+	#sidebar.collapsed #sidebar-menu summary,
+	#sidebar.collapsed .sidebar-link {
+		width: 100% !important;
+		display: flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+		padding: 0.6rem 0 !important;
+		gap: 0 !important;
+		border-right: 3px solid transparent;
+	}
+
+	#sidebar.collapsed #sidebar-menu summary::after {
+		display: none !important;
+	}
+
+	#sidebar.collapsed #sidebar-menu .sidebar-menu-icon,
+	#sidebar.collapsed #sidebar-menu i {
+		margin: 0 !important;
+		display: inline-flex !important;
+		align-items: center !important;
+		justify-content: center !important;
+	}
+
+	#sidebar.collapsed #profile {
+		width: 100% !important;
+		padding: 0.625rem 0 !important;
+		display: flex !important;
+		justify-content: center !important;
+	}
+
+	#sidebar.collapsed #profile .sidebar-profile {
+		width: 100% !important;
+		justify-content: center !important;
+		align-items: center !important;
+		padding: 0 !important;
+		gap: 0 !important;
+	}
+
 	/* Top navigation progress bar (instant feedback on link click) */
 	#nav-progress-bar {
 		position: fixed;
@@ -372,6 +446,41 @@
 	i.fi {
 		@apply flex items-center justify-center;
 	}
+}
+
+/* ==========================================================================
+   Select2 Corporate Styling (AMEC GWS v1.4 — 0px Radius & text-xs Typography)
+   ========================================================================== */
+.select2-container {
+	--select2-font-size: 0.75rem;
+	--select2-height: 2.375rem;
+}
+
+.select2-container--default .select2-selection--single,
+.select2-dropdown,
+.select2-container--default .select2-search--dropdown .select2-search__field {
+	border-radius: 0 !important;
+	border-color: var(--color-base-300) !important;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--single,
+.select2-container--default.select2-container--open .select2-selection--single,
+.select2-container--default .select2-search--dropdown .select2-search__field:focus {
+	border-color: var(--color-accent) !important;
+	outline: none !important;
+}
+
+.select2-container--default .select2-selection--single {
+	height: 2.375rem !important;
+	font-size: 0.75rem !important;
+	line-height: 1rem !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered,
+.select2-container--default .select2-search--dropdown .select2-search__field,
+.select2-container--default .select2-results__option {
+	font-size: 0.75rem !important;
+	line-height: 1.15rem !important;
 }
 
 /* ==========================================================================

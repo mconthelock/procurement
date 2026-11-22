@@ -1,9 +1,14 @@
+import "select2/dist/css/select2.min.css";
+import "@amec/webasset/css/select2.min.css";
 import "@amec/webasset/css/dataTable.min.css";
+import select2 from "select2";
 import dayjs from "dayjs";
 import { showLoader } from "@amec/webasset/preloader";
 import { showMessage, showConfirm } from "@amec/webasset/utils";
 import { createTable } from "@amec/webasset/dataTable";
 import { tableOpt, escapeHtml, escapeAttribute } from "../utils.js";
+
+select2();
 import {
 	getVendors,
 	getVendorUsers,
@@ -113,6 +118,69 @@ function populateVendorSelects() {
 			`<option value="${escapeAttribute(code)}">${escapeHtml(label)}</option>`,
 		);
 	});
+
+	if ($filter.hasClass("select2-hidden-accessible")) {
+		$filter.select2("destroy");
+	}
+	$filter.select2({
+		placeholder: "All Registered Vendors",
+		allowClear: true,
+		width: "100%",
+	});
+
+	if ($modal.hasClass("select2-hidden-accessible")) {
+		$modal.select2("destroy");
+	}
+	$modal.select2({
+		placeholder: "Search & Select Registered Vendor...",
+		allowClear: true,
+		width: "100%",
+		dropdownParent: $("#vendorUserModal"),
+	});
+
+	const defaultPositions = [
+		"Sales / Coordinator",
+		"Production / Planning",
+		"Logistics / Delivery",
+		"Quality Assurance (QA)",
+		"Accounting / Finance",
+		"Management / Director",
+	];
+	const positionSet = new Set(defaultPositions);
+	usersData.forEach((u) => {
+		const pos = String(u.USER_POSITION || u.USER_ROLE || u.USER_DEPT || "").trim();
+		if (pos) positionSet.add(pos);
+	});
+
+	const $roleFilter = $("#user-role-filter");
+	if ($roleFilter.hasClass("select2-hidden-accessible")) $roleFilter.select2("destroy");
+	$roleFilter.find("option:not(:first)").remove();
+	[...positionSet].sort().forEach((pos) => {
+		$roleFilter.append(
+			`<option value="${escapeAttribute(pos)}">${escapeHtml(pos)}</option>`,
+		);
+	});
+	$roleFilter.select2({
+		placeholder: "All Positions / Duties",
+		allowClear: true,
+		width: "100%",
+	});
+
+	const $modalRole = $("#modal-user-role");
+	if ($modalRole.hasClass("select2-hidden-accessible")) $modalRole.select2("destroy");
+	$modalRole.find("option:not(:first)").remove();
+	[...positionSet].sort().forEach((pos) => {
+		$modalRole.append(
+			`<option value="${escapeAttribute(pos)}">${escapeHtml(pos)}</option>`,
+		);
+	});
+	$modalRole.select2({
+		placeholder: "Select or type position...",
+		tags: true,
+		allowClear: true,
+		width: "100%",
+		dropdownParent: $("#vendorUserModal"),
+	});
 }
 
 function updateSelectedCounter() {
@@ -208,15 +276,14 @@ async function initUsersTable(rows) {
 		},
 		{
 			data: "USER_ROLE",
-			title: "Portal Role",
-			render: (data, type) => {
-				const roleKey = String(data || "SALES").toUpperCase();
-				if (type !== "display") return roleKey;
-				const cfg = ROLE_CONFIG[roleKey] || {
-					label: roleKey,
-					badge: "badge-ghost",
-				};
-				return `<span class="badge badge-xs ${cfg.badge} font-mono font-bold uppercase">${escapeHtml(cfg.label)}</span>`;
+			title: "Position / Responsibility",
+			render: (data, type, row) => {
+				const pos = String(
+					row.USER_POSITION || data || row.USER_DEPT || "",
+				).trim();
+				if (type !== "display") return pos;
+				if (!pos) return '<span class="text-mute italic">-</span>';
+				return `<span class="badge badge-xs badge-outline border-base-300 text-primary font-medium">${escapeHtml(pos)}</span>`;
 			},
 		},
 		{
@@ -282,8 +349,9 @@ function openUserDrawer(user) {
 	selectedUser = user;
 	const statusKey = normalizeStatus(user.USER_STATUS);
 	const statusCfg = STATUS_CONFIG[statusKey] || STATUS_CONFIG.INACTIVE;
-	const roleKey = String(user.USER_ROLE || "SALES").toUpperCase();
-	const roleCfg = ROLE_CONFIG[roleKey] || ROLE_CONFIG.SALES;
+	const positionLabel =
+		String(user.USER_POSITION || user.USER_ROLE || user.USER_DEPT || "").trim() ||
+		"-";
 
 	$("#drawer-user-login").text(user.USER_LOGIN || "-");
 	$("#drawer-user-status")
@@ -294,7 +362,7 @@ function openUserDrawer(user) {
 		`${user.VND_NAME || "Registered Vendor"} • Mitsubishi Elevator Asia Co., Ltd. (AMEC)`,
 	);
 	$("#drawer-user-name").text(user.USER_NAME || "-");
-	$("#drawer-user-role").text(roleCfg.label);
+	$("#drawer-user-role").text(positionLabel);
 	$("#drawer-user-vndcode").text(user.VND_CODE || "-");
 	$("#drawer-user-lastlogin").text(
 		user.LAST_LOGIN ? dayjs(user.LAST_LOGIN).format("YYYY-MM-DD HH:mm") : "Never",
@@ -302,14 +370,7 @@ function openUserDrawer(user) {
 	$("#drawer-user-vndname").text(user.VND_NAME || "-");
 	$("#drawer-user-email").text(user.USER_EMAIL || "-");
 	$("#drawer-user-phone").text(user.USER_PHONE || "-");
-	$("#drawer-user-dept").text(user.USER_DEPT || roleCfg.label);
-
-	const $modules = $("#drawer-user-modules").empty();
-	roleCfg.modules.forEach((mod) => {
-		$modules.append(
-			`<span class="badge badge-xs badge-outline border-base-300 bg-white font-mono text-primary">${escapeHtml(mod)}</span>`,
-		);
-	});
+	$("#drawer-user-dept").text(user.USER_DEPT || positionLabel);
 
 	const $alert = $("#drawer-user-alert");
 	if (statusKey === "INACTIVE") {
@@ -339,17 +400,31 @@ function openUserModal(user = null) {
 	if (user) {
 		$("#modal-user-title").text("Edit Vendor User Account");
 		$("#modal-user-id").val(user.USER_ID || "");
-		$("#modal-user-vendor").val(user.VND_CODE || "");
+		$("#modal-user-vendor").val(user.VND_CODE || "").trigger("change.select2");
 		$("#modal-user-name").val(user.USER_NAME || "");
 		$("#modal-user-login").val(user.USER_LOGIN || "");
 		$("#modal-user-email").val(user.USER_EMAIL || "");
 		$("#modal-user-phone").val(user.USER_PHONE || "");
-		$("#modal-user-role").val(String(user.USER_ROLE || "SALES").toUpperCase());
+		const posVal = String(
+			user.USER_POSITION || user.USER_ROLE || user.USER_DEPT || "",
+		).trim();
+		const $modalRole = $("#modal-user-role");
+		if (
+			posVal &&
+			$modalRole.find(`option[value="${escapeAttribute(posVal)}"]`).length === 0
+		) {
+			$modalRole.append(
+				`<option value="${escapeAttribute(posVal)}">${escapeHtml(posVal)}</option>`,
+			);
+		}
+		$modalRole.val(posVal).trigger("change.select2");
 		$("#modal-user-status").val(normalizeStatus(user.USER_STATUS));
 	} else {
 		$("#modal-user-title").text("Provision New Vendor User");
 		$("#vendorUserForm")[0].reset();
 		$("#modal-user-id").val("");
+		$("#modal-user-vendor").val("").trigger("change.select2");
+		$("#modal-user-role").val("").trigger("change.select2");
 		$("#modal-user-status").val("PENDING");
 	}
 
@@ -405,8 +480,8 @@ $(document).on("change", "#user-vendor-filter, #user-role-filter", applyAllFilte
 
 $(document).on("click", "#user-filter-reset", function () {
 	$("#user-search").val("");
-	$("#user-vendor-filter").val("");
-	$("#user-role-filter").val("");
+	$("#user-vendor-filter").val("").trigger("change.select2");
+	$("#user-role-filter").val("").trigger("change.select2");
 	activeStatusFilter = "";
 	$('.user-status-tab[data-status=""]').trigger("click");
 });

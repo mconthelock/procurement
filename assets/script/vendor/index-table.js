@@ -1,7 +1,12 @@
+import "select2/dist/css/select2.min.css";
+import "@amec/webasset/css/select2.min.css";
+import select2 from "select2";
 import dayjs from "dayjs";
 import { createTable } from "@amec/webasset/dataTable";
 import { showMessage } from "@amec/webasset/utils";
 import { tableOpt, escapeHtml } from "../utils.js";
+
+select2();
 import {
 	getVendors,
 	getVendorGroups,
@@ -189,6 +194,14 @@ function populateFilterDropdowns(data) {
 			`<option value="${escapeHtml(cur)}">${escapeHtml(cur)}</option>`,
 		);
 	});
+
+	const initS2 = ($el, placeholder) => {
+		if ($el.hasClass("select2-hidden-accessible")) $el.select2("destroy");
+		$el.select2({ placeholder, allowClear: true, width: "100%" });
+	};
+	initS2($("#vendorGroupFilter"), "All Vendor Groups (1–8)");
+	initS2($country, "All Countries");
+	initS2($curr, "All Currencies");
 }
 
 async function createVendorsTable(data) {
@@ -506,9 +519,9 @@ export function setActiveTab($tab) {
 
 export function resetAllFilters() {
 	$("#vendorSearchInput").val("");
-	$("#vendorGroupFilter").val("");
-	$("#vendorCountryFilter").val("");
-	$("#vendorCurrencyFilter").val("");
+	$("#vendorGroupFilter").val("").trigger("change.select2");
+	$("#vendorCountryFilter").val("").trigger("change.select2");
+	$("#vendorCurrencyFilter").val("").trigger("change.select2");
 	setActiveTab($('.vendor-status-tab[data-filter-tab="ALL"]'));
 }
 

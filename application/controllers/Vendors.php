@@ -27,35 +27,10 @@ class Vendors extends MY_Controller {
 
     //Vendors Users
     public function users(){
-        $this->breadcrumb->add('Vendor Directory', base_url('vendors/users'));
+        $this->breadcrumb->add('Vendor Directory', base_url('vendors'));
         $this->breadcrumb->add('Vendor Users');
         $this->views('vendors/users', [
             'title' => 'nav-vendors-users'
         ]);
     }
-
-
-    public function create()
-    {
-     $this->views('Vendors/create', [
-        'title' => 'Create New Vendor'
-    ]);
-    }
-
-    public function approval($id = '')
-    {
-     $this->views('Vendors/approval', [
-        'id' => $id,
-        'title' => 'Vendor Approval'
-    ]);
-    }
-
-    public function form($id = '')
-    {
-     $this->views('Vendors/frmapv', [
-        'id' => $id,
-        'title' => 'Vendor Approval'
-    ]);
-    }
-
 }
