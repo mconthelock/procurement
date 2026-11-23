@@ -1,8 +1,8 @@
 # รายงานการวิเคราะห์และจัดโครงสร้างหมวดหมู่สินค้าใหม่ (Product Categorization & Taxonomy Redesign)
 
 > **แหล่งข้อมูลต้นทาง:** `procurement_products.xlsx` (จำนวน 230,329 รายการ)  
-> **โครงสร้างฐานข้อมูลเป้าหมาย:** `Products.SQL` (ตาราง `CATEGORIES`, `CATEGORY_ATTRIBUTES`, `PRODUCTS`)  
-> **วันที่จัดทำรายงาน:** 16 พฤศจิกายน 2026
+> **โครงสร้างฐานข้อมูลเป้าหมาย:** `Products.SQL` (Oracle Database)  
+> **ปรับปรุงล่าสุด:** พฤศจิกายน 2026 (รวมโครงสร้าง Core Columns และระบบ Quotation-Controlled Pricing)
 
 ---
 
@@ -12,9 +12,12 @@
 3. [รายงานการวิเคราะห์เจาะลึกทั้ง 23 หมวดหมู่งบประมาณเดิม](#3-รายงานการวิเคราะห์เจาะลึกทั้ง-23-หมวดหมู่งบประมาณเดิม)
 4. [ปัญหาสำคัญเชิงโครงสร้างและตัวอย่างสินค้าจริงที่ปะปน](#4-ปัญหาสำคัญเชิงโครงสร้างและตัวอย่างสินค้าจริงที่ปะปน)
 5. [การออกแบบโครงสร้างหมวดหมู่ใหม่ตาม Products.SQL](#5-การออกแบบโครงสร้างหมวดหมู่ใหม่ตาม-productssql)
-6. [ข้อกำหนด Dynamic Attributes (CATEGORY_ATTRIBUTES)](#6-ข้อกำหนด-dynamic-attributes-category_attributes)
-7. [การ Mapping ข้อมูลสินค้าและการจัดเก็บ EXTRA_ATTRIBUTES (JSON)](#7-การ-mapping-ข้อมูลสินค้าและการจัดเก็บ-extra_attributes-json)
-8. [แนวทางการดำเนินงานแปลงข้อมูล (ETL & Migration Pipeline)](#8-แนวทางการดำเนินงานแปลงข้อมูล-etl--migration-pipeline)
+6. [การปรับปรุงฟิลด์พื้นฐานของสินค้า (Core Columns vs Dynamic Attributes)](#6-การปรับปรุงฟิลด์พื้นฐานของสินค้า-core-columns-vs-dynamic-attributes)
+7. [สถาปัตยกรรมระบบราคา: Price Master + History ควบคุมด้วย Quotation](#7-สถาปัตยกรรมระบบราคา-price-master--history-ควบคุมด้วย-quotation)
+8. [ข้อกำหนด Dynamic Attributes (CATEGORY_ATTRIBUTES)](#8-ข้อกำหนด-dynamic-attributes-category_attributes)
+9. [การ Mapping ข้อมูลสินค้าและการจัดเก็บ EXTRA_ATTRIBUTES (JSON)](#9-การ-mapping-ข้อมูลสินค้าและการจัดเก็บ-extra_attributes-json)
+10. [สรุปโครงสร้าง Database DDL ฉบับสมบูรณ์ (Complete SQL Schema)](#10-สรุปโครงสร้าง-database-ddl-ฉบับสมบูรณ์-complete-sql-schema)
+11. [แนวทางการดำเนินงานแปลงข้อมูล (ETL & Migration Pipeline)](#11-แนวทางการดำเนินงานแปลงข้อมูล-etl--migration-pipeline)
 
 ---
 
@@ -24,7 +27,8 @@
 
 1. **การปะปนของประเภทสินค้าในทุกหมวดหมู่ (Cross-Category Fragmentation):** ผู้ขอซื้อ (Requester) เลือกหมวดตามงบประมาณที่ตนได้รับอนุมัติ ทำให้สินค้าชนิดเดียวกัน (เช่น น็อต, สกรู, ตลับลูกปืน, คอมพิวเตอร์, ดอกสว่าน) กระจายตัวอยู่ใน 5–10 หมวดหมู่ที่แตกต่างกัน
 2. **การปะปนกันระหว่างสินค้าจริง (Goods) กับงานบริการ/สัญญาเช่า (Services & Rentals):** มีรายการค่าจ้าง ค่าซ่อม ค่าเช่ารถโฟล์คลิฟท์ ค่าบำบัดของเสีย และค่าธรรมเนียมราชการ แฝงตัวอยู่ในตารางสินค้าสูงถึงกว่า 25,000+ รายการ
-3. **การออกแบบฐานข้อมูลใหม่ตาม `Products.SQL`:** นำเสนอการแยก **"ลักษณะสินค้าทางกายภาพ (Material Taxonomy)"** ออกจาก **"รหัสงบประมาณทางบัญชี (Accounting Budget Code)"** โดยจัดโครงสร้างหมวดหมู่เป็น Tree ในตาราง `CATEGORIES` พร้อม Dynamic Attributes ใน `CATEGORY_ATTRIBUTES` และเก็บประวัติงบประมาณเดิมไว้ใน `EXTRA_ATTRIBUTES` (JSON) เพื่อรองรับการทำงานย้อนหลัง (Backward Compatibility) 100%
+3. **การยกระดับตาราง `PRODUCTS` ด้วย Core Procurement Columns:** ดึงข้อมูลที่จำเป็นและใช้ร่วมกันทุกสินค้าออกมาเป็นคอลัมน์จริง ได้แก่ `UNIT_CODE` (หน่วยนับ 99.999%), `CURRENCY_CODE` (สกุลเงิน 99.96%), `PRODUCT_TYPE` (แยก Goods/Service/Rental), `STATUS` (สถานะการใช้งาน) และ `DEFAULT_VENDOR_CODE` (ผู้ขายหลัก 99.65%)
+4. **การแยกการจัดการราคาออกจากสินค้า (Quotation-Controlled Pricing Architecture):** ปลดล็อคข้อจำกัดของการ Hardcode ราคาในตารางสินค้า โดยแยกเป็น **Price Master (`PRODUCT_PRICES`)** และ **Price History (`PRODUCT_PRICE_HISTORY`)** ที่ถูกควบคุมด้วย **ใบเสนอราคา (`QUOTATIONS` & `QUOTATION_ITEMS`)** รองรับ Multi-Vendor, Tier/Volume Pricing และการตรวจสอบย้อนหลัง (Audit Trail) 100%
 
 ---
 
@@ -82,8 +86,6 @@ LEFT JOIN pcatalog d ON a.SCATID = d.scatid
 
 ### ปัญหาที่ 1: สินค้าชนิดเดียวกันกระจายตัวข้ามหมวดหมู่ (Cross-Category Fragmentation)
 
-ตัวอย่างจากการตรวจสอบกลุ่มสินค้าที่มีการจัดซื้อบ่อยที่สุด:
-
 1. **สลักเกลียวและน็อต (BOLT, NUT, SCREW, WASHER) — รวมกว่า 16,000+ รายการ**
    * หมวด 56 (Factory Maintenance): **7,761 รายการ**
    * หมวด 10 (Annual Investment): **5,343 รายการ**
@@ -118,7 +120,7 @@ LEFT JOIN pcatalog d ON a.SCATID = d.scatid
 
 ## 5. การออกแบบโครงสร้างหมวดหมู่ใหม่ตาม Products.SQL
 
-ในโครงสร้างตาราง `CATEGORIES` ใหม่ของ [Products.SQL](file:///d:/project/php85/src/procurement/Products.SQL) ได้ใช้รูปแบบ **Adjacency List (Tree Structure ด้วย `PARENT_ID`)** ซึ่งเอื้อต่อการจัดกลุ่มตามลักษณะทางกายภาพที่แท้จริง (Physical Material & Service Taxonomy):
+ตาราง `CATEGORIES` ใช้รูปแบบ **Adjacency List (Tree Structure ด้วย `PARENT_ID`)** เพื่อรองรับการจัดกลุ่มตามลักษณะทางกายภาพที่แท้จริง (Physical Material & Service Taxonomy):
 
 ```mermaid
 graph TD
@@ -164,14 +166,113 @@ graph TD
 
 ---
 
-## 6. ข้อกำหนด Dynamic Attributes (CATEGORY_ATTRIBUTES)
+## 6. การปรับปรุงฟิลด์พื้นฐานของสินค้า (Core Columns vs Dynamic Attributes)
 
-เพื่อหลีกเลี่ยงการเพิ่มคอลัมน์ในตารางสินค้าอย่างไร้ขีดจำกัด ตาราง `CATEGORY_ATTRIBUTES` จะเป็นตัวกำหนดว่าหมวดหมู่ใดต้องกรอก Attributes อะไรบ้าง:
+จากการตรวจสอบสถิติข้อมูลจริง 230,329 รายการ มีอย่างน้อย **5 ฟิลด์หลักที่จำเป็นต้องใช้ซ้ำๆ ในทุกสินค้า** ซึ่งไม่ควรซ่อนอยู่ใน JSON `EXTRA_ATTRIBUTES` แต่ควรดึงออกมาเป็น First-Class Columns ในตาราง `PRODUCTS`:
+
+```mermaid
+graph LR
+    subgraph MustHave ["ฟิลด์จำเป็นอย่างยิ่ง (Must-Have Columns)"]
+        F1["1. UNIT_CODE (หน่วยนับ UOM)<br/>(มี 99.999% : 230,328 รายการ)"]
+        F2["2. CURRENCY_CODE (สกุลเงิน)<br/>(มี 99.96% : 230,251 รายการ)"]
+        F3["3. PRODUCT_TYPE (ประเภท: สินค้า vs บริการ)<br/>(กระทบการตัดสต็อกและการตรวจรับ)"]
+    end
+
+    subgraph ShouldHave ["ฟิลด์แนะนำเพิ่มเติม (Should-Have Columns)"]
+        F4["4. STATUS (สถานะ Active/Inactive)<br/>(คัดกรองสินค้าที่เลิกใช้)"]
+        F5["5. DEFAULT_VENDOR_CODE (ผู้ขายหลัก)<br/>(มี 99.65% : 229,529 รายการ)"]
+    end
+```
+
+### รายละเอียดและเหตุผลทางธุรกิจ:
+1. **`UNIT_CODE` (UOM - หน่วยนับหลัก):** มีข้อมูลถึง 99.999% ในระบบจัดซื้อขาดหน่วยนับไม่ได้ จำเป็นต้องใช้ `SUM` รวมยอด และทำ Foreign Key
+2. **`CURRENCY_CODE` (สกุลเงิน):** การเก็บตัวเลขราคาโดยไม่มีสกุลเงินกำกับมีความเสี่ยงสูงมาก (เช่น 1,000 THB vs 1,000 USD vs 1,000 JPY)
+3. **`PRODUCT_TYPE` (`GOODS` / `SERVICE` / `RENTAL`):** ใช้แยกรายการสินค้าทางกายภาพ (ตัดสต็อก/ทำ GR) ออกจากงานบริการและสัญญาเช่า (ตรวจรับงานจ้าง/ไม่ตัดสต็อก)
+4. **`STATUS` (`ACTIVE` / `INACTIVE` / `DISCONTINUED`):** สำหรับควบคุมไม่ให้เปิด PR/PO สินค้าที่เลิกผลิตแล้ว โดยไม่ต้องลบข้อมูลประวัติทิ้ง
+5. **`DEFAULT_VENDOR_CODE` (ผู้ขายหลัก):** ช่วยให้ฝ่ายจัดซื้อคิวรีสินค้าตามคู่ค้าเพื่อรวมใบสั่งซื้อ (PO Consolidation) ได้ทันที
+
+---
+
+## 7. สถาปัตยกรรมระบบราคา: Price Master + History ควบคุมด้วย Quotation
+
+ในระบบจัดซื้อระดับสากล (Enterprise Procurement) **สินค้า 1 รายการสามารถซื้อได้จากหลายผู้ขาย (Multi-Vendor), มีราคาผันผวนตามช่วงเวลา (Validity Dates), เปลี่ยนแปลงตามปริมาณสั่งซื้อ (Tier/Volume Pricing) และต้องมีเอกสารอ้างอิงทางกฎหมาย**
+
+จึงต้องแยกการจัดการราคาออกจากตาราง `PRODUCTS` แล้วนำไปควบคุมด้วย **ใบเสนอราคา (Quotation)** ดังนี้:
+
+### 7.1 ผังการทำงาน (Quotation-Controlled Pricing Flow)
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Buyer as เจ้าหน้าที่จัดซื้อ
+    actor Mgr as ผู้มีอำนาจอนุมัติ
+    participant QT as ตาราง QUOTATIONS / ITEMS
+    participant PM as ตาราง PRODUCT_PRICES (Price Master)
+    participant PH as ตาราง PRODUCT_PRICE_HISTORY (Audit Log)
+    participant PO as ระบบสั่งซื้อ (PR / PO)
+
+    Buyer->>QT: 1. บันทึกใบเสนอราคาจากผู้ขาย (Status: DRAFT/PENDING)
+    Mgr->>QT: 2. ตรวจสอบและอนุมัติใบเสนอราคา (Status: APPROVED)
+    QT->>PM: 3. Sync ราคาที่อนุมัติเข้า Price Master (Set Active, ระบุ Valid Date)
+    PM->>PH: 4. บันทึก Snapshot ประวัติราคาเก่า-ใหม่ (Audit Trail)
+    PO->>PM: 5. เปิด PR/PO ดึงราคา Active ตาม Vendor + วันที่ + ปริมาณสั่งซื้อ
+```
+
+### 7.2 ผังความสัมพันธ์ตารางระบบราคา (ER Diagram)
+
+```mermaid
+erDiagram
+    PRODUCTS ||--o{ PRODUCT_PRICES : "has active prices"
+    PRODUCTS ||--o{ QUOTATION_ITEMS : "quoted in"
+    QUOTATIONS ||--|{ QUOTATION_ITEMS : "contains"
+    QUOTATION_ITEMS ||--o{ PRODUCT_PRICES : "source of price"
+    PRODUCT_PRICES ||--o{ PRODUCT_PRICE_HISTORY : "tracks changes"
+
+    QUOTATIONS {
+        number id PK
+        varchar quotation_no
+        varchar vendor_code
+        date valid_from
+        date valid_to
+        varchar status
+    }
+    QUOTATION_ITEMS {
+        number id PK
+        number quotation_id FK
+        number product_id FK
+        number unit_price
+        varchar currency_code
+        number min_quantity
+    }
+    PRODUCT_PRICES {
+        number id PK
+        number product_id FK
+        varchar vendor_code
+        number unit_price
+        varchar currency_code
+        date valid_from
+        date valid_to
+        number is_active
+        number is_preferred_vendor
+    }
+    PRODUCT_PRICE_HISTORY {
+        number id PK
+        number product_id FK
+        number old_price
+        number new_price
+        varchar change_reason
+        timestamp changed_at
+    }
+```
+
+---
+
+## 8. ข้อกำหนด Dynamic Attributes (CATEGORY_ATTRIBUTES)
+
+เมื่อย้าย Core Procurement Columns ออกมาแล้ว ตาราง `CATEGORY_ATTRIBUTES` จะทำหน้าที่เก็บเฉพาะ **"สเปกเฉพาะทางตามประเภทสินค้า (Technical Specs)"** เท่านั้น:
 
 | กลุ่มหมวดหมู่ (Category Group) | Attribute Name | Data Type | Option Source | Fixed Options / คำอธิบาย |
 | :--- | :--- | :---: | :---: | :--- |
-| **ทุกหมวดหมู่ (Global)** | `unit` | `option` | `fixed` | `["Pce", "Set", "Box", "Kg", "Ton", "Roll", "Pack", "Mtr"]` |
-| | `currency` | `option` | `fixed` | `["Bt.", "USD", "JPY", "EUR"]` |
 | **Fasteners & Hardware** | `thread_size` | `text` | `none` | เช่น M3, M4, M5, M6, M8, M10, 5/16" |
 | | `pitch` | `number` | `none` | ระยะพิทช์เกลียว เช่น 1.0, 1.25, 1.5 |
 | | `length` | `number` | `none` | ความยาว (มม.) |
@@ -182,46 +283,29 @@ graph TD
 | **Cutting Tools** | `tool_type` | `option` | `fixed` | `["Drill", "Endmill", "Tap", "Insert", "Reamer", "Cutter"]` |
 | | `shank_dia` | `number` | `none` | ขนาดก้านจับ (มม.) |
 | | `coating` | `text` | `none` | สารเคลือบผิว เช่น TiN, TiAlN, DLC |
+| **Machining & Mold Parts** | `drawing_no` | `text` | `none` | เลขที่แบบแปลนวิศวกรรม |
+| | `model` | `text` | `none` | รุ่นเครื่องจักรที่รองรับ |
 | **Electrical & Electronics** | `voltage` | `text` | `none` | แรงดันไฟฟ้า เช่น 24VDC, 220VAC, 380VAC |
 | | `current_rating` | `text` | `none` | พิกัดกระแส เช่น 10A, 100A |
 | **IT & Office Equipment** | `device_type` | `option` | `fixed` | `["Desktop PC", "Laptop", "Monitor", "Printer", "UPS", "Server"]` |
 | | `specs_summary` | `text` | `none` | สเปกหลัก (CPU / RAM / Storage) |
 | **Chemicals & Lubricants** | `hazard_status` | `option` | `fixed` | `["Non-Hazardous", "Hazardous"]` |
 | | `hazard_no` | `text` | `none` | รหัสวัตถุอันตราย / UN Number / CAS No. |
-| **Services & Rentals** | `is_service` | `number` | `none` | กำหนดค่าคงที่ 1 (บอกสถานะว่าเป็นงานบริการ) |
-| | `service_period` | `text` | `none` | ระยะเวลาสัญญา เช่น รายเดือน, รายปี, รายครั้ง |
+| **Services & Rentals** | `service_period` | `text` | `none` | ระยะเวลาสัญญา เช่น รายเดือน, รายปี, รายครั้ง |
 
 ---
 
-## 7. การ Mapping ข้อมูลสินค้าและการจัดเก็บ EXTRA_ATTRIBUTES (JSON)
+## 9. การ Mapping ข้อมูลสินค้าและการจัดเก็บ EXTRA_ATTRIBUTES (JSON)
 
-### 7.1 ผังการจับคู่ข้อมูล (Field Mapping Table)
+### 9.1 ตัวอย่าง JSON ในคอลัมน์ `EXTRA_ATTRIBUTES`
 
-| คอลัมน์เดิมใน Excel | ฟิลด์ใหม่ใน `PRODUCTS` | กฎการแปลงข้อมูล (Business Logic) |
-| :--- | :--- | :--- |
-| `SPRODCODE` | **`SKU`** | รหัสสินค้าเดิม (Unique Constraint) |
-| `SEPRODNAME` / `STPRODNAME` | **`NAME`** | ใช้ชื่อภาษาอังกฤษ หากว่างให้ใช้ชื่อภาษาไทย |
-| `SEDESC` / `STDESC` | **`DESCRIPTION`** | รายละเอียดเพิ่มเติมของสินค้า |
-| `NPRICE` | **`PRICE`** | ราคาต่อหน่วยมาตรฐาน |
-| - | **`COST_PRICE`** | กำหนดค่าเริ่มต้น 0.00 (รอผูกกับ Cost Accounting) |
-| `SCATID` (ประมวลผลใหม่) | **`CATEGORY_ID`** | รหัส Leaf Category ในตาราง `CATEGORIES` ใหม่ |
-| คุณลักษณะเฉพาะ + ข้อมูลงบเดิม | **`EXTRA_ATTRIBUTES`** | บันทึกในรูปแบบ JSON CLOB ตามมาตรฐานข้อกำหนด |
-| `DADDDATE` | **`CREATED_AT`** | แปลงวันที่เดิม (Format: DD-MON-YY เป็น Timestamp) |
-
----
-
-### 7.2 ตัวอย่าง JSON ในคอลัมน์ `EXTRA_ATTRIBUTES`
-
-#### ตัวอย่างที่ 1: สลักเกลียว (Bolt) ที่เดิมเคยหลุดไปอยู่ในหมวด 56 (Maintenance)
+#### ตัวอย่างที่ 1: สลักเกลียว (Bolt)
 ```json
 {
-  "unit": "Pce",
-  "currency": "Bt.",
   "thread_size": "M10",
   "pitch": 1.5,
   "length": 120,
   "material_grade": "Steel 8.8",
-  "vendor_code": "60110",
   "legacy_tracking": {
     "expense_type": "56",
     "expense_desc": "Factory Maintenance",
@@ -232,11 +316,9 @@ graph TD
 }
 ```
 
-#### ตัวอย่างที่ 2: เครื่องคอมพิวเตอร์ที่เดิมเคยอยู่ในหมวด 10 (งบลงทุน)
+#### ตัวอย่างที่ 2: เครื่องคอมพิวเตอร์ (เดิมอยู่ในงบลงทุน 10)
 ```json
 {
-  "unit": "Set",
-  "currency": "Bt.",
   "device_type": "Desktop PC",
   "brand": "HP",
   "model": "BRIO",
@@ -254,12 +336,9 @@ graph TD
 }
 ```
 
-#### ตัวอย่างที่ 3: สัญญาเช่ารถโฟล์คลิฟท์ที่เดิมอยู่ในหมวด 50 (Factory Consumption)
+#### ตัวอย่างที่ 3: สัญญาเช่ารถโฟล์คลิฟท์ (เดิมอยู่ในหมวด 50)
 ```json
 {
-  "unit": "Month",
-  "currency": "Bt.",
-  "is_service": 1,
   "service_type": "Forklift Rental",
   "equipment_details": {
     "brand": "MITSUBISHI",
@@ -277,7 +356,191 @@ graph TD
 
 ---
 
-## 8. แนวทางการดำเนินงานแปลงข้อมูล (ETL & Migration Pipeline)
+## 10. สรุปโครงสร้าง Database DDL ฉบับสมบูรณ์ (Complete SQL Schema)
+
+ชุดคำสั่ง DDL ภาษา SQL สำหรับสร้างระบบทั้งหมดบน **Oracle Database**:
+
+```sql
+-- ============================================================================
+-- 1. ตาราง CATEGORIES (โครงสร้างหมวดหมู่สินค้าแบบ Tree)
+-- ============================================================================
+CREATE TABLE CATEGORIES (
+    ID NUMBER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    NAME VARCHAR2(255) NOT NULL,
+    PARENT_ID NUMBER,
+    CONSTRAINT FK_CATEGORIES_PARENT
+        FOREIGN KEY (PARENT_ID) REFERENCES CATEGORIES(ID) ON DELETE CASCADE
+);
+CREATE INDEX IDX_CATEGORIES_PARENT ON CATEGORIES(PARENT_ID);
+
+
+-- ============================================================================
+-- 2. ตาราง CATEGORY_ATTRIBUTES (Dynamic Attributes Registry)
+-- ============================================================================
+CREATE TABLE CATEGORY_ATTRIBUTES (
+    ID NUMBER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    CATEGORY_ID NUMBER NOT NULL,
+    NAME VARCHAR2(100) NOT NULL,
+    DATA_TYPE VARCHAR2(20) DEFAULT 'text' NOT NULL,
+    IS_REQUIRED NUMBER(1) DEFAULT 0 NOT NULL,
+    OPTION_SOURCE VARCHAR2(20) DEFAULT 'none' NOT NULL,
+    FIXED_OPTIONS CLOB,
+    FUNCTION_NAME VARCHAR2(100),
+
+    CONSTRAINT FK_CAT_ATTR_CATEGORY
+        FOREIGN KEY (CATEGORY_ID) REFERENCES CATEGORIES(ID) ON DELETE CASCADE,
+    CONSTRAINT UK_CAT_ATTR_NAME UNIQUE (CATEGORY_ID, NAME),
+    CONSTRAINT CHK_CAT_ATTR_DATA_TYPE CHECK (DATA_TYPE IN ('text', 'number', 'option')),
+    CONSTRAINT CHK_CAT_ATTR_IS_REQ CHECK (IS_REQUIRED IN (0, 1)),
+    CONSTRAINT CHK_CAT_ATTR_OPT_SRC CHECK (OPTION_SOURCE IN ('none', 'fixed', 'function')),
+    CONSTRAINT CHK_FIXED_OPTIONS_JSON CHECK (FIXED_OPTIONS IS NULL OR FIXED_OPTIONS IS JSON)
+);
+CREATE INDEX IDX_CAT_ATTR_CATEGORY ON CATEGORY_ATTRIBUTES(CATEGORY_ID);
+
+
+-- ============================================================================
+-- 3. ตาราง PRODUCTS (ข้อมูลสินค้าหลัก + Core Procurement Columns)
+-- ============================================================================
+CREATE TABLE PRODUCTS (
+    ID NUMBER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    SKU VARCHAR2(100) NOT NULL,
+    NAME VARCHAR2(255) NOT NULL,
+    DESCRIPTION CLOB,
+    
+    -- Core Procurement Columns
+    UNIT_CODE VARCHAR2(20) DEFAULT 'Pce' NOT NULL,       -- หน่วยนับหลัก (UOM)
+    PRODUCT_TYPE VARCHAR2(20) DEFAULT 'GOODS' NOT NULL,  -- GOODS, SERVICE, RENTAL
+    STATUS VARCHAR2(20) DEFAULT 'ACTIVE' NOT NULL,       -- ACTIVE, INACTIVE, DISCONTINUED
+    CATEGORY_ID NUMBER,
+    DEFAULT_VENDOR_CODE VARCHAR2(50),                    -- รหัสผู้จำหน่ายหลัก
+    
+    -- สรุปประวัติราคาล่าสุด (Optional Cache)
+    LAST_PURCHASE_PRICE NUMBER(14, 4) DEFAULT 0,
+    LAST_PURCHASE_CURRENCY VARCHAR2(10) DEFAULT 'Bt.',
+    LAST_PURCHASE_DATE DATE,
+    
+    -- Dynamic Extra Attributes
+    EXTRA_ATTRIBUTES CLOB DEFAULT '{}',
+    
+    -- Audit Timestamps
+    CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    UPDATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    DELETED_AT TIMESTAMP,
+
+    CONSTRAINT UK_PRODUCTS_SKU UNIQUE (SKU),
+    CONSTRAINT FK_PRODUCTS_CATEGORY
+        FOREIGN KEY (CATEGORY_ID) REFERENCES CATEGORIES(ID) ON DELETE SET NULL,
+    CONSTRAINT CHK_PRODUCTS_TYPE CHECK (PRODUCT_TYPE IN ('GOODS', 'SERVICE', 'RENTAL')),
+    CONSTRAINT CHK_PRODUCTS_STATUS CHECK (STATUS IN ('ACTIVE', 'INACTIVE', 'DISCONTINUED')),
+    CONSTRAINT CHK_EXTRA_ATTRS_JSON CHECK (EXTRA_ATTRIBUTES IS NULL OR EXTRA_ATTRIBUTES IS JSON)
+);
+CREATE INDEX IDX_PRODUCTS_CATEGORY ON PRODUCTS(CATEGORY_ID);
+CREATE INDEX IDX_PRODUCTS_TYPE ON PRODUCTS(PRODUCT_TYPE);
+CREATE INDEX IDX_PRODUCTS_STATUS ON PRODUCTS(STATUS);
+CREATE INDEX IDX_PRODUCTS_VENDOR ON PRODUCTS(DEFAULT_VENDOR_CODE);
+CREATE INDEX IDX_PRODUCTS_DELETED_AT ON PRODUCTS(DELETED_AT);
+
+
+-- ============================================================================
+-- 4. ตาราง QUOTATIONS (ใบเสนอราคาจากผู้ขาย - Header)
+-- ============================================================================
+CREATE TABLE QUOTATIONS (
+    ID NUMBER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    QUOTATION_NO VARCHAR2(100) NOT NULL,          -- เลขที่ใบเสนอราคา
+    VENDOR_CODE VARCHAR2(50) NOT NULL,             -- รหัสคู่ค้า/ผู้ขาย
+    VENDOR_NAME VARCHAR2(255),                     -- ชื่อคู่ค้า
+    QUOTATION_DATE DATE NOT NULL,                  -- วันที่เสนอราคา
+    VALID_FROM DATE NOT NULL,                      -- วันที่เริ่มมีผลคุ้มครองราคา
+    VALID_TO DATE NOT NULL,                        -- วันที่สิ้นสุดความคุ้มครองราคา
+    STATUS VARCHAR2(20) DEFAULT 'DRAFT' NOT NULL,  -- DRAFT, PENDING, APPROVED, REJECTED, EXPIRED
+    APPROVED_BY VARCHAR2(100),                     -- ผู้อนุมัติราคา
+    APPROVED_AT TIMESTAMP,                         -- วันเวลาที่อนุมัติ
+    DOCUMENT_URL VARCHAR2(500),                    -- ลิงก์ไฟล์แนบเอกสาร (PDF)
+    REMARKS CLOB,
+    CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    
+    CONSTRAINT UK_QUOTATION_NO_VENDOR UNIQUE (QUOTATION_NO, VENDOR_CODE),
+    CONSTRAINT CHK_QUOTATION_STATUS CHECK (STATUS IN ('DRAFT', 'PENDING', 'APPROVED', 'REJECTED', 'EXPIRED'))
+);
+CREATE INDEX IDX_QUOTATIONS_VENDOR ON QUOTATIONS(VENDOR_CODE);
+CREATE INDEX IDX_QUOTATIONS_STATUS ON QUOTATIONS(STATUS);
+
+
+-- ============================================================================
+-- 5. ตาราง QUOTATION_ITEMS (รายการสินค้าในใบเสนอราคา - Detail)
+-- ============================================================================
+CREATE TABLE QUOTATION_ITEMS (
+    ID NUMBER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    QUOTATION_ID NUMBER NOT NULL,
+    PRODUCT_ID NUMBER NOT NULL,
+    UNIT_CODE VARCHAR2(20) NOT NULL,
+    UNIT_PRICE NUMBER(14, 4) NOT NULL,             -- ราคาต่อหน่วย (ทศนิยม 4 ตำแหน่ง)
+    CURRENCY_CODE VARCHAR2(10) DEFAULT 'Bt.' NOT NULL,
+    MIN_QUANTITY NUMBER(12, 2) DEFAULT 1 NOT NULL, -- ปริมาณสั่งซื้อขั้นต่ำ / Tier
+    LEAD_TIME_DAYS NUMBER(5) DEFAULT 0,            -- ระยะเวลาส่งมอบ (วัน)
+    REMARKS VARCHAR2(255),
+
+    CONSTRAINT FK_QT_ITEMS_QUOTATION 
+        FOREIGN KEY (QUOTATION_ID) REFERENCES QUOTATIONS(ID) ON DELETE CASCADE,
+    CONSTRAINT FK_QT_ITEMS_PRODUCT 
+        FOREIGN KEY (PRODUCT_ID) REFERENCES PRODUCTS(ID) ON DELETE CASCADE
+);
+CREATE INDEX IDX_QT_ITEMS_PROD ON QUOTATION_ITEMS(PRODUCT_ID);
+CREATE INDEX IDX_QT_ITEMS_QT ON QUOTATION_ITEMS(QUOTATION_ID);
+
+
+-- ============================================================================
+-- 6. ตาราง PRODUCT_PRICES (Price Master / Purchasing Info Record)
+-- ============================================================================
+CREATE TABLE PRODUCT_PRICES (
+    ID NUMBER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    PRODUCT_ID NUMBER NOT NULL,
+    VENDOR_CODE VARCHAR2(50) NOT NULL,
+    QUOTATION_ITEM_ID NUMBER,                      -- ผูกกับ Item ในใบเสนอราคาที่ใช้อ้างอิง
+    UNIT_CODE VARCHAR2(20) NOT NULL,
+    UNIT_PRICE NUMBER(14, 4) NOT NULL,
+    CURRENCY_CODE VARCHAR2(10) DEFAULT 'Bt.' NOT NULL,
+    MIN_QUANTITY NUMBER(12, 2) DEFAULT 1 NOT NULL, -- สั่งซื้อขั้นต่ำ หรือ Tier
+    VALID_FROM DATE NOT NULL,
+    VALID_TO DATE NOT NULL,
+    IS_ACTIVE NUMBER(1) DEFAULT 1 NOT NULL,        -- 1 = ใช้งานได้, 0 = หมดอายุ/ยกเลิก
+    IS_PREFERRED_VENDOR NUMBER(1) DEFAULT 0 NOT NULL, -- ผู้ขายหลักของสินค้านี้หรือไม่
+    CREATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    UPDATED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+
+    CONSTRAINT FK_PROD_PRICES_PRODUCT 
+        FOREIGN KEY (PRODUCT_ID) REFERENCES PRODUCTS(ID) ON DELETE CASCADE,
+    CONSTRAINT FK_PROD_PRICES_QT_ITEM 
+        FOREIGN KEY (QUOTATION_ITEM_ID) REFERENCES QUOTATION_ITEMS(ID) ON DELETE SET NULL,
+    CONSTRAINT CHK_PROD_PRICES_ACTIVE CHECK (IS_ACTIVE IN (0, 1)),
+    CONSTRAINT CHK_PROD_PRICES_PREF CHECK (IS_PREFERRED_VENDOR IN (0, 1))
+);
+CREATE INDEX IDX_PROD_PRICES_LOOKUP ON PRODUCT_PRICES(PRODUCT_ID, VENDOR_CODE, IS_ACTIVE, VALID_FROM, VALID_TO);
+
+
+-- ============================================================================
+-- 7. ตาราง PRODUCT_PRICE_HISTORY (ประวัติการเปลี่ยนแปลงราคา / Audit Log)
+-- ============================================================================
+CREATE TABLE PRODUCT_PRICE_HISTORY (
+    ID NUMBER GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    PRODUCT_PRICE_ID NUMBER NOT NULL,              -- อ้างอิง Price Master Record
+    PRODUCT_ID NUMBER NOT NULL,
+    VENDOR_CODE VARCHAR2(50) NOT NULL,
+    QUOTATION_ID NUMBER,                           -- ใบเสนอราคาที่ทำให้ราคาเปลี่ยน
+    OLD_PRICE NUMBER(14, 4),
+    NEW_PRICE NUMBER(14, 4) NOT NULL,
+    CURRENCY_CODE VARCHAR2(10) NOT NULL,
+    CHANGE_REASON VARCHAR2(255),                   -- สาเหตุการเปลี่ยนราคา
+    EFFECTIVE_DATE DATE NOT NULL,
+    CHANGED_BY VARCHAR2(100) NOT NULL,             -- ผู้บันทึก/อนุมัติ
+    CHANGED_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+CREATE INDEX IDX_PRICE_HIST_PROD ON PRODUCT_PRICE_HISTORY(PRODUCT_ID, VENDOR_CODE);
+```
+
+---
+
+## 11. แนวทางการดำเนินงานแปลงข้อมูล (ETL & Migration Pipeline)
 
 ```mermaid
 flowchart TD
@@ -286,8 +549,8 @@ flowchart TD
     subgraph Step1 ["ขั้นตอนที่ 1: Data Cleansing & Service Tagging"]
         CleanName["ตัด Whitespace และตัวอักษรพิเศษที่ไม่จำเป็น"]
         TagService{"ตรวจสอบคำว่า RENTAL, SERVICE, FEE, CALIBRATION"}
-        TagService -->|ใช่| FlagService["กำหนด is_service = 1"]
-        TagService -->|ไม่ใช่| FlagGoods["กำหนด is_service = 0"]
+        TagService -->|ใช่| FlagService["กำหนด PRODUCT_TYPE = 'SERVICE' หรือ 'RENTAL'"]
+        TagService -->|ไม่ใช่| FlagGoods["กำหนด PRODUCT_TYPE = 'GOODS'"]
     end
 
     subgraph Step2 ["ขั้นตอนที่ 2: Keyword Rule-based Classification"]
@@ -303,6 +566,7 @@ flowchart TD
         BuildCat["สร้างหมวดหมู่ Level 1, 2, 3 ลงใน CATEGORIES"]
         BuildAttr["สร้าง Attributes ลงใน CATEGORY_ATTRIBUTES"]
         InsertProd["แปลงข้อมูล JSON และ Insert ลงใน PRODUCTS"]
+        InitPrice["นำราคา NPRICE เดิมเปิดเป็น Initial Price Master ใน PRODUCT_PRICES"]
     end
 
     Raw --> Step1
@@ -311,7 +575,8 @@ flowchart TD
     Step3 --> TargetDB[("Oracle Database")]
 ```
 
-### สรุปผลประโยชน์ที่จะได้รับจากการปรับโครงสร้างใหม่
-1. **การรวมอำนาจการต่อรองราคา (Procurement Volume Consolidation):** ฝ่ายจัดซื้อสามารถดึงยอดสั่งซื้อรวมของสินค้าประเภทเดียวกัน เช่น น็อตหรือตลับลูกปืน ที่เดิมเคยกระจายตัวอยู่ 8–10 หมวด มารวมศูนย์เพื่อขอส่วนลดปริมาณ (Volume Rebate) ได้ทันที
-2. **การควบคุมสต็อกที่แม่นยำ (Clean Inventory Management):** แยกรายการที่เป็นสัญญาเช่าและค่าบริการออกจากสต็อกสินค้าทางกายภาพ หมดปัญหารายการบริการคงค้างในคลังสินค้า
-3. **ความถูกต้องทางบัญชีคงเดิม 100% (Zero Business Disruption):** การเก็บรหัส `legacy_tracking` ไว้ใน `EXTRA_ATTRIBUTES` ทำให้ฝ่ายบัญชีและการเงินยังคงสามารถออกรายงานแยกตามงบประมาณ (Budget Cost Center) เดิมได้ทุกประการ
+### สรุปผลประโยชน์ที่จะได้รับจากการปรับปรุงโครงสร้างรอบนี้
+1. **การรวมอำนาจต่อรองราคา (Procurement Volume Consolidation):** ฝ่ายจัดซื้อสามารถดึงยอดสั่งซื้อรวมของสินค้าประเภทเดียวกันมารวมศูนย์เพื่อขอส่วนลดปริมาณ (Volume Rebate) ได้ทันที
+2. **การควบคุมสต็อกที่แม่นยำ (Clean Inventory Management):** แยกรายการสินค้าที่มีสต็อก (`GOODS`) ออกจากงานบริการและสัญญาเช่า (`SERVICE`/`RENTAL`) อย่างสิ้นเชิง หมดปัญหาสต็อกคงค้างผิดปกติ
+3. **การควบคุมราคาโปร่งใส ป้องกันทุจริต (Fraud Prevention & Compliance):** เจ้าหน้าที่จัดซื้อไม่สามารถคีย์ราคาตามอำเภอใจได้ เพราะราคาต้องถูกควบคุมด้วยใบเสนอราคา (`QUOTATIONS`) ที่ได้รับอนุมัติในระบบแล้วเท่านั้น
+4. **ความถูกต้องทางบัญชีคงเดิม 100% (Zero Business Disruption):** การเก็บรหัส `legacy_tracking` ไว้ใน `EXTRA_ATTRIBUTES` ทำให้ฝ่ายบัญชียังคงสามารถออกรายงานแยกตามงบประมาณ (Budget Cost Center) เดิมได้ทุกประการ
