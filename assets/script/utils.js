@@ -28,11 +28,12 @@ const getAppOptions = () => {
 };
 
 const initFromCache = async (opt) => {
+	showbgLoader();
 	const { APP_NAME, APP_ID, TIMEOUT } = getConfig();
 	const cookie = getCookie(APP_NAME);
 	if (!cookie) {
 		window.location.href = `${root}/form/authen/index/${APP_ID}`;
-		return false;
+		return new Promise(() => {});
 	}
 
 	setCookie(APP_NAME, cookie, TIMEOUT || 30);
