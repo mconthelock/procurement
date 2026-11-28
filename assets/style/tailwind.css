@@ -669,6 +669,11 @@ div.dt-container
 		view-transition-name: app-main;
 	}
 
+	html.leaving-app .drawer-side,
+	html.leaving-app #main-contents {
+		view-transition-name: none !important;
+	}
+
 	::view-transition-old(app-sidebar),
 	::view-transition-new(app-sidebar) {
 		animation: none;

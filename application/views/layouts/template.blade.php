@@ -18,7 +18,7 @@
         href="{{ $_ENV['APP_ENV'] }}/assets/fonts/material-symbols/material-symbols-outlined.woff2">
     <link rel="stylesheet" href="{{ $_ENV['APP_CSS'] }}/tailwind.css?ver={{ $GLOBALS['version'] }}">
     @yield('styles')
-    <script src="{{ $_ENV['APP_ENV'] }}/script.js"></script>
+    <script src="{{ $_ENV['APP_ENV'] }}/script.js?ver={{ $GLOBALS['version'] }}"></script>
 </head>
 
 <body menuTitle="{{ $title ?? '' }}" class="flex flex-col min-h-screen">

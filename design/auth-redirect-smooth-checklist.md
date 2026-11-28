@@ -53,11 +53,26 @@ public function views($view_name, $data = array()){
 
 **วิธีเช็ค:**
 - ค้นหา `@view-transition` และ `view-transition-name` ในไฟล์ CSS (เช่น `assets/style/tailwind.css`)
-- ถ้ามีการตั้ง `::view-transition-old(app-sidebar) { animation: none; }` ให้เช็คใน `script.js` ว่ามี `pageswap` listener สำหรับยกเลิก transition ตอนออกนอกแอปหรือไม่
+- เช็คใน `application/views/layouts/template.blade.php` ว่า `<script src=".../script.js">` มี `?ver={{ $GLOBALS['version'] }}` หรือไม่ (ถ้าไม่มี browser จะจำ `script.js` เก่าจาก cache)
+- ถ้ามีการตั้ง `::view-transition-old(app-sidebar) { animation: none; }` ให้เช็คใน `script.js` ว่ามี `pageswap` listener และตัวกัน `.logout, #delete-cookie` หรือไม่
 
 **วิธีแก้:**
-1. ใน `script.js` เพิ่ม `pageswap` listener เพื่อ skip transition เมื่อออกนอก `base_url`:
+1. ใน `application/views/layouts/template.blade.php` ใส่ `?ver={{ $GLOBALS['version'] }}` ให้ `script.js`:
+```html
+<script src="{{ $_ENV['APP_ENV'] }}/script.js?ver={{ $GLOBALS['version'] }}"></script>
+```
+2. ใน `script.js` เพิ่ม capture click listener สำหรับ `.logout, #delete-cookie` และ `pageswap` listener เพื่อ skip transition เมื่อออกนอก `base_url`:
 ```js
+document.addEventListener(
+    "click",
+    (event) => {
+        if (event.target?.closest?.(".logout, #delete-cookie")) {
+            document.documentElement.classList.add("leaving-app");
+        }
+    },
+    true,
+);
+
 window.addEventListener("pageswap", (event) => {
     if (!event.viewTransition) return;
     const destUrl = event.activation?.entry?.url || "";
@@ -65,17 +80,23 @@ window.addEventListener("pageswap", (event) => {
         document.querySelector('meta[name="base_url"]')?.content || ""
     ).replace(/\/+$/, "");
     if (
-        destUrl &&
-        appBase &&
-        destUrl !== appBase &&
-        !destUrl.startsWith(`${appBase}/`)
+        document.documentElement.classList.contains("leaving-app") ||
+        (destUrl &&
+            appBase &&
+            destUrl !== appBase &&
+            !destUrl.startsWith(`${appBase}/`))
     ) {
         event.viewTransition.skipTransition();
     }
 });
 ```
-2. ในไฟล์ CSS (เช่น `assets/style/tailwind.css`) เพิ่ม fallback สำหรับกรณี sidebar เป็น `:only-child`:
+3. ในไฟล์ CSS (เช่น `assets/style/tailwind.css`) เพิ่ม rule ปิด `view-transition-name` ตอน `html.leaving-app` และ fallback สำหรับ `:only-child`:
 ```css
+html.leaving-app .drawer-side,
+html.leaving-app #main-contents {
+    view-transition-name: none !important;
+}
+
 ::view-transition-old(app-sidebar):only-child {
     animation: 100ms ease-out both amec-page-out;
 }

@@ -48,6 +48,16 @@
 
 	// Skip cross-document View Transition when leaving the app (e.g. redirect/logout to /form/authen)
 	// so the pinned app-sidebar snapshot doesn't linger over the destination splash/login page.
+	document.addEventListener(
+		"click",
+		(event) => {
+			if (event.target?.closest?.(".logout, #delete-cookie")) {
+				document.documentElement.classList.add("leaving-app");
+			}
+		},
+		true,
+	);
+
 	window.addEventListener("pageswap", (event) => {
 		if (!event.viewTransition) return;
 		const destUrl = event.activation?.entry?.url || "";
@@ -55,10 +65,11 @@
 			document.querySelector('meta[name="base_url"]')?.content || ""
 		).replace(/\/+$/, "");
 		if (
-			destUrl &&
-			appBase &&
-			destUrl !== appBase &&
-			!destUrl.startsWith(`${appBase}/`)
+			document.documentElement.classList.contains("leaving-app") ||
+			(destUrl &&
+				appBase &&
+				destUrl !== appBase &&
+				!destUrl.startsWith(`${appBase}/`))
 		) {
 			event.viewTransition.skipTransition();
 		}
