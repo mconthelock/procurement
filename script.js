@@ -41,7 +41,26 @@
 	localStorage.setItem("theme", savedTheme);
 	document.addEventListener("DOMContentLoaded", function () {
 		if (savedTheme === "dark") {
-			document.getElementById("theme").checked = true;
+			const themeToggle = document.getElementById("theme");
+			if (themeToggle) themeToggle.checked = true;
+		}
+	});
+
+	// Skip cross-document View Transition when leaving the app (e.g. redirect/logout to /form/authen)
+	// so the pinned app-sidebar snapshot doesn't linger over the destination splash/login page.
+	window.addEventListener("pageswap", (event) => {
+		if (!event.viewTransition) return;
+		const destUrl = event.activation?.entry?.url || "";
+		const appBase = (
+			document.querySelector('meta[name="base_url"]')?.content || ""
+		).replace(/\/+$/, "");
+		if (
+			destUrl &&
+			appBase &&
+			destUrl !== appBase &&
+			!destUrl.startsWith(`${appBase}/`)
+		) {
+			event.viewTransition.skipTransition();
 		}
 	});
 

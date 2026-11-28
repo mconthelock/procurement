@@ -4,7 +4,6 @@ import { decryptText } from "@amec/webasset/crypto";
 import { getMenu, getGroup, displayEmpInfo } from "@amec/webasset/indexDB";
 import { getCookie, setCookie, getTimeLeft } from "@amec/webasset/jsCookie";
 import { initNavbar } from "@amec/webasset/navbar";
-import { showbgLoader } from "@amec/webasset/preloader";
 import {
 	initSidebar,
 	setSidebarMenu,
@@ -28,11 +27,10 @@ const getAppOptions = () => {
 };
 
 const initFromCache = async (opt) => {
-	showbgLoader();
 	const { APP_NAME, APP_ID, TIMEOUT } = getConfig();
 	const cookie = getCookie(APP_NAME);
 	if (!cookie) {
-		window.location.href = `${root}/form/authen/index/${APP_ID}`;
+		window.location.replace(`${root}/form/authen/index/${APP_ID}`);
 		return new Promise(() => {});
 	}
 
@@ -70,7 +68,6 @@ const initFromCache = async (opt) => {
 	initNavbar(opt);
 	initSidebar(opt);
 	await setSidebarMenu(menu, info, opt.lang || "en");
-	showbgLoader({ show: false });
 
 	const pin = localStorage.getItem("pin");
 	if (pin === undefined || pin === null) {

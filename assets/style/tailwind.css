@@ -674,6 +674,10 @@ div.dt-container
 		animation: none;
 	}
 
+	::view-transition-old(app-sidebar):only-child {
+		animation: 100ms ease-out both amec-page-out;
+	}
+
 	::view-transition-old(app-main) {
 		animation: 140ms ease-out both amec-page-out;
 	}

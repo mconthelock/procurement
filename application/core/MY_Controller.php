@@ -17,6 +17,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     }
 
     public function views($view_name, $data = array()){
+        $appName = $_ENV['APP_NAME'] ?? '';
+        if (!is_cli() && !$this->isAjaxRequest() && $appName !== '' && empty($_COOKIE[$appName])) {
+            $authUrl = rtrim($_ENV['APP_HOST'], '/') . '/form/authen/index/' . $_ENV['APP_ID'];
+            header('Cache-Control: no-store, no-cache, must-revalidate');
+            header('Location: ' . $authUrl, true, 302);
+            exit;
+        }
         echo $this->blade->render($view_name, $data);
     }
 
